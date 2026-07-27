@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Військова англійська — курс</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{
+  --bg:#f4f5f7; --card:#fff; --fg:#15181d; --dim:#6b7280; --line:#dfe3e8;
+  --accent:#2563eb; --ok:#15803d; --okbg:#dcfce7; --bad:#b91c1c; --badbg:#fee2e2;
+  --warn:#a16207; --warnbg:#fef3c7;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#101215;--card:#181b20;--fg:#e8eaed;--dim:#9aa1ab;--line:#2a2f36;
+        --accent:#60a5fa;--ok:#4ade80;--okbg:#14361f;--bad:#f87171;--badbg:#3a1618;
+        --warn:#fbbf24;--warnbg:#3a2e0c;}
+}
+body.tg{
+  --bg:var(--tg-theme-bg-color,#101215);
+  --card:var(--tg-theme-secondary-bg-color,#181b20);
+  --fg:var(--tg-theme-text-color,#e8eaed);
+  --dim:var(--tg-theme-hint-color,#9aa1ab);
+  --accent:var(--tg-theme-button-color,#60a5fa);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+#wrap{max-width:820px;margin:0 auto;padding:12px 14px 80px}
+h1{font-size:19px;margin:0 0 2px}
+h2{font-size:17px;margin:14px 0 4px}
+.sub{color:var(--dim);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:14px 15px;margin:10px 0}
+.tap{cursor:pointer}
+.tap:active{opacity:.7}
+.card h3{margin:0 0 2px;font-size:16px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+button{font:inherit}
+.act{padding:11px 16px;border-radius:10px;border:1px solid var(--accent);
+  background:var(--accent);color:#fff;font-size:15px;cursor:pointer}
+.act:disabled{opacity:.45;cursor:default}
+.ghost{padding:10px 14px;border-radius:10px;border:1px solid var(--line);
+  background:transparent;color:var(--fg);font-size:15px;cursor:pointer}
+.ghost.on{border-color:var(--accent);color:var(--accent)}
+.small{font-size:13px;padding:7px 11px}
+.back{color:var(--accent);font-size:14px;cursor:pointer;display:inline-block;margin:2px 0 6px}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.pill{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:99px;padding:2px 9px}
+.pill.done{color:var(--ok);border-color:var(--ok)}
+.pill.soon{color:var(--warn);border-color:var(--warn)}
+.flash{min-height:150px;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;gap:8px;padding:22px 10px}
+.big{font-size:26px;font-weight:600;line-height:1.25}
+.mid{font-size:19px}
+.expl{color:var(--dim);font-size:14px;max-width:34em}
+.opts{display:flex;flex-direction:column;gap:7px;margin-top:10px}
+.opts button{text-align:left;padding:11px 13px;border:1px solid var(--line);border-radius:10px;
+  background:transparent;color:var(--fg);font-size:15px;cursor:pointer}
+.opts button.good{border-color:var(--ok);background:var(--okbg)}
+.opts button.bad{border-color:var(--bad);background:var(--badbg)}
+.opts button:disabled{cursor:default}
+input.gap,input.tin{font:inherit;font-size:16px;padding:8px 11px;border:1px solid var(--line);
+  border-radius:9px;background:var(--bg);color:var(--fg);width:100%;max-width:16em}
+input.gap{padding:2px 7px;border:0;border-bottom:2px solid var(--accent);background:transparent;
+  width:9.5em;border-radius:3px 3px 0 0;font-size:15px}
+select.gap{font:inherit;font-size:15px;padding:3px 6px;border:1px solid var(--accent);
+  border-radius:7px;background:var(--card);color:var(--fg);max-width:100%}
+.gap.good,.tin.good{border-color:var(--ok);background:var(--okbg)}
+.gap.bad,.tin.bad{border-color:var(--bad);background:var(--badbg)}
+.gap.near,.tin.near{border-color:var(--warn);background:var(--warnbg)}
+.fix{color:var(--bad);font-size:13px;margin-left:4px;white-space:nowrap}
+.hint{color:var(--dim);font-size:13px}
+.bank{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.bank span{border:1px dashed var(--line);border-radius:7px;padding:3px 9px;font-size:13px;color:var(--dim)}
+.line{display:flex;gap:8px;margin:7px 0;align-items:baseline}
+.who{flex:0 0 22px;color:var(--accent);font-weight:600;font-size:13px}
+.txt{flex:1}
+p.para{margin:9px 0}
+.score{font-size:14px;padding:8px 12px;border-radius:9px;background:var(--okbg);color:var(--ok);
+  display:inline-block;margin-top:8px}
+.score.low{background:var(--badbg);color:var(--bad)}
+.steps{display:flex;gap:6px;margin:10px 0 4px}
+.steps div{flex:1;text-align:center;font-size:12px;color:var(--dim);
+  border-bottom:3px solid var(--line);padding-bottom:5px}
+.steps div.on{color:var(--accent);border-color:var(--accent)}
+.steps div.ok{color:var(--ok);border-color:var(--ok)}
+.speak{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:8px;
+  padding:4px 9px;font-size:15px;cursor:pointer}
+.res{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+footer{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);
+  padding:8px 14px;font-size:12px;color:var(--dim);display:flex;gap:12px;justify-content:center}
+footer span{cursor:pointer}
+.list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:11px 0;border-top:1px solid var(--line)}
+.list-item:first-child{border-top:0}
+.grow{flex:1;min-width:0}
+.nowrap{white-space:nowrap}
+.tiny{font-size:12px;color:var(--dim)}
+</style>
+</head>
+<body>
+<div id="wrap"><div id="view"></div></div>
+<footer>
+  <span id="f-home">Курс</span>
+  <span id="f-review">Повторення</span>
+  <span id="f-search">Пошук</span>
+  <span id="f-sync"></span>
+</footer>
+
+<script id="course" type="application/json">{"modules":[{"id":"m1","title":"Авіатехніка","sub":"Обслуговування літака: системи, інструмент, документація","themes":[{"id":"442861a8","title":"Виконання робіт (дієслова)","lessons":[{"id":"m1:eddf88fb","title":"Виконання робіт (дієслова) — ч. 1","terms":[{"en":"Remove","ua":"Демонтувати / Зняти","ex":"To remove a part means to take it off the aircraft.","cloze":"To …… a part means to take it off the aircraft.","acc":["remove"],"dis":["Extend","Deactivate","Drain"],"uadis":["Киснева маска","Розподільник / Колектор","Звалювання"],"k":"m1:Remove"},{"en":"Install","ua":"Монтувати / Встановити","ex":"To install means to put a new or repaired part in place.","cloze":"To …… means to put a new or repaired part in place.","acc":["install"],"dis":["Fill","Purge","Perform"],"uadis":["Основні стійки шасі","Привод агрегатів","Паяльник"],"k":"m1:Install"},{"en":"Replace","ua":"Замінити","ex":"To replace means to remove the old part and install a new one.","cloze":"To …… means to remove the old part and install a new one.","acc":["replace"],"dis":["Modify","Pressurize","Renew"],"uadis":["Прибрати","Гайка","Ізолювати"],"k":"m1:Replace"},{"en":"Disconnect","ua":"Від'єднати","ex":"To disconnect means to separate wires, hoses, or linkages.","cloze":"To …… means to separate wires, hoses, or linkages.","acc":["disconnect"],"dis":["Lubricate","Examine","Verify"],"uadis":["Амортизаційна стійка","Регульоване сопло","Термоусадка"],"k":"m1:Disconnect"},{"en":"Connect","ua":"Приєднати","ex":"To connect means to join components or systems together.","cloze":"To …… means to join components or systems together.","acc":["connect"],"dis":["Perform","Detach","Remove"],"uadis":["Гальмівний диск","Канал / Протока","Розгортка"],"k":"m1:Connect"},{"en":"Repair","ua":"Відремонтувати","ex":"To repair means to restore a damaged part to working condition.","cloze":"To …… means to restore a damaged part to working condition.","acc":["repair"],"dis":["Fill","Remove","Blend"],"uadis":["Привод агрегатів","Теплова пастка","Електрогідравлічний клапан"],"k":"m1:Repair"},{"en":"Overhaul","ua":"Капітальний ремонт","ex":"Overhaul is a complete disassembly, inspection, and restoration of a unit.","cloze":"…… is a complete disassembly, inspection, and restoration of a unit.","acc":["overhaul"],"dis":["Rectify","Submit","Bleed"],"uadis":["Гвинт / Шуруп","Водовідділювач","Шайба"],"k":"m1:Overhaul"},{"en":"Withdraw","ua":"Витягти","ex":"To withdraw means to pull out, for example a pin or cartridge.","cloze":"To …… means to pull out, for example a pin or cartridge.","acc":["withdraw"],"dis":["Lubricate","Adjust","Secure"],"uadis":["Наповнити / Заправити","Конденсатор","Вузол підвіски"],"k":"m1:Withdraw"},{"en":"Detach","ua":"Відкріпити","ex":"To detach means to release something held by clips or locks.","cloze":"To …… means to release something held by clips or locks.","acc":["detach"],"dis":["Adjust","Torque","Connect"],"uadis":["Канал / Протока","Відбірне повітря","Окуляри нічного бачення"],"k":"m1:Detach"},{"en":"Attach","ua":"Прикріпити","ex":"To attach means to fix a component using fasteners.","cloze":"To …… means to fix a component using fasteners.","acc":["attach"],"dis":["Retract","Detach","Rectify"],"uadis":["Гідробак","Кут місця","Окуляри нічного бачення"],"k":"m1:Attach"},{"en":"Access","ua":"Доступ","ex":"Access means opening panels or hatches to reach internal components.","cloze":"…… means opening panels or hatches to reach internal components.","acc":["access"],"dis":["Blend","Replace","Connect"],"uadis":["Плашка","Лопатка","Дріт заземлення"],"k":"m1:Access"},{"en":"Align","ua":"Вирівняти / Сумістити","ex":"To align means to position parts correctly relative to each other.","cloze":"To …… means to position parts correctly relative to each other.","acc":["align"],"dis":["Overhaul","Calibrate","Lubricate"],"uadis":["Від'єднати","Приймач попередження про опромінення","Паливна форсунка"],"k":"m1:Align"},{"en":"Bleed","ua":"Прокачати","ex":"To bleed means to remove air from a hydraulic or fuel system.","cloze":"To …… means to remove air from a hydraulic or fuel system.","acc":["bleed"],"dis":["Verify","Incorporate","Purge"],"uadis":["Шестигранна головка","Серійний номер","НДЖ у складі літака"],"k":"m1:Bleed"},{"en":"Blend","ua":"Зачистити (сплавно)","ex":"To blend means to smooth out sharp edges on damaged metal.","cloze":"To …… means to smooth out sharp edges on damaged metal.","acc":["blend"],"dis":["Lubricate","Retract","Retighten"],"uadis":["Автоматичний вимикач","Токсично","Боєприпаси"],"k":"m1:Blend"},{"en":"Calibrate","ua":"Калібрувати","ex":"To calibrate means to verify and adjust the accuracy of an instrument.","cloze":"To …… means to verify and adjust the accuracy of an instrument.","acc":["calibrate"],"dis":["Pressurize","Bleed","Incorporate"],"uadis":["Підвісний бак","Передня стійка шасі","Прикріпити"],"k":"m1:Calibrate"}]},{"id":"m1:182e0d56","title":"Виконання робіт (дієслова) — ч. 2","terms":[{"en":"Drain","ua":"Злити","ex":"To drain means to completely remove fluid from a tank or system.","cloze":"To …… means to completely remove fluid from a tank or system.","acc":["drain"],"dis":["Connect","Perform","Repair"],"uadis":["Гальмівний диск","Вхідний напрямний апарат","Впровадити"],"k":"m1:Drain"},{"en":"Fill","ua":"Наповнити / Заправити","ex":"To fill means to add fluid up to the required level.","cloze":"To …… means to add fluid up to the required level.","acc":["fill"],"dis":["Detach","Attach","Closure"],"uadis":["Постановка завад","Інвертор","Подряпина"],"k":"m1:Fill"},{"en":"Flush","ua":"Промити","ex":"To flush means to clean a system by passing fluid through it.","cloze":"To …… means to clean a system by passing fluid through it.","acc":["flush"],"dis":["Modify","Drain","Rectify"],"uadis":["Прошивка","Корончаста гайка","Відповідач"],"k":"m1:Flush"},{"en":"Isolate","ua":"Ізолювати","ex":"Isolate means to cut off the supply of fluid or electrical power.","cloze":"…… means to cut off the supply of fluid or electrical power.","acc":["isolate"],"dis":["Flush","Examine","Attach"],"uadis":["Перелік мінімального обладнання","Буксирувальне водило","Компресор"],"k":"m1:Isolate"},{"en":"Lubricate","ua":"Змастити","ex":"To lubricate means to apply oil or grease to moving parts.","cloze":"To …… means to apply oil or grease to moving parts.","acc":["lubricate"],"dis":["Isolate","Submit","Safety"],"uadis":["Підтягнути","Записати / Задокументувати","Манометр"],"k":"m1:Lubricate"},{"en":"Purge","ua":"Продути","ex":"To purge means to remove remaining fuel or gas from a line.","cloze":"To …… means to remove remaining fuel or gas from a line.","acc":["purge"],"dis":["Align","Depressurize","Detach"],"uadis":["Допоміжна силова установка","Розгортка","НАЗ"],"k":"m1:Purge"},{"en":"Retract","ua":"Прибрати","ex":"To retract means to pull in, for example the landing gear.","cloze":"To …… means to pull in, for example the landing gear.","acc":["retract"],"dis":["Blend","Remove","De-energize"],"uadis":["Інвертор","Вихрові струми","«Висота» в кабіні"],"k":"m1:Retract"},{"en":"Extend","ua":"Випустити","ex":"To extend means to deploy, for example the flaps or landing gear.","cloze":"To …… means to deploy, for example the flaps or landing gear.","acc":["extend"],"dis":["Overhaul","Disconnect","Troubleshoot"],"uadis":["Педалі керування","Викрутка","НАЗ"],"k":"m1:Extend"},{"en":"Secure","ua":"Закріпити","ex":"To secure means to fasten a part so it cannot move.","cloze":"To …… means to fasten a part so it cannot move.","acc":["secure"],"dis":["Verify","Isolate","Connect"],"uadis":["Заїдати / Заклинити","Прокачати","Зрощування"],"k":"m1:Secure"},{"en":"Torque","ua":"Затягнути з моментом","ex":"To torque means to tighten a fastener to a specified torque value.","cloze":"To …… means to tighten a fastener to a specified torque value.","acc":["torque"],"dis":["Remove","Fill","Connect"],"uadis":["Паливний насос","Кермо напрямку","Сертифікат"],"k":"m1:Torque"},{"en":"Troubleshoot","ua":"Шукати несправність","ex":"To troubleshoot means to identify why a system is not working.","cloze":"To …… means to identify why a system is not working.","acc":["troubleshoot"],"dis":["Fill","Withdraw","Adjust"],"uadis":["Гармата","Передня кромка","Припій / Паяти"],"k":"m1:Troubleshoot"},{"en":"Verify","ua":"Підтвердити / Перевірити","ex":"To verify means to confirm that a system is working correctly.","cloze":"To …… means to confirm that a system is working correctly.","acc":["verify"],"dis":["Blend","Activate","Secure"],"uadis":["Вирівняти / Сумістити","Підйомна сила","Знеструмити"],"k":"m1:Verify"},{"en":"Safety","ua":"Законтрити","ex":"To safety means to lock fasteners using safety wire.","cloze":"To …… means to lock fasteners using safety wire.","acc":["safety"],"dis":["Modify","Perform","Withdraw"],"uadis":["Рентгенографія","Вісь","Зворотний клапан"],"k":"m1:Safety"},{"en":"Adjust","ua":"Налаштувати","ex":"To adjust means to change settings to meet the required specification.","cloze":"To …… means to change settings to meet the required specification.","acc":["adjust"],"dis":["Inhibit","Attach","Access"],"uadis":["Візор","Паливомір","Коротке замикання"],"k":"m1:Adjust"},{"en":"Examine","ua":"Оглянути","ex":"To examine means to carefully inspect for defects or cracks.","cloze":"To …… means to carefully inspect for defects or cracks.","acc":["examine"],"dis":["Calibrate","Depressurize","Pressurize"],"uadis":["Пружинна шайба","Продути","Коротке замикання"],"k":"m1:Examine"}]},{"id":"m1:82d9d319","title":"Виконання робіт (дієслова) — ч. 3","terms":[{"en":"Annotate","ua":"Записати / Задокументувати","ex":"To annotate means to record information in a logbook.","cloze":"To …… means to record information in a logbook.","acc":["annotate"],"dis":["Fill","Overhaul","Attach"],"uadis":["Екранування","Протектор","Оновити / Замінити"],"k":"m1:Annotate"},{"en":"Activate","ua":"Активувати","ex":"To activate means to switch a system on for testing.","cloze":"To …… means to switch a system on for testing.","acc":["activate"],"dis":["Rectify","Purge","Secure"],"uadis":["Нервюра","Кут атаки","Перетирання"],"k":"m1:Activate"},{"en":"Deactivate","ua":"Деактивувати","ex":"To deactivate means to switch a system off before maintenance.","cloze":"To …… means to switch a system off before maintenance.","acc":["deactivate"],"dis":["Calibrate","Inhibit","Lubricate"],"uadis":["Гідробак","Будівельний фен","Тріщина"],"k":"m1:Deactivate"},{"en":"De-energize","ua":"Знеструмити","ex":"To de-energize means to completely remove all electrical power.","cloze":"To …… means to completely remove all electrical power.","acc":["de-energize"],"dis":["Flush","Withdraw","Annotate"],"uadis":["Джгут проводів","Термоусадка","Кермо напрямку"],"k":"m1:De-energize"},{"en":"Pressurize","ua":"Подати тиск","ex":"To pressurize means to build up pressure in a hydraulic or pneumatic system.","cloze":"To …… means to build up pressure in a hydraulic or pneumatic system.","acc":["pressurize"],"dis":["Verify","Attach","Withdraw"],"uadis":["«Висота» в кабіні","Лопатка","Паливомір"],"k":"m1:Pressurize"},{"en":"Depressurize","ua":"Скинути тиск","ex":"To depressurize means to safely reduce system pressure to zero.","cloze":"To …… means to safely reduce system pressure to zero.","acc":["depressurize"],"dis":["Closure","Perform","Drain"],"uadis":["Точкова корозія","Поставити на бойовий взвод","Триматися подалі"],"k":"m1:Depressurize"},{"en":"Inhibit","ua":"Заблокувати / Заборонити","ex":"To inhibit means to temporarily block a signal or function.","cloze":"To …… means to temporarily block a signal or function.","acc":["inhibit"],"dis":["Isolate","Remove","Drain"],"uadis":["Мультиметр","Дипольні відбивачі","Викрутка"],"k":"m1:Inhibit"},{"en":"Retighten","ua":"Підтягнути","ex":"To retighten means to tighten fasteners again after initial installation.","cloze":"To …… means to tighten fasteners again after initial installation.","acc":["retighten"],"dis":["Repair","Install","Renew"],"uadis":["Передня стійка шасі","Мануал з ремонту конструкції","Злити"],"k":"m1:Retighten"},{"en":"Closure","ua":"Закриття","ex":"Closure is the final step — closing panels and hatches after maintenance.","cloze":"…… is the final step — closing panels and hatches after maintenance.","acc":["closure"],"dis":["Inhibit","Isolate","Connect"],"uadis":["Манометр","Селектор","Система генерації кисню"],"k":"m1:Closure"},{"en":"Incorporate","ua":"Впровадити","ex":"To incorporate means to apply a modification from a service bulletin.","cloze":"To …… means to apply a modification from a service bulletin.","acc":["incorporate"],"dis":["Bleed","Fill","Annotate"],"uadis":["Повітря-повітря","Плоскогубці","Сервісний бюлетень"],"k":"m1:Incorporate"},{"en":"Modify","ua":"Модифікувати","ex":"To modify means to change a design according to an official order.","cloze":"To …… means to change a design according to an official order.","acc":["modify"],"dis":["Drain","Access","Troubleshoot"],"uadis":["Прокладка","Підвісний бак","Законтрити"],"k":"m1:Modify"},{"en":"Perform","ua":"Виконати","ex":"To perform means to carry out a procedure, such as an inspection.","cloze":"To …… means to carry out a procedure, such as an inspection.","acc":["perform"],"dis":["Retract","Pressurize","Remove"],"uadis":["Гвинт / Шуруп","Підтвердити / Перевірити","Ємність"],"k":"m1:Perform"},{"en":"Rectify","ua":"Усунути","ex":"To rectify means to fix a defect reported by the pilot.","cloze":"To …… means to fix a defect reported by the pilot.","acc":["rectify"],"dis":["Inhibit","Adjust","Bleed"],"uadis":["Затягнути з моментом","Зворотний клапан","Головний вал"],"k":"m1:Rectify"},{"en":"Renew","ua":"Оновити / Замінити","ex":"To renew means to replace consumables such as filters or fluids.","cloze":"To …… means to replace consumables such as filters or fluids.","acc":["renew"],"dis":["Annotate","Closure","Purge"],"uadis":["Головний вал","Магнітопорошковий метод","Номер деталі"],"k":"m1:Renew"},{"en":"Submit","ua":"Подати (звіт)","ex":"To submit means to send documentation for review or approval.","cloze":"To …… means to send documentation for review or approval.","acc":["submit"],"dis":["Adjust","Isolate","Incorporate"],"uadis":["МФІ","Привод агрегатів","Тензометр"],"k":"m1:Submit"}]}],"texts":[],"drills":[5,6]},{"id":"732fbf92","title":"Двигун (Power Plant)","lessons":[{"id":"m1:a6322699","title":"Двигун (Power Plant) — ч. 1","terms":[{"en":"Afterburner","ua":"Форсажна камера","ex":"The afterburner is the section that dramatically increases engine thrust.","cloze":"The …… is the section that dramatically increases engine thrust.","acc":["afterburner"],"dis":["Boost pump","Oil Cooler","Fuel probe"],"uadis":["Задня кромка","Центр ваги","Зворотний клапан"],"k":"m1:Afterburner"},{"en":"Air Inlet","ua":"Повітрозабірник","ex":"The air inlet is the opening where air enters the engine.","cloze":"The …… is the opening where air enters the engine.","acc":["air inlet"],"dis":["Duct","Vent","Combustor"],"uadis":["Розгортка","Гвинт / Шуруп","Індикація (сигнал)"],"k":"m1:Air Inlet"},{"en":"Blade","ua":"Лопатка","ex":"A blade is a rotating component inside the compressor or turbine.","cloze":"A …… is a rotating component inside the compressor or turbine.","acc":["blade"],"dis":["Refuel","Thermocouple","Fuel Nozzle"],"uadis":["Вихлоп / Випуск","Мультиплікатор моменту","Скинути тиск"],"k":"m1:Blade"},{"en":"Casing","ua":"Корпус","ex":"The casing is the outer shell of the engine or component.","cloze":"The …… is the outer shell of the engine or component.","acc":["casing"],"dis":["EGT","Jettison","Sensor"],"uadis":["Герметик","Не ставати","Стрингер"],"k":"m1:Casing"},{"en":"Combustor","ua":"Камера згоряння","ex":"The combustor is where fuel mixes with air and burns.","cloze":"The …… is where fuel mixes with air and burns.","acc":["combustor"],"dis":["Sensor","Stator","Defuel"],"uadis":["Номер деталі","Шайби","Записати / Задокументувати"],"k":"m1:Combustor"},{"en":"Compressor","ua":"Компресор","ex":"The compressor compresses incoming air before combustion.","cloze":"The …… compresses incoming air before combustion.","acc":["compressor"],"dis":["Blade","Jettison","Transfer valve"],"uadis":["Замок прибраного стану","Тягач","Замок / Клямка"],"k":"m1:Compressor"},{"en":"Exhaust","ua":"Вихлоп / Випуск","ex":"The exhaust is the exit for hot gases leaving the engine.","cloze":"The …… is the exit for hot gases leaving the engine.","acc":["exhaust"],"dis":["Refuel","Vane","Accessory Drive"],"uadis":["Гармата","Канал / Протока","Гідробак"],"k":"m1:Exhaust"},{"en":"FADEC","ua":"ФАДЕК","ex":"FADEC is the Full Authority Digital Engine Control system.","cloze":"…… is the Full Authority Digital Engine Control system.","acc":["fadec"],"dis":["Oil Cooler","Boost pump","Nozzle"],"uadis":["Оглянути","Подати (звіт)","Розшарування"],"k":"m1:FADEC"},{"en":"Fuel Pump","ua":"Паливний насос","ex":"The fuel pump delivers fuel under pressure to the engine.","cloze":"The …… delivers fuel under pressure to the engine.","acc":["fuel pump"],"dis":["Scavenge pump","Boost pump","Nozzle"],"uadis":["Перетирання","Взаємозамінний","Затягнути з моментом"],"k":"m1:Fuel Pump"},{"en":"Gearbox","ua":"Редуктор","ex":"The gearbox transfers power from the engine to accessories.","cloze":"The …… transfers power from the engine to accessories.","acc":["gearbox"],"dis":["Combustor","Main shaft","Bleed air"],"uadis":["Шпилька","Мультиметр","Температура вихлопних газів"],"k":"m1:Gearbox"},{"en":"Igniter","ua":"Запальник / Свічка","ex":"The igniter creates the spark that starts the engine.","cloze":"The …… creates the spark that starts the engine.","acc":["igniter"],"dis":["Combustor","Compressor","Sump"],"uadis":["Підвіска (об'єкт)","Складка / Вигин","Випустити"],"k":"m1:Igniter"},{"en":"Nozzle","ua":"Сопло","ex":"The nozzle controls the flow of exhaust gases from the engine.","cloze":"The …… controls the flow of exhaust gases from the engine.","acc":["nozzle"],"dis":["Afterburner","Vane","Duct"],"uadis":["Наліт від нового","Обшивка","Зазубрина"],"k":"m1:Nozzle"},{"en":"Oil Filter","ua":"Мастильний фільтр","ex":"The oil filter removes metal particles from the engine oil.","cloze":"The …… removes metal particles from the engine oil.","acc":["oil filter"],"dis":["Afterburner","Duct","Vent"],"uadis":["Налаштувати","Усунути","Самоконтрувальний"],"k":"m1:Oil Filter"},{"en":"Sensor","ua":"Датчик","ex":"A sensor measures parameters such as temperature or pressure.","cloze":"A …… measures parameters such as temperature or pressure.","acc":["sensor"],"dis":["Fuel probe","Stator","Main shaft"],"uadis":["Екранування","Вирівняти / Сумістити","Перегородка"],"k":"m1:Sensor"},{"en":"Thrust","ua":"Тяга","ex":"Thrust is the force that pushes the aircraft forward.","cloze":"…… is the force that pushes the aircraft forward.","acc":["thrust"],"dis":["Igniter","Air Inlet","Oil Filter"],"uadis":["Мультиплікатор моменту","Підйомна сила","Азимут"],"k":"m1:Thrust"}]},{"id":"m1:2be58b47","title":"Двигун (Power Plant) — ч. 2","terms":[{"en":"Vane","ua":"Напрямна лопатка","ex":"A vane is a stationary blade that directs airflow.","cloze":"A …… is a stationary blade that directs airflow.","acc":["vane"],"dis":["Defuel","Boost pump","Scavenge pump"],"uadis":["Дистанційне керування","Герметик","Процесор"],"k":"m1:Vane"},{"en":"Accessory Drive","ua":"Привод агрегатів","ex":"The accessory drive transfers power to pumps and generators.","cloze":"The …… transfers power to pumps and generators.","acc":["accessory drive"],"dis":["Inlet Guide Vanes","Main shaft","Air Inlet"],"uadis":["Пружинна шайба","Мікрометр","Бортовий журнал"],"k":"m1:Accessory Drive"},{"en":"Anti-ice system","ua":"Протиобліднювальна система","ex":"The anti-ice system prevents ice forming at the engine inlet.","cloze":"The …… prevents ice forming at the engine inlet.","acc":["anti-ice system"],"dis":["Bleed air","Sump","Casing"],"uadis":["Інерціальна навігаційна система","Наліт від нового","Тензометр"],"k":"m1:Anti-ice system"},{"en":"Bleed air","ua":"Відбірне повітря","ex":"Bleed air is compressed air taken from the compressor.","cloze":"…… is compressed air taken from the compressor.","acc":["bleed air"],"dis":["Combustor","Igniter","Exhaust"],"uadis":["Замок / Клямка","Електрогідравлічний клапан","РУД"],"k":"m1:Bleed air"},{"en":"Chip detector","ua":"Сигналізатор стружки","ex":"The chip detector is a magnetic plug that detects metal in oil.","cloze":"The …… is a magnetic plug that detects metal in oil.","acc":["chip detector"],"dis":["Thrust","Variable Nozzle","Oil Cooler"],"uadis":["Вакуумний насос","Калібрувати","Сила тяжіння"],"k":"m1:Chip detector"},{"en":"Duct","ua":"Канал / Протока","ex":"A duct is a pipe or channel for airflow or gas.","cloze":"A …… is a pipe or channel for airflow or gas.","acc":["duct"],"dis":["Thrust","Refuel","Fuel probe"],"uadis":["Випрямляч","Візор","Запальник / Свічка"],"k":"m1:Duct"},{"en":"EGT","ua":"Температура вихлопних газів","ex":"EGT is Exhaust Gas Temperature — a key engine health indicator.","cloze":"…… is Exhaust Gas Temperature — a key engine health indicator.","acc":["egt"],"dis":["Igniter","Fuel Nozzle","Anti-ice system"],"uadis":["Цілісність (продзвонка)","Різьба","Наряд-замовлення"],"k":"m1:EGT"},{"en":"Fuel Nozzle","ua":"Паливна форсунка","ex":"The fuel nozzle atomizes fuel into the combustion chamber.","cloze":"The …… atomizes fuel into the combustion chamber.","acc":["fuel nozzle"],"dis":["Stator","Sump","Vent"],"uadis":["Вогненебезпечно","Ємність","Хомут / Затискач"],"k":"m1:Fuel Nozzle"},{"en":"Inlet Guide Vanes","ua":"Вхідний напрямний апарат","ex":"Inlet guide vanes direct airflow into the compressor.","cloze":"…… direct airflow into the compressor.","acc":["inlet guide vanes"],"dis":["Blade","Capacitance","Anti-ice system"],"uadis":["Прес-кліщі","Шукати несправність","Корозія"],"k":"m1:Inlet Guide Vanes"},{"en":"Main shaft","ua":"Головний вал","ex":"The main shaft connects the compressor and turbine sections.","cloze":"The …… connects the compressor and turbine sections.","acc":["main shaft"],"dis":["Stator","Gearbox","Thermocouple"],"uadis":["Глибока вибоїна","Випрямляч","Тяга"],"k":"m1:Main shaft"},{"en":"Oil Cooler","ua":"Мастилорадіатор","ex":"The oil cooler reduces the temperature of engine oil.","cloze":"The …… reduces the temperature of engine oil.","acc":["oil cooler"],"dis":["Fuel Nozzle","Thrust","Vane"],"uadis":["Шпилька","Шайби","Оновити / Замінити"],"k":"m1:Oil Cooler"},{"en":"Scavenge pump","ua":"Відкачувальний насос","ex":"The scavenge pump returns oil from bearings back to the tank.","cloze":"The …… returns oil from bearings back to the tank.","acc":["scavenge pump"],"dis":["Vent","Sensor","Afterburner"],"uadis":["Сертифікат","Заклепка","Гармата"],"k":"m1:Scavenge pump"},{"en":"Stator","ua":"Статор","ex":"The stator is the stationary part of the engine with fixed blades.","cloze":"The …… is the stationary part of the engine with fixed blades.","acc":["stator"],"dis":["Sump","Fuel Nozzle","Igniter"],"uadis":["Електрогідравлічний клапан","Підшипник","Боєприпаси"],"k":"m1:Stator"},{"en":"Thermocouple","ua":"Термопара","ex":"A thermocouple is a sensor that measures very high temperatures.","cloze":"A …… is a sensor that measures very high temperatures.","acc":["thermocouple"],"dis":["Fuel probe","Compressor","Baffle"],"uadis":["Справний","Стрингер","Попередження"],"k":"m1:Thermocouple"},{"en":"Variable Nozzle","ua":"Регульоване сопло","ex":"The variable nozzle adjusts the exhaust area for afterburner operation.","cloze":"The …… adjusts the exhaust area for afterburner operation.","acc":["variable nozzle"],"dis":["Sump","Oil Filter","Capacitance"],"uadis":["Змастити","Капілярний метод","Подряпина"],"k":"m1:Variable Nozzle"}]},{"id":"m1:592d3e77","title":"Двигун (Power Plant) — ч. 3","terms":[{"en":"Baffle","ua":"Перегородка","ex":"A baffle is an internal plate that reduces fuel movement in the tank.","cloze":"A …… is an internal plate that reduces fuel movement in the tank.","acc":["baffle"],"dis":["Oil Filter","Combustor","Fuel Pump"],"uadis":["Подати (звіт)","Екранування","Відкачувальний насос"],"k":"m1:Baffle"},{"en":"Boost pump","ua":"Насос підкачування","ex":"The boost pump transfers fuel from the tank to the engine pump.","cloze":"The …… transfers fuel from the tank to the engine pump.","acc":["boost pump"],"dis":["Fuel Nozzle","Stator","Anti-ice system"],"uadis":["Окуляри нічного бачення","Рівень рідини","Лобовий опір"],"k":"m1:Boost pump"},{"en":"Capacitance","ua":"Ємність","ex":"Capacitance is the operating principle of fuel quantity sensors.","cloze":"…… is the operating principle of fuel quantity sensors.","acc":["capacitance"],"dis":["Chip detector","Vane","Thermocouple"],"uadis":["Гідростенд","Мастильний фільтр","Наліт від нового"],"k":"m1:Capacitance"},{"en":"Defuel","ua":"Злити паливо","ex":"To defuel means to completely remove all fuel from the aircraft.","cloze":"To …… means to completely remove all fuel from the aircraft.","acc":["defuel"],"dis":["Scavenge pump","Exhaust","Stator"],"uadis":["Антена","Хомут / Затискач","Щуп"],"k":"m1:Defuel"},{"en":"External tank","ua":"Підвісний бак","ex":"An external tank is an additional fuel tank mounted under the wing.","cloze":"An …… is an additional fuel tank mounted under the wing.","acc":["external tank"],"dis":["Nozzle","Vane","Baffle"],"uadis":["Клема","Прицільний контейнер","Калібрувати"],"k":"m1:External tank"},{"en":"Fuel probe","ua":"Паливомір","ex":"The fuel probe is a sensor that measures fuel quantity in the tank.","cloze":"The …… is a sensor that measures fuel quantity in the tank.","acc":["fuel probe"],"dis":["Nozzle","Exhaust","Scavenge pump"],"uadis":["Термопара","НАЗ","Подати (звіт)"],"k":"m1:Fuel probe"},{"en":"Jettison","ua":"Аварійний скид","ex":"Jettison means to emergency-release fuel or stores in flight.","cloze":"…… means to emergency-release fuel or stores in flight.","acc":["jettison"],"dis":["EGT","Thermocouple","Variable Nozzle"],"uadis":["Запобіжник","Витягти","Підшипник"],"k":"m1:Jettison"},{"en":"Refuel","ua":"Заправка","ex":"To refuel means to fill the aircraft with fuel before flight.","cloze":"To …… means to fill the aircraft with fuel before flight.","acc":["refuel"],"dis":["Igniter","External tank","Chip detector"],"uadis":["Підйомна сила","Припій / Паяти","Законтрити"],"k":"m1:Refuel"},{"en":"Sump","ua":"Відстійник","ex":"The sump is the lowest point of the tank where water collects.","cloze":"The …… is the lowest point of the tank where water collects.","acc":["sump"],"dis":["Variable Nozzle","EGT","Thrust"],"uadis":["Літак не може літати (статус)","Шпангоут / Рама","Кронштейн"],"k":"m1:Sump"},{"en":"Transfer valve","ua":"Клапан перекачування","ex":"The transfer valve controls fuel movement between tanks.","cloze":"The …… controls fuel movement between tanks.","acc":["transfer valve"],"dis":["Inlet Guide Vanes","Vane","Refuel"],"uadis":["Взаємозамінний","Індикатор зносу","Допуск"],"k":"m1:Transfer valve"},{"en":"Vent","ua":"Дренаж / Вентиляція","ex":"The vent is an opening that equalizes pressure inside the fuel tank.","cloze":"The …… is an opening that equalizes pressure inside the fuel tank.","acc":["vent"],"dis":["Accessory Drive","Scavenge pump","Blade"],"uadis":["Вирівняти / Сумістити","Напруга","Рівень рідини"],"k":"m1:Vent"}]}],"texts":["engine","fuel"],"drills":[0]},{"id":"acf6714b","title":"Гідравліка та керування","lessons":[{"id":"m1:b0c45609","title":"Гідравліка та керування","terms":[{"en":"Accumulator","ua":"Гідроакумулятор","ex":"The accumulator stores pressurized hydraulic fluid for emergency use.","cloze":"The …… stores pressurized hydraulic fluid for emergency use.","acc":["accumulator"],"dis":["Fluid level","Check valve","Pressure switch"],"uadis":["Самоконтрувальний","Центр ваги","Затягнути з моментом"],"k":"m1:Accumulator"},{"en":"Actuator","ua":"Привод / Сервопривод","ex":"The actuator converts hydraulic pressure into mechanical movement.","cloze":"The …… converts hydraulic pressure into mechanical movement.","acc":["actuator"],"dis":["Accumulator","Check valve","Rudder"],"uadis":["Злити","Герметизація","Відремонтувати"],"k":"m1:Actuator"},{"en":"Aileron","ua":"Елерон","ex":"The aileron is the movable wing surface that controls roll.","cloze":"The …… is the movable wing surface that controls roll.","acc":["aileron"],"dis":["Actuator","Check valve","Servo valve"],"uadis":["Форсажна камера","Не ставати","Відстійник"],"k":"m1:Aileron"},{"en":"Check valve","ua":"Зворотний клапан","ex":"The check valve allows fluid to flow in one direction only.","cloze":"The …… allows fluid to flow in one direction only.","acc":["check valve"],"dis":["Rudder","Aileron","Actuator"],"uadis":["Прошивка","Скинути тиск","Запобіжна чека"],"k":"m1:Check valve"},{"en":"Control stick","ua":"Ручка керування","ex":"The control stick is the pilot's main flight control input.","cloze":"The …… is the pilot's main flight control input.","acc":["control stick"],"dis":["Actuator","Pressure switch","Reservoir"],"uadis":["Опір","Монтувати / Встановити","Замок випущеного стану"],"k":"m1:Control stick"},{"en":"Elevon","ua":"Елевон","ex":"The elevon combines the functions of elevator and aileron.","cloze":"The …… combines the functions of elevator and aileron.","acc":["elevon"],"dis":["Control stick","FBW","Check valve"],"uadis":["Запальник / Свічка","Турбохолодильник","Селектор"],"k":"m1:Elevon"},{"en":"FBW","ua":"Дистанційне керування","ex":"Fly-By-Wire transmits pilot commands to control surfaces electronically.","cloze":"…… transmits pilot commands to control surfaces electronically.","acc":["fbw","fly-by-wire"],"dis":["Manifold","Elevon","Check valve"],"uadis":["Тріщина","Промити","Сопло"],"k":"m1:FBW"},{"en":"Fluid level","ua":"Рівень рідини","ex":"The fluid level indicates the quantity of hydraulic fluid in the reservoir.","cloze":"The …… indicates the quantity of hydraulic fluid in the reservoir.","acc":["fluid level"],"dis":["Accumulator","Actuator","Pressure switch"],"uadis":["Зняти з бойового взводу","Вогненебезпечно","Перетирання"],"k":"m1:Fluid level"},{"en":"Manifold","ua":"Розподільник / Колектор","ex":"The manifold distributes hydraulic fluid to multiple systems.","cloze":"The …… distributes hydraulic fluid to multiple systems.","acc":["manifold"],"dis":["Rudder","Accumulator","Relief valve"],"uadis":["Клапан перекачування","Герметизація","Заїдати / Заклинити"],"k":"m1:Manifold"},{"en":"Pressure switch","ua":"Сигналізатор тиску","ex":"The pressure switch triggers a warning when pressure drops or rises.","cloze":"The …… triggers a warning when pressure drops or rises.","acc":["pressure switch"],"dis":["Manifold","Relief valve","Fluid level"],"uadis":["Протектор","Вирівняти / Сумістити","Неоднорідність"],"k":"m1:Pressure switch"},{"en":"Relief valve","ua":"Запобіжний клапан","ex":"The relief valve releases excess pressure to protect the system.","cloze":"The …… releases excess pressure to protect the system.","acc":["relief valve"],"dis":["Reservoir","Pressure switch","Control stick"],"uadis":["Неоднорідність","Кріпильний елемент","Розподільна коробка"],"k":"m1:Relief valve"},{"en":"Reservoir","ua":"Гідробак","ex":"The reservoir is the tank that stores hydraulic fluid.","cloze":"The …… is the tank that stores hydraulic fluid.","acc":["reservoir"],"dis":["Rudder","Control stick","Pressure switch"],"uadis":["Іскріння","Регулятор","Сервісний бюлетень"],"k":"m1:Reservoir"},{"en":"Rudder","ua":"Кермо напрямку","ex":"The rudder is the vertical tail surface that controls yaw.","cloze":"The …… is the vertical tail surface that controls yaw.","acc":["rudder"],"dis":["Check valve","FBW","Servo valve"],"uadis":["Регулювальна прокладка","Підйомна сила","Розмах"],"k":"m1:Rudder"},{"en":"Servo valve","ua":"Електрогідравлічний клапан","ex":"The servo valve precisely controls hydraulic flow by computer command.","cloze":"The …… precisely controls hydraulic flow by computer command.","acc":["servo valve"],"dis":["Actuator","Fluid level","FBW"],"uadis":["Оглянути","Частота","Витягти"],"k":"m1:Servo valve"}]}],"texts":["hydraulics"],"drills":[]},{"id":"a5b46ba1","title":"Авіоніка та електрика","lessons":[{"id":"m1:ac3d1d3d","title":"Авіоніка та електрика — ч. 1","terms":[{"en":"Antenna","ua":"Антена","ex":"The antenna transmits and receives radio signals.","cloze":"The …… transmits and receives radio signals.","acc":["antenna"],"dis":["Grounding","Voltage","Pitot tube"],"uadis":["Вогненебезпечно","Електронна протидія","Електрогідравлічний клапан"],"k":"m1:Antenna"},{"en":"Bus","ua":"Шина живлення","ex":"The electrical bus is the main distribution line for power.","cloze":"The electrical …… is the main distribution line for power.","acc":["bus"],"dis":["Inertial Navigation","Pitot tube","Current"],"uadis":["Налаштувати","Капітальний ремонт","Температура вихлопних газів"],"k":"m1:Bus"},{"en":"Circuit breaker","ua":"Автоматичний вимикач","ex":"The circuit breaker protects a circuit from overload.","cloze":"The …… protects a circuit from overload.","acc":["circuit breaker"],"dis":["MFD","Frequency","Firmware"],"uadis":["Боєприпаси","Ракета","Обтічник"],"k":"m1:Circuit breaker"},{"en":"Connector","ua":"Роз'єм / Штекер","ex":"The connector is the joining point for cables and wires.","cloze":"The …… is the joining point for cables and wires.","acc":["connector"],"dis":["Resistance","Azimuth","Short circuit"],"uadis":["Гідроакумулятор","Відремонтувати","Ізоляція"],"k":"m1:Connector"},{"en":"Data Link","ua":"Лінія передачі даних","ex":"The data link is the system for exchanging data between aircraft.","cloze":"The …… is the system for exchanging data between aircraft.","acc":["data link"],"dis":["Continuity","Terminal","Inertial Navigation"],"uadis":["Оборотний агрегат","Ємність","Інтерфейс"],"k":"m1:Data Link"},{"en":"Grounding","ua":"Заземлення","ex":"Grounding protects against static electricity buildup.","cloze":"…… protects against static electricity buildup.","acc":["grounding"],"dis":["Data Link","HUD","Relay"],"uadis":["Електропроводка","Конденсатор","Термін зберігання"],"k":"m1:Grounding"},{"en":"Harness","ua":"Джгут проводів","ex":"The harness is a bundle of wires in a protective sleeve.","cloze":"The …… is a bundle of wires in a protective sleeve.","acc":["harness"],"dis":["Firmware","Shielding","Azimuth"],"uadis":["Будівельний фен","Аеродинамічний профіль","Злити"],"k":"m1:Harness"},{"en":"HUD","ua":"ІЛС","ex":"HUD stands for Head-Up Display — flight data projected on the windscreen.","cloze":"…… stands for Head-Up Display — flight data projected on the windscreen.","acc":["hud"],"dis":["Crimping","Grounding","Antenna"],"uadis":["Вхідний напрямний апарат","Активувати","Азотний візок"],"k":"m1:HUD"},{"en":"MFD","ua":"МФІ","ex":"The MFD is the Multi-Function Display screen in the cockpit.","cloze":"The …… is the Multi-Function Display screen in the cockpit.","acc":["mfd"],"dis":["Firmware","Fuse","Junction box"],"uadis":["Подати тиск","Неоднорідність","Цілісність (продзвонка)"],"k":"m1:MFD"},{"en":"Pitot tube","ua":"Трубка Піто","ex":"The pitot tube measures airspeed by sensing air pressure.","cloze":"The …… measures airspeed by sensing air pressure.","acc":["pitot tube"],"dis":["Arcing","Stripping","Interface"],"uadis":["Вихор","Оновити / Замінити","Свій-чужий"],"k":"m1:Pitot tube"},{"en":"Shielding","ua":"Екранування","ex":"Shielding protects wiring from electromagnetic interference.","cloze":"…… protects wiring from electromagnetic interference.","acc":["shielding"],"dis":["Elevation","Frequency","Jamming"],"uadis":["Свій-чужий","Композитний матеріал","Оновити / Замінити"],"k":"m1:Shielding"},{"en":"Transponder","ua":"Відповідач","ex":"The transponder is the identification system for friend or foe.","cloze":"The …… is the identification system for friend or foe.","acc":["transponder"],"dis":["Harness","Connector","Heatshrink"],"uadis":["Система генерації кисню","Стороннє пошкодження","Кут атаки"],"k":"m1:Transponder"},{"en":"Wiring","ua":"Електропроводка","ex":"Wiring refers to all the electrical cables in the aircraft.","cloze":"…… refers to all the electrical cables in the aircraft.","acc":["wiring"],"dis":["Processor","Lock-on","Insulation"],"uadis":["НДЖ (контейнер)","Зачистити (сплавно)","Замок випущеного стану"],"k":"m1:Wiring"},{"en":"Azimuth","ua":"Азимут","ex":"Azimuth is the horizontal angle of the radar target.","cloze":"…… is the horizontal angle of the radar target.","acc":["azimuth"],"dis":["Frequency","Continuity","Data Link"],"uadis":["Шпилька","Плоскогубці","Шайба"],"k":"m1:Azimuth"},{"en":"Elevation","ua":"Кут місця","ex":"Elevation is the vertical angle of the radar target.","cloze":"…… is the vertical angle of the radar target.","acc":["elevation"],"dis":["Software","Resistance","Processor"],"uadis":["Заїдати / Заклинити","Обшивка","Обтискання"],"k":"m1:Elevation"}]},{"id":"m1:9343498c","title":"Авіоніка та електрика — ч. 2","terms":[{"en":"Lock-on","ua":"Захоплення цілі","ex":"Lock-on is the state when the radar is tracking a single target.","cloze":"…… is the state when the radar is tracking a single target.","acc":["lock-on"],"dis":["Capacitor","Data Link","GPS Antenna"],"uadis":["Вм'ятина","Центр ваги","Обтічник"],"k":"m1:Lock-on"},{"en":"Pulse","ua":"Імпульс","ex":"A pulse is the radio signal transmitted by the radar antenna.","cloze":"A …… is the radio signal transmitted by the radar antenna.","acc":["pulse"],"dis":["Data Link","Elevation","Stripping"],"uadis":["Боєприпаси","Водовідділювач","Клапан перекачування"],"k":"m1:Pulse"},{"en":"Frequency","ua":"Частота","ex":"Frequency is the operating range of radio waves.","cloze":"…… is the operating range of radio waves.","acc":["frequency"],"dis":["MFD","Azimuth","Shielding"],"uadis":["Вхідний напрямний апарат","Вузол підвіски","Мануал з ремонту конструкції"],"k":"m1:Frequency"},{"en":"Processor","ua":"Процесор","ex":"The processor is the computing unit of a control system.","cloze":"The …… is the computing unit of a control system.","acc":["processor"],"dis":["Continuity","Resistance","Connector"],"uadis":["Зворотний клапан","Протиобліднювальна система","Замок прибраного стану"],"k":"m1:Processor"},{"en":"Software","ua":"ПЗ","ex":"Software is the code that controls system operation.","cloze":"…… is the code that controls system operation.","acc":["software"],"dis":["Rectifier","Bus","Processor"],"uadis":["Автоматичний вимикач","Ізолювати","Приймач попередження про опромінення"],"k":"m1:Software"},{"en":"Firmware","ua":"Прошивка","ex":"Firmware is the embedded software in hardware components.","cloze":"…… is the embedded software in hardware components.","acc":["firmware"],"dis":["Jamming","Circuit breaker","Continuity"],"uadis":["Статор","Мікрометр","Відповідач"],"k":"m1:Firmware"},{"en":"Interface","ua":"Інтерфейс","ex":"The interface is the connection point between two systems.","cloze":"The …… is the connection point between two systems.","acc":["interface"],"dis":["Firmware","Stripping","Frequency"],"uadis":["Кермо напрямку","Витягти","Вогненебезпечно"],"k":"m1:Interface"},{"en":"Inertial Navigation","ua":"Інерціальна навігація","ex":"Inertial navigation determines position without satellite signals.","cloze":"…… determines position without satellite signals.","acc":["inertial navigation"],"dis":["GPS Antenna","Multimeter","Junction box"],"uadis":["Захоплення цілі","Насос підкачування","Композитний матеріал"],"k":"m1:Inertial Navigation"},{"en":"GPS Antenna","ua":"Антена GPS","ex":"The GPS antenna receives satellite positioning signals.","cloze":"The …… receives satellite positioning signals.","acc":["gps antenna"],"dis":["Lock-on","HUD","Interface"],"uadis":["Зачистка","НДЖ (контейнер)","Заклепка"],"k":"m1:GPS Antenna"},{"en":"Jamming","ua":"Постановка завад","ex":"Jamming is electronic warfare — disrupting enemy radar signals.","cloze":"…… is electronic warfare — disrupting enemy radar signals.","acc":["jamming"],"dis":["Bus","Data Link","Harness"],"uadis":["Свій-чужий","ФАДЕК","Паливний насос"],"k":"m1:Jamming"},{"en":"Capacitor","ua":"Конденсатор","ex":"A capacitor stores electrical charge in a circuit.","cloze":"A …… stores electrical charge in a circuit.","acc":["capacitor"],"dis":["HUD","Fuse","Connector"],"uadis":["Підшипник","Гармата","Заземлення"],"k":"m1:Capacitor"},{"en":"Relay","ua":"Реле","ex":"A relay is an electromagnetic switch.","cloze":"A …… is an electromagnetic switch.","acc":["relay"],"dis":["Bus","Capacitor","Shielding"],"uadis":["Тяга","Попередження","Запобіжна чека"],"k":"m1:Relay"},{"en":"Fuse","ua":"Запобіжник","ex":"A fuse breaks the circuit when current exceeds the safe limit.","cloze":"A …… breaks the circuit when current exceeds the safe limit.","acc":["fuse"],"dis":["Jamming","Data Link","Inertial Navigation"],"uadis":["Паливомір","Від'єднати","Наповнити / Заправити"],"k":"m1:Fuse"},{"en":"Solder","ua":"Припій / Паяти","ex":"To solder means to join metal components by melting an alloy.","cloze":"To …… means to join metal components by melting an alloy.","acc":["solder"],"dis":["Rectifier","Splice","Antenna"],"uadis":["Серійний номер","Тріщина","Візор"],"k":"m1:Solder"},{"en":"Crimping","ua":"Обтискання","ex":"Crimping is the method of attaching terminals to wires without soldering.","cloze":"…… is the method of attaching terminals to wires without soldering.","acc":["crimping"],"dis":["Interface","Jamming","Software"],"uadis":["Простежуваність","Записати / Задокументувати","Випустити"],"k":"m1:Crimping"}]},{"id":"m1:70e11f36","title":"Авіоніка та електрика — ч. 3","terms":[{"en":"Stripping","ua":"Зачистка","ex":"Stripping means removing insulation from the end of a wire.","cloze":"…… means removing insulation from the end of a wire.","acc":["stripping"],"dis":["Capacitor","Circuit breaker","Current"],"uadis":["Ємність","Контргайка","Антена GPS"],"k":"m1:Stripping"},{"en":"Heatshrink","ua":"Термоусадка","ex":"Heatshrink is a tube that shrinks when heated to insulate connections.","cloze":"…… is a tube that shrinks when heated to insulate connections.","acc":["heatshrink"],"dis":["Junction box","Terminal","Fuse"],"uadis":["Ерозія","Обтискання","Хорда"],"k":"m1:Heatshrink"},{"en":"Short circuit","ua":"Коротке замикання","ex":"A short circuit is an unintended connection between phase and ground.","cloze":"A …… is an unintended connection between phase and ground.","acc":["short circuit"],"dis":["Lock-on","Circuit breaker","Transponder"],"uadis":["Витратний матеріал","НАЗ","Електропроводка"],"k":"m1:Short circuit"},{"en":"Inverter","ua":"Інвертор","ex":"The inverter converts direct current to alternating current.","cloze":"The …… converts direct current to alternating current.","acc":["inverter"],"dis":["Relay","Insulation","Stripping"],"uadis":["Протиобліднювальна система","Випускний клапан","Тумблер"],"k":"m1:Inverter"},{"en":"Rectifier","ua":"Випрямляч","ex":"The rectifier converts alternating current to direct current.","cloze":"The …… converts alternating current to direct current.","acc":["rectifier"],"dis":["Transponder","HUD","Capacitor"],"uadis":["Подати (звіт)","Індикатор зносу","Опір"],"k":"m1:Rectifier"},{"en":"Junction box","ua":"Розподільна коробка","ex":"The junction box is where multiple wires are connected together.","cloze":"The …… is where multiple wires are connected together.","acc":["junction box"],"dis":["Connector","Frequency","Rectifier"],"uadis":["Крісло-катапульта","Шпангоут / Рама","Лопатка"],"k":"m1:Junction box"},{"en":"Arcing","ua":"Іскріння","ex":"Arcing is the appearance of an electrical spark at a bad connection.","cloze":"…… is the appearance of an electrical spark at a bad connection.","acc":["arcing"],"dis":["Software","Jamming","Insulation"],"uadis":["Обтискання","Гідроакумулятор","Повітря-повітря"],"k":"m1:Arcing"},{"en":"Resistance","ua":"Опір","ex":"Resistance is measured in Ohms and opposes electrical current flow.","cloze":"…… is measured in Ohms and opposes electrical current flow.","acc":["resistance"],"dis":["Antenna","Heatshrink","Current"],"uadis":["Змастити","Законтрити","Хомут / Затискач"],"k":"m1:Resistance"},{"en":"Voltage","ua":"Напруга","ex":"Voltage is electrical potential, measured in Volts.","cloze":"…… is electrical potential, measured in Volts.","acc":["voltage"],"dis":["Pitot tube","Inertial Navigation","MFD"],"uadis":["Розподільна коробка","Супорт","Тріщина"],"k":"m1:Voltage"},{"en":"Current","ua":"Струм","ex":"Current is the flow of electricity, measured in Amperes.","cloze":"…… is the flow of electricity, measured in Amperes.","acc":["current"],"dis":["Solder","Fuse","Elevation"],"uadis":["Відстійник","Вісь","Шина живлення"],"k":"m1:Current"},{"en":"Terminal","ua":"Клема","ex":"The terminal is the end point of a wire for connection under a screw.","cloze":"The …… is the end point of a wire for connection under a screw.","acc":["terminal"],"dis":["Resistance","Solder","Continuity"],"uadis":["Кронштейн","Мікрометр","Розмах"],"k":"m1:Terminal"},{"en":"Splice","ua":"Зрощування","ex":"A splice is a permanent join between two wires.","cloze":"A …… is a permanent join between two wires.","acc":["splice"],"dis":["Frequency","Wiring","Multimeter"],"uadis":["Лонжерон","Опір","Корозія"],"k":"m1:Splice"},{"en":"Insulation","ua":"Ізоляція","ex":"Insulation is the protective coating that prevents current flow.","cloze":"…… is the protective coating that prevents current flow.","acc":["insulation"],"dis":["GPS Antenna","Current","Inertial Navigation"],"uadis":["Каталог запчастин","Струм","Шина живлення"],"k":"m1:Insulation"},{"en":"Multimeter","ua":"Мультиметр","ex":"The multimeter measures voltage, current, and resistance.","cloze":"The …… measures voltage, current, and resistance.","acc":["multimeter"],"dis":["Insulation","Capacitor","Frequency"],"uadis":["Тензометр","Замок прибраного стану","Кут атаки"],"k":"m1:Multimeter"},{"en":"Continuity","ua":"Цілісність (продзвонка)","ex":"Continuity testing verifies that an electrical circuit is not broken.","cloze":"…… testing verifies that an electrical circuit is not broken.","acc":["continuity"],"dis":["Inverter","Solder","Pitot tube"],"uadis":["Вихрові струми","Самоконтрувальний","Розгортка"],"k":"m1:Continuity"}]}],"texts":["wiring"],"drills":[]},{"id":"3ee360ab","title":"Конструкція та матеріали","lessons":[{"id":"m1:9426533b","title":"Конструкція та матеріали","terms":[{"en":"Bulkhead","ua":"Шпангоут","ex":"The bulkhead is a structural cross-wall inside the fuselage.","cloze":"The …… is a structural cross-wall inside the fuselage.","acc":["bulkhead"],"dis":["Fatigue","Access panel","Spar"],"uadis":["Імпульс","Наліт від нового","Кріпильний елемент"],"k":"m1:Bulkhead"},{"en":"Composite","ua":"Композитний матеріал","ex":"Composite material is made from carbon fiber layers.","cloze":"…… material is made from carbon fiber layers.","acc":["composite"],"dis":["Gusset","Delamination","Frame"],"uadis":["Ерозія","Зворотний клапан","Вихлоп / Випуск"],"k":"m1:Composite"},{"en":"Corrosion","ua":"Корозія","ex":"Corrosion is the destruction of metal by chemical reaction.","cloze":"…… is the destruction of metal by chemical reaction.","acc":["corrosion"],"dis":["Sealant","Frame","Fastener"],"uadis":["Система глобального позиціювання","Мастилорадіатор","Не ставати"],"k":"m1:Corrosion"},{"en":"Counter-sunk rivet","ua":"Заклепка «в потай»","ex":"A countersunk rivet sits flush with the surface.","cloze":"A …… sits flush with the surface.","acc":["counter-sunk rivet","countersunk rivet"],"dis":["Spar","Corrosion","Rib"],"uadis":["Викрутка","Звалювання","Рентгенографія"],"k":"m1:Counter-sunk rivet"},{"en":"Delamination","ua":"Розшарування","ex":"Delamination is internal separation of composite layers.","cloze":"…… is internal separation of composite layers.","acc":["delamination"],"dis":["Gusset","Counter-sunk rivet","Sealant"],"uadis":["Клема","Паливозаправник","Індикатор зносу"],"k":"m1:Delamination"},{"en":"Fastener","ua":"Кріпильний елемент","ex":"A fastener is the general term for bolts, screws, and rivets.","cloze":"A …… is the general term for bolts, screws, and rivets.","acc":["fastener"],"dis":["Counter-sunk rivet","Fairing","Bulkhead"],"uadis":["Заблокувати / Заборонити","Запобіжна чека","Супорт"],"k":"m1:Fastener"},{"en":"Fatigue","ua":"Втома (металу)","ex":"Metal fatigue means microscopic cracks from repeated stress cycles.","cloze":"Metal …… means microscopic cracks from repeated stress cycles.","acc":["fatigue"],"dis":["Bulkhead","Washers","Gusset"],"uadis":["Привод агрегатів","Заземлення","Відстійник"],"k":"m1:Fatigue"},{"en":"Frame","ua":"Шпангоут / Рама","ex":"The frame is a transverse structural element of the fuselage.","cloze":"The …… is a transverse structural element of the fuselage.","acc":["frame"],"dis":["Fastener","Spar","Corrosion"],"uadis":["Мастильний фільтр","Вага на колесах","Пружинна шайба"],"k":"m1:Frame"},{"en":"Rib","ua":"Нервюра","ex":"The rib is a transverse structural element of the wing.","cloze":"The …… is a transverse structural element of the wing.","acc":["rib"],"dis":["Fastener","Access panel","Latch"],"uadis":["Підйомна сила","Розгортка","Сервісний бюлетень"],"k":"m1:Rib"},{"en":"Sealant","ua":"Герметик","ex":"Sealant is a compound used to seal joints and fuel tanks.","cloze":"…… is a compound used to seal joints and fuel tanks.","acc":["sealant"],"dis":["Fastener","Delamination","Gusset"],"uadis":["Налаштувати","Шукати несправність","Відкачувальний насос"],"k":"m1:Sealant"},{"en":"Spar","ua":"Лонжерон","ex":"The spar is the main longitudinal load-bearing beam of the wing.","cloze":"The …… is the main longitudinal load-bearing beam of the wing.","acc":["spar"],"dis":["Stringer","Fairing","Skin"],"uadis":["Кріпильний елемент","Сервісний бюлетень","Центр ваги"],"k":"m1:Spar"},{"en":"Stringer","ua":"Стрингер","ex":"The stringer is a longitudinal stiffening element of the fuselage skin.","cloze":"The …… is a longitudinal stiffening element of the fuselage skin.","acc":["stringer"],"dis":["Bulkhead","Gusset","Sealant"],"uadis":["Точкова корозія","Амортизаційна стійка","Турбохолодильник"],"k":"m1:Stringer"},{"en":"Tolerance","ua":"Допуск","ex":"Tolerance is the maximum allowable deviation from a dimension.","cloze":"…… is the maximum allowable deviation from a dimension.","acc":["tolerance"],"dis":["Spar","Rib","Composite"],"uadis":["Датчик","Блок лінійної заміни","Мітчик"],"k":"m1:Tolerance"},{"en":"Washers","ua":"Шайби","ex":"Washers are flat rings placed under bolts or nuts.","cloze":"…… are flat rings placed under bolts or nuts.","acc":["washers"],"dis":["Fastener","Fatigue","Skin"],"uadis":["Взаємозамінний","Мастилорадіатор","Ерозія"],"k":"m1:Washers"},{"en":"Skin","ua":"Обшивка","ex":"The skin is the outer load-bearing layer of the aircraft.","cloze":"The …… is the outer load-bearing layer of the aircraft.","acc":["skin"],"dis":["Fairing","Stringer","Hinge"],"uadis":["Монтувати / Встановити","РУД","Напрямна лопатка"],"k":"m1:Skin"},{"en":"Fairing","ua":"Обтічник","ex":"A fairing is a smooth cover that reduces aerodynamic drag.","cloze":"A …… is a smooth cover that reduces aerodynamic drag.","acc":["fairing"],"dis":["Skin","Corrosion","Latch"],"uadis":["Шайби","Дренаж / Вентиляція","Наліт від нового"],"k":"m1:Fairing"},{"en":"Latch","ua":"Замок / Клямка","ex":"A latch is a quick-release mechanism for closing panels.","cloze":"A …… is a quick-release mechanism for closing panels.","acc":["latch"],"dis":["Counter-sunk rivet","Composite","Hinge"],"uadis":["Від'єднати","Задирка","Опір"],"k":"m1:Latch"},{"en":"Hinge","ua":"Завіса / Петля","ex":"A hinge is a movable joint for doors or access panels.","cloze":"A …… is a movable joint for doors or access panels.","acc":["hinge"],"dis":["Composite","Spar","Washers"],"uadis":["Центр ваги","Дипольні відбивачі","Приєднати"],"k":"m1:Hinge"},{"en":"Access panel","ua":"Люк доступу","ex":"The access panel is a removable cover for inspection.","cloze":"The …… is a removable cover for inspection.","acc":["access panel"],"dis":["Composite","Tolerance","Fatigue"],"uadis":["Складка / Вигин","Відкріпити","Подряпина"],"k":"m1:Access panel"},{"en":"Gusset","ua":"Косинка","ex":"A gusset is a reinforcing plate at structural joints.","cloze":"A …… is a reinforcing plate at structural joints.","acc":["gusset"],"dis":["Sealant","Hinge","Tolerance"],"uadis":["Шестигранна головка","Екранування","Ультразвук"],"k":"m1:Gusset"}]}],"texts":[],"drills":[2]},{"id":"dd695d45","title":"Озброєння","lessons":[{"id":"m1:f616d58a","title":"Озброєння","terms":[{"en":"Ammunition","ua":"Боєприпаси","ex":"Ammunition refers to rounds for the cannon or missiles.","cloze":"…… refers to rounds for the cannon or missiles.","acc":["ammunition"],"dis":["Targeting pod","Dearm","Seeker"],"uadis":["Різьба","«Кіска»","Лобовий опір"],"k":"m1:Ammunition"},{"en":"Arm","ua":"Поставити на бойовий взвод","ex":"To arm means to prepare a weapon for use.","cloze":"To …… means to prepare a weapon for use.","acc":["arm"],"dis":["Seeker","Targeting pod","Launcher"],"uadis":["Ізолювати","Змастити","Насос підкачування"],"k":"m1:Arm"},{"en":"Dearm","ua":"Зняти з бойового взводу","ex":"To dearm means to safely make a weapon safe after flight.","cloze":"To …… means to safely make a weapon safe after flight.","acc":["dearm"],"dis":["Targeting pod","Cannon / Gun","Launcher"],"uadis":["Не ставати","Електронна протидія","Продути"],"k":"m1:Dearm"},{"en":"Cannon / Gun","ua":"Гармата","ex":"The cannon is the aircraft gun — a twenty-seven millimeter Mauser.","cloze":"The …… is the aircraft gun — a twenty-seven millimeter Mauser.","acc":["cannon","cannon / gun"],"dis":["Missile","Launcher","Hardpoint"],"uadis":["Скинути тиск","Продути","Вирівняти / Сумістити"],"k":"m1:Cannon / Gun"},{"en":"Chaff","ua":"Дипольні відбивачі","ex":"Chaff consists of radar-reflective strips used to confuse enemy radar.","cloze":"…… consists of radar-reflective strips used to confuse enemy radar.","acc":["chaff"],"dis":["Ammunition","Launcher","Safety pin"],"uadis":["Зняти з бойового взводу","Дата закінчення строку","Колодки"],"k":"m1:Chaff"},{"en":"Flare","ua":"Теплова пастка","ex":"A flare is a heat source used to decoy heat-seeking missiles.","cloze":"A …… is a heat source used to decoy heat-seeking missiles.","acc":["flare"],"dis":["Store","Targeting pod","Pylon"],"uadis":["Наліт від нового","Шестигранна головка","Контрольний дріт"],"k":"m1:Flare"},{"en":"Hardpoint","ua":"Вузол підвіски","ex":"A hardpoint is the mounting point on the wing or fuselage for weapons.","cloze":"A …… is the mounting point on the wing or fuselage for weapons.","acc":["hardpoint"],"dis":["Chaff","Pylon","Safety pin"],"uadis":["Азотний візок","Інвертор","Несправний"],"k":"m1:Hardpoint"},{"en":"Launcher","ua":"Пускова установка","ex":"The launcher is the device that fires the missile.","cloze":"The …… is the device that fires the missile.","acc":["launcher"],"dis":["Safety pin","Seeker","Dearm"],"uadis":["Паливний насос","Джгут проводів","Дриль / Свердло"],"k":"m1:Launcher"},{"en":"Missile","ua":"Ракета","ex":"A missile is a guided weapon, for example the Meteor.","cloze":"A …… is a guided weapon, for example the Meteor.","acc":["missile"],"dis":["Pylon","Launcher","Chaff"],"uadis":["Змішувальний клапан","Підвісний бак","Токсично"],"k":"m1:Missile"},{"en":"Pylon","ua":"Пілон","ex":"The pylon connects the wing hardpoint to the weapon or tank.","cloze":"The …… connects the wing hardpoint to the weapon or tank.","acc":["pylon"],"dis":["Arm","Flare","Targeting pod"],"uadis":["Мультиплікатор моменту","Демпфер шиммі","Замок прибраного стану"],"k":"m1:Pylon"},{"en":"Safety pin","ua":"Запобіжна чека","ex":"The safety pin is the red flag that prevents accidental weapon release on the ground.","cloze":"The …… is the red flag that prevents accidental weapon release on the ground.","acc":["safety pin"],"dis":["Flare","Targeting pod","Pylon"],"uadis":["Шайби","Записати / Задокументувати","Дипольні відбивачі"],"k":"m1:Safety pin"},{"en":"Seeker","ua":"ГСН","ex":"The seeker is the guidance head of a missile.","cloze":"The …… is the guidance head of a missile.","acc":["seeker"],"dis":["Chaff","Ammunition","Arm"],"uadis":["Зняти з бойового взводу","Контрольний дріт","Насос підкачування"],"k":"m1:Seeker"},{"en":"Store","ua":"Підвіска (об'єкт)","ex":"A store is any item carried externally — tanks, missiles, or pods.","cloze":"A …… is any item carried externally — tanks, missiles, or pods.","acc":["store"],"dis":["Targeting pod","Chaff","Missile"],"uadis":["Парашут","Капілярний метод","Індикація (сигнал)"],"k":"m1:Store"},{"en":"Targeting pod","ua":"Прицільний контейнер","ex":"The targeting pod is a container for laser and optical targeting systems.","cloze":"The …… is a container for laser and optical targeting systems.","acc":["targeting pod"],"dis":["Ammunition","Flare","Hardpoint"],"uadis":["Інерціальна навігація","Задня кромка","Цілісність (продзвонка)"],"k":"m1:Targeting pod"}]}],"texts":["armament"],"drills":[]},{"id":"02e97cfb","title":"Наземне обладнання (GSE)","lessons":[{"id":"m1:d43666bf","title":"Наземне обладнання (GSE)","terms":[{"en":"Chocks","ua":"Колодки","ex":"Chocks are placed under wheels to prevent the aircraft from moving.","cloze":"…… are placed under wheels to prevent the aircraft from moving.","acc":["chocks"],"dis":["Fuel tanker","Ground wire","Tug / Tractor"],"uadis":["Регулятор","Візор","Домкрат"],"k":"m1:Chocks"},{"en":"Cover / Blank","ua":"Чохол / Заглушка","ex":"Covers and blanks protect engine inlets and pitot tubes from debris.","cloze":"…… and blanks protect engine inlets and pitot tubes from debris.","acc":["cover / blank","covers"],"dis":["Tug / Tractor","Ground wire","GPU"],"uadis":["Демпфер шиммі","Боєприпаси","Пускова установка"],"k":"m1:Cover / Blank"},{"en":"EPU","ua":"НДЖ у складі літака","ex":"The EPU is the aircraft's own emergency power unit.","cloze":"The …… is the aircraft's own emergency power unit.","acc":["epu"],"dis":["Nitrogen cart","Steps / Ladder","Chocks"],"uadis":["Вогненебезпечно","Задня кромка","Рівень рідини"],"k":"m1:EPU"},{"en":"GPU","ua":"НДЖ (контейнер)","ex":"The GPU is the Ground Power Unit — an external power source.","cloze":"The …… is the Ground Power Unit — an external power source.","acc":["gpu"],"dis":["Tug / Tractor","Fuel tanker","Nitrogen cart"],"uadis":["Замок / Клямка","Кут місця","Водовідділювач"],"k":"m1:GPU"},{"en":"Fuel tanker","ua":"Паливозаправник","ex":"The fuel tanker is the vehicle used to refuel the aircraft.","cloze":"The …… is the vehicle used to refuel the aircraft.","acc":["fuel tanker"],"dis":["Steps / Ladder","Tug / Tractor","Nitrogen cart"],"uadis":["Час після капремонту","Злити","Сигналізатор тиску"],"k":"m1:Fuel tanker"},{"en":"Ground wire","ua":"Дріт заземлення","ex":"The ground wire removes static electricity before fueling.","cloze":"The …… removes static electricity before fueling.","acc":["ground wire"],"dis":["Steps / Ladder","Hydraulic mule","Fuel tanker"],"uadis":["Модифікувати","Шайба","Складка / Вигин"],"k":"m1:Ground wire"},{"en":"Hydraulic mule","ua":"Гідростенд","ex":"The hydraulic mule supplies pressure to the system without engine power.","cloze":"The …… supplies pressure to the system without engine power.","acc":["hydraulic mule"],"dis":["Fuel tanker","Tow bar","EPU"],"uadis":["Індикація (сигнал)","Візор","Подати тиск"],"k":"m1:Hydraulic mule"},{"en":"Lifting jack","ua":"Домкрат","ex":"The lifting jack raises the aircraft off the ground for maintenance.","cloze":"The …… raises the aircraft off the ground for maintenance.","acc":["lifting jack"],"dis":["Tow bar","Steps / Ladder","Chocks"],"uadis":["Звалювання","Термін зберігання","Регулятор"],"k":"m1:Lifting jack"},{"en":"Nitrogen cart","ua":"Азотний візок","ex":"The nitrogen cart is used to inflate wheels and accumulators.","cloze":"The …… is used to inflate wheels and accumulators.","acc":["nitrogen cart"],"dis":["Tug / Tractor","Lifting jack","Ground wire"],"uadis":["Запальник / Свічка","Прокладка","Мітчик"],"k":"m1:Nitrogen cart"},{"en":"Steps / Ladder","ua":"Драбина","ex":"Steps and ladders allow technicians to reach the cockpit and components.","cloze":"Steps and …… allow technicians to reach the cockpit and components.","acc":["ladders","steps / ladder"],"dis":["Chocks","Nitrogen cart","Ground wire"],"uadis":["Струм","Гідроакумулятор","Замок / Клямка"],"k":"m1:Steps / Ladder"},{"en":"Tow bar","ua":"Буксирувальне водило","ex":"The tow bar connects the aircraft nose gear to the tractor.","cloze":"The …… connects the aircraft nose gear to the tractor.","acc":["tow bar"],"dis":["Tug / Tractor","Ground wire","Fuel tanker"],"uadis":["Наліт від нового","Форсажна камера","Ізоляція"],"k":"m1:Tow bar"},{"en":"Tug / Tractor","ua":"Тягач","ex":"The tug is the vehicle used to tow the aircraft.","cloze":"The …… is the vehicle used to tow the aircraft.","acc":["tug","tug / tractor"],"dis":["Cover / Blank","Ground wire","Fuel tanker"],"uadis":["Глибока вибоїна","Ізолювати","Серійний номер"],"k":"m1:Tug / Tractor"}]}],"texts":["walkaround"],"drills":[]},{"id":"f845c919","title":"Кріплення та залізо","lessons":[{"id":"m1:307478ea","title":"Кріплення та залізо — ч. 1","terms":[{"en":"Bolt","ua":"Болт","ex":"A bolt has a hex head and is tightened with a wrench.","cloze":"A …… has a hex head and is tightened with a wrench.","acc":["bolt"],"dis":["Hex head","Stud","Seize"],"uadis":["Ліхтар кабіни","Перетирання","Інвертор"],"k":"m1:Bolt"},{"en":"Screw","ua":"Гвинт / Шуруп","ex":"A screw has a drive recess for a screwdriver.","cloze":"A …… has a drive recess for a screwdriver.","acc":["screw"],"dis":["Bearing","Lock washer","Safety wire"],"uadis":["Вихрові струми","Регульоване сопло","Зачистка"],"k":"m1:Screw"},{"en":"Nut","ua":"Гайка","ex":"A nut is threaded onto a bolt or stud.","cloze":"A …… is threaded onto a bolt or stud.","acc":["nut"],"dis":["Thread","Shim","O-ring"],"uadis":["Будівельний фен","Допоміжна силова установка","Відкачувальний насос"],"k":"m1:Nut"},{"en":"Locknut","ua":"Контргайка","ex":"A locknut prevents the fastener from loosening by vibration.","cloze":"A …… prevents the fastener from loosening by vibration.","acc":["locknut"],"dis":["Bracket","Bolt","Hex head"],"uadis":["Інерціальна навігаційна система","Задня кромка","Справний"],"k":"m1:Locknut"},{"en":"Washer","ua":"Шайба","ex":"A washer is a flat ring placed under a nut or bolt head.","cloze":"A …… is a flat ring placed under a nut or bolt head.","acc":["washer"],"dis":["Shim","Rivet","Bearing"],"uadis":["Підтвердити / Перевірити","Складка / Вигин","Домкрат"],"k":"m1:Washer"},{"en":"Lock washer","ua":"Пружинна шайба","ex":"A lock washer is a spring washer that prevents loosening.","cloze":"A …… is a spring washer that prevents loosening.","acc":["lock washer"],"dis":["Safety wire","Hex head","Washer"],"uadis":["Паливна форсунка","Корончаста гайка","Сервісний бюлетень"],"k":"m1:Lock washer"},{"en":"Stud","ua":"Шпилька","ex":"A stud is a rod threaded at both ends.","cloze":"A …… is a rod threaded at both ends.","acc":["stud"],"dis":["Pigtail","Cotter pin","Self-locking"],"uadis":["Конденсатор","Витік","Відкріпити"],"k":"m1:Stud"},{"en":"Rivet","ua":"Заклепка","ex":"A rivet is a permanent fastener used for aircraft skin.","cloze":"A …… is a permanent fastener used for aircraft skin.","acc":["rivet"],"dis":["Thread","Burr","Self-locking"],"uadis":["Термоусадка","Оборотний агрегат","Випустити"],"k":"m1:Rivet"},{"en":"Cotter pin","ua":"Шплінт","ex":"A cotter pin locks a nut through a hole in the bolt.","cloze":"A …… locks a nut through a hole in the bolt.","acc":["cotter pin"],"dis":["Countersunk","Bolt","Screw"],"uadis":["Мастилорадіатор","Замок / Клямка","Ізоляція"],"k":"m1:Cotter pin"},{"en":"Safety wire","ua":"Контрольний дріт","ex":"Safety wire connects groups of bolts to prevent loosening.","cloze":"…… connects groups of bolts to prevent loosening.","acc":["safety wire"],"dis":["Lock washer","Bushing","Shim"],"uadis":["Знеструмити","Момент затягування","Термостат"],"k":"m1:Safety wire"},{"en":"O-ring","ua":"Кільцеве ущільнення","ex":"An O-ring is a rubber seal for hydraulic or fuel connections.","cloze":"An …… is a rubber seal for hydraulic or fuel connections.","acc":["o-ring"],"dis":["Gasket","Burr","Castle nut"],"uadis":["Промити","Клапан перекачування","Прикріпити"],"k":"m1:O-ring"},{"en":"Gasket","ua":"Прокладка","ex":"A gasket is a flat seal between mating flanges.","cloze":"A …… is a flat seal between mating flanges.","acc":["gasket"],"dis":["Chafe","Locknut","Rivet"],"uadis":["Наліт від нового","Вихрові струми","Імпульс"],"k":"m1:Gasket"},{"en":"Bushing","ua":"Втулка","ex":"A bushing is an insert that reduces friction at a joint.","cloze":"A …… is an insert that reduces friction at a joint.","acc":["bushing"],"dis":["Shim","Chafe","Washer"],"uadis":["Дріт заземлення","Датчик","Напруга"],"k":"m1:Bushing"},{"en":"Bearing","ua":"Підшипник","ex":"A bearing supports a rotating shaft.","cloze":"A …… supports a rotating shaft.","acc":["bearing"],"dis":["Clamp","Self-locking","Burr"],"uadis":["Насос підкачування","Драбина","Мітчик"],"k":"m1:Bearing"},{"en":"Clamp","ua":"Хомут / Затискач","ex":"A clamp secures hoses or wire bundles.","cloze":"A …… secures hoses or wire bundles.","acc":["clamp"],"dis":["Bracket","Seize","Nut"],"uadis":["Складка / Вигин","Елерон","Вісь"],"k":"m1:Clamp"}]},{"id":"m1:cf3ef1a2","title":"Кріплення та залізо — ч. 2","terms":[{"en":"Bracket","ua":"Кронштейн","ex":"A bracket supports components attached to the structure.","cloze":"A …… supports components attached to the structure.","acc":["bracket"],"dis":["Safety wire","O-ring","Chafe"],"uadis":["НДЖ (контейнер)","Камера згоряння","Мікрометр"],"k":"m1:Bracket"},{"en":"Shim","ua":"Регулювальна прокладка","ex":"A shim is a thin plate used to set precise clearances.","cloze":"A …… is a thin plate used to set precise clearances.","acc":["shim"],"dis":["Screw","Bushing","Hex head"],"uadis":["Перетирання","Інерціальна навігаційна система","Відбірне повітря"],"k":"m1:Shim"},{"en":"Thread","ua":"Різьба","ex":"The thread is the helical groove on a bolt or in a nut.","cloze":"The …… is the helical groove on a bolt or in a nut.","acc":["thread"],"dis":["Chafe","Washer","Safety wire"],"uadis":["Злити","Свій-чужий","Змастити"],"k":"m1:Thread"},{"en":"Torque value","ua":"Момент затягування","ex":"The torque value is the exact tightening force specified in the manual.","cloze":"The …… is the exact tightening force specified in the manual.","acc":["torque value"],"dis":["Pigtail","Bushing","O-ring"],"uadis":["Заблокувати / Заборонити","Струм","Інерціальна навігаційна система"],"k":"m1:Torque value"},{"en":"Burr","ua":"Задирка","ex":"A burr is a sharp metal edge left after machining.","cloze":"A …… is a sharp metal edge left after machining.","acc":["burr"],"dis":["Bolt","Bracket","Chafe"],"uadis":["Процесор","Від'єднати","Ручка керування"],"k":"m1:Burr"},{"en":"Chafe","ua":"Перетирання","ex":"Chafe is damage caused by a hose or wire rubbing against a surface.","cloze":"…… is damage caused by a hose or wire rubbing against a surface.","acc":["chafe"],"dis":["O-ring","Pigtail","Safety wire"],"uadis":["Дата закінчення строку","Інтерфейс","Відремонтувати"],"k":"m1:Chafe"},{"en":"Seize","ua":"Заїдати / Заклинити","ex":"To seize means a part cannot move due to corrosion or contamination.","cloze":"To …… means a part cannot move due to corrosion or contamination.","acc":["seize"],"dis":["Screw","Stud","Self-locking"],"uadis":["Прицільний контейнер","Шестигранна головка","Стандарт розділів документації"],"k":"m1:Seize"},{"en":"Hex head","ua":"Шестигранна головка","ex":"A hex head bolt is tightened with a standard wrench.","cloze":"A …… bolt is tightened with a standard wrench.","acc":["hex head"],"dis":["Self-locking","Torque value","Castle nut"],"uadis":["Закріпити","Літак не може літати (статус)","Простежуваність"],"k":"m1:Hex head"},{"en":"Countersunk","ua":"Потайна головка","ex":"A countersunk head sits flush with the surface when installed.","cloze":"A …… head sits flush with the surface when installed.","acc":["countersunk"],"dis":["O-ring","Hex head","Bolt"],"uadis":["Магнітопорошковий метод","Канал / Протока","Токсично"],"k":"m1:Countersunk"},{"en":"Self-locking","ua":"Самоконтрувальний","ex":"A self-locking fastener does not require safety wire to stay tight.","cloze":"A …… fastener does not require safety wire to stay tight.","acc":["self-locking"],"dis":["Gasket","Bushing","Seize"],"uadis":["Плоскогубці","Інерціальна навігація","Контргайка"],"k":"m1:Self-locking"},{"en":"Castle nut","ua":"Корончаста гайка","ex":"A castle nut has slots for a cotter pin to lock it in place.","cloze":"A …… has slots for a cotter pin to lock it in place.","acc":["castle nut"],"dis":["Burr","Chafe","Self-locking"],"uadis":["Система глобального позиціювання","Підйомна сила","Замінити"],"k":"m1:Castle nut"},{"en":"Pigtail","ua":"«Кіска»","ex":"The pigtail is the twisted end of safety wire.","cloze":"The …… is the twisted end of safety wire.","acc":["pigtail"],"dis":["Torque value","O-ring","Lock washer"],"uadis":["Неоднорідність","Дата закінчення строку","Термостат"],"k":"m1:Pigtail"}]}],"texts":[],"drills":[1,4,8]},{"id":"76246f41","title":"Кабіна та органи керування","lessons":[{"id":"m1:c1924532","title":"Кабіна та органи керування","terms":[{"en":"Canopy","ua":"Ліхтар кабіни","ex":"The canopy is the transparent cover that encloses the cockpit.","cloze":"The …… is the transparent cover that encloses the cockpit.","acc":["canopy"],"dis":["Toggle","Throttle lever","Selector"],"uadis":["Небезпека","Система повітропроводів","Супорт"],"k":"m1:Canopy"},{"en":"Ejection seat","ua":"Крісло-катапульта","ex":"The ejection seat is the pilot's emergency escape system.","cloze":"The …… is the pilot's emergency escape system.","acc":["ejection seat"],"dis":["Console","Canopy","Throttle lever"],"uadis":["Приймач попередження про опромінення","Подати (звіт)","Азотний візок"],"k":"m1:Ejection seat"},{"en":"Throttle lever","ua":"РУД","ex":"The throttle lever controls engine thrust.","cloze":"The …… controls engine thrust.","acc":["throttle lever"],"dis":["Toggle","Console","Ejection seat"],"uadis":["Триматися подалі","Підтвердити / Перевірити","Підтягнути"],"k":"m1:Throttle lever"},{"en":"Rudder pedals","ua":"Педалі керування","ex":"The rudder pedals control the rudder and nose wheel steering.","cloze":"The …… control the rudder and nose wheel steering.","acc":["rudder pedals"],"dis":["Selector","Ejection seat","Console"],"uadis":["«Висота» в кабіні","Регульоване сопло","Підвісний бак"],"k":"m1:Rudder pedals"},{"en":"Console","ua":"Консоль","ex":"The console is the side panel with switches and controls.","cloze":"The …… is the side panel with switches and controls.","acc":["console"],"dis":["Selector","Canopy","Rudder pedals"],"uadis":["Активувати","Канал / Протока","Розподільна коробка"],"k":"m1:Console"},{"en":"Toggle","ua":"Тумблер","ex":"A toggle is a lever-type switch.","cloze":"A …… is a lever-type switch.","acc":["toggle"],"dis":["Glare shield","Throttle lever","Selector"],"uadis":["Скинути тиск","Відремонтувати","Елевон"],"k":"m1:Toggle"},{"en":"Selector","ua":"Селектор","ex":"A selector is a rotary switch for choosing operating modes.","cloze":"A …… is a rotary switch for choosing operating modes.","acc":["selector"],"dis":["Throttle lever","Canopy","Ejection seat"],"uadis":["Центр ваги","Струм","Прибрати"],"k":"m1:Selector"},{"en":"Glare shield","ua":"Козирок панелі","ex":"The glare shield protects instruments from direct sunlight.","cloze":"The …… protects instruments from direct sunlight.","acc":["glare shield"],"dis":["Ejection seat","Selector","Console"],"uadis":["Задня кромка","«Кіска»","Консоль"],"k":"m1:Glare shield"}]}],"texts":["cockpit"],"drills":[]},{"id":"0bff69b9","title":"Життєзабезпечення та безпека","lessons":[{"id":"m1:1888f111","title":"Життєзабезпечення та безпека","terms":[{"en":"Oxygen mask","ua":"Киснева маска","ex":"The oxygen mask delivers breathing mixture to the pilot.","cloze":"The …… delivers breathing mixture to the pilot.","acc":["oxygen mask"],"dis":["Pressurization","Parachute","Regulator"],"uadis":["Демонтувати / Зняти","Запобіжна чека","Наповнити / Заправити"],"k":"m1:Oxygen mask"},{"en":"G-suit","ua":"ППК","ex":"The G-suit is the anti-G trousers that prevent pilot blackout.","cloze":"The …… is the anti-G trousers that prevent pilot blackout.","acc":["g-suit"],"dis":["Parachute","Regulator","Pressurization"],"uadis":["НДЖ у складі літака","Підвісний бак","Промити"],"k":"m1:G-suit"},{"en":"Regulator","ua":"Регулятор","ex":"The regulator controls the supply of oxygen to the mask.","cloze":"The …… controls the supply of oxygen to the mask.","acc":["regulator"],"dis":["Oxygen mask","G-suit","Survival kit"],"uadis":["Візор","Елевон","Дриль / Свердло"],"k":"m1:Regulator"},{"en":"Survival kit","ua":"НАЗ","ex":"The survival kit contains emergency food, water, and tools.","cloze":"The …… contains emergency food, water, and tools.","acc":["survival kit"],"dis":["OBOGS","Pressurization","Visor"],"uadis":["Трубка Піто","Усунути","Прес-кліщі"],"k":"m1:Survival kit"},{"en":"Parachute","ua":"Парашут","ex":"The parachute decelerates the pilot after ejection.","cloze":"The …… decelerates the pilot after ejection.","acc":["parachute"],"dis":["Visor","Regulator","Oxygen mask"],"uadis":["Мастилорадіатор","Торцева головка","Приєднати"],"k":"m1:Parachute"},{"en":"Visor","ua":"Візор","ex":"The visor is the protective transparent screen on the pilot helmet.","cloze":"The …… is the protective transparent screen on the pilot helmet.","acc":["visor"],"dis":["OBOGS","Survival kit","Parachute"],"uadis":["Наряд-замовлення","Інерціальна навігаційна система","Електрогідравлічний клапан"],"k":"m1:Visor"},{"en":"Pressurization","ua":"Герметизація","ex":"Pressurization maintains safe cabin pressure at high altitude.","cloze":"…… maintains safe cabin pressure at high altitude.","acc":["pressurization"],"dis":["G-suit","Oxygen mask","Survival kit"],"uadis":["Обшивка","Блок лінійної заміни","Іскріння"],"k":"m1:Pressurization"},{"en":"OBOGS","ua":"Система генерації кисню","ex":"OBOGS is the On-Board Oxygen Generating System.","cloze":"…… is the On-Board Oxygen Generating System.","acc":["obogs"],"dis":["Parachute","Regulator","Pressurization"],"uadis":["Оборотний агрегат","Мультиметр","Тріскачка"],"k":"m1:OBOGS"}]}],"texts":[],"drills":[]},{"id":"0580b22b","title":"Шасі та шини","lessons":[{"id":"m1:5bcc437b","title":"Шасі та шини","terms":[{"en":"Shock strut","ua":"Амортизаційна стійка","ex":"The shock strut absorbs the impact energy during landing.","cloze":"The …… absorbs the impact energy during landing.","acc":["shock strut"],"dis":["Caliper","Tread","Brake disc"],"uadis":["Кермо напрямку","Електропроводка","Відповідач"],"k":"m1:Shock strut"},{"en":"Axle","ua":"Вісь","ex":"The axle is the shaft on which the wheel is mounted.","cloze":"The …… is the shaft on which the wheel is mounted.","acc":["axle"],"dis":["Wear indicator","NLG","Brake disc"],"uadis":["Застереження","Повітря-повітря","Сигналізатор стружки"],"k":"m1:Axle"},{"en":"Brake disc","ua":"Гальмівний диск","ex":"The brake disc creates friction to slow the aircraft on landing.","cloze":"The …… creates friction to slow the aircraft on landing.","acc":["brake disc"],"dis":["Shock strut","Shimmy damper","Axle"],"uadis":["Струм","Відремонтувати","Мультиплікатор моменту"],"k":"m1:Brake disc"},{"en":"Caliper","ua":"Супорт","ex":"Calipers measure external and internal dimensions precisely.","cloze":"…… measure external and internal dimensions precisely.","acc":["caliper","calipers"],"dis":["Shimmy damper","Axle","Downlock"],"uadis":["Каталог запчастин","Роз'єм / Штекер","Ультразвук"],"k":"m1:Caliper"},{"en":"Wear indicator","ua":"Індикатор зносу","ex":"The wear indicator shows when brake pads need replacement.","cloze":"The …… shows when brake pads need replacement.","acc":["wear indicator"],"dis":["MLG","NLG","Shock strut"],"uadis":["Мультиметр","Час після капремонту","Регулятор"],"k":"m1:Wear indicator"},{"en":"MLG","ua":"Основні стійки шасі","ex":"MLG stands for Main Landing Gear — the primary support structure.","cloze":"…… stands for Main Landing Gear — the primary support structure.","acc":["mlg"],"dis":["Uplock","Shock strut","Shimmy damper"],"uadis":["Сервісний бюлетень","Прес-кліщі","Герметик"],"k":"m1:MLG"},{"en":"NLG","ua":"Передня стійка шасі","ex":"NLG stands for Nose Landing Gear — the front support of the aircraft.","cloze":"…… stands for Nose Landing Gear — the front support of the aircraft.","acc":["nlg"],"dis":["MLG","Uplock","Downlock"],"uadis":["Дозаправлення у повітрі","Закриття","Налаштувати"],"k":"m1:NLG"},{"en":"Shimmy damper","ua":"Демпфер шиммі","ex":"The shimmy damper prevents nose wheel oscillation during ground roll.","cloze":"The …… prevents nose wheel oscillation during ground roll.","acc":["shimmy damper"],"dis":["Axle","Brake disc","MLG"],"uadis":["Попередження","Заклепка «в потай»","Вісь"],"k":"m1:Shimmy damper"},{"en":"Uplock","ua":"Замок прибраного стану","ex":"The uplock holds the landing gear retracted during flight.","cloze":"The …… holds the landing gear retracted during flight.","acc":["uplock"],"dis":["Caliper","Shock strut","Brake disc"],"uadis":["Допуск","Повітря-повітря","Магнітопорошковий метод"],"k":"m1:Uplock"},{"en":"Downlock","ua":"Замок випущеного стану","ex":"The downlock secures the landing gear extended for landing.","cloze":"The …… secures the landing gear extended for landing.","acc":["downlock"],"dis":["Shimmy damper","MLG","Shock strut"],"uadis":["Вихрові струми","Розгортка","Теплова пастка"],"k":"m1:Downlock"},{"en":"Tread","ua":"Протектор","ex":"The tread is the pattern on the tire surface.","cloze":"The …… is the pattern on the tire surface.","acc":["tread"],"dis":["Shimmy damper","Axle","Brake disc"],"uadis":["Будівельний фен","Гвинт / Шуруп","Бортовий журнал"],"k":"m1:Tread"}]}],"texts":["wheel"],"drills":[]},{"id":"aca0e1f8","title":"Система кондиціювання (ECS)","lessons":[{"id":"m1:724674b5","title":"Система кондиціювання (ECS)","terms":[{"en":"Heat exchanger","ua":"Теплообмінник","ex":"The heat exchanger cools hot bleed air from the engine.","cloze":"The …… cools hot bleed air from the engine.","acc":["heat exchanger"],"dis":["Water separator","Air cycle machine","Ram air"],"uadis":["Зрощування","Опір","Шайба"],"k":"m1:Heat exchanger"},{"en":"Air cycle machine","ua":"Турбохолодильник","ex":"The air cycle machine is the core of the air cooling system.","cloze":"The …… is the core of the air cooling system.","acc":["air cycle machine"],"dis":["Cabin altitude","Mixing valve","Outflow valve"],"uadis":["Азотний візок","Витягти","Контрольний дріт"],"k":"m1:Air cycle machine"},{"en":"Water separator","ua":"Водовідділювач","ex":"The water separator removes moisture from the air supply.","cloze":"The …… removes moisture from the air supply.","acc":["water separator"],"dis":["Outflow valve","Heat exchanger","Air cycle machine"],"uadis":["Компресор","Записати / Задокументувати","Обтискання"],"k":"m1:Water separator"},{"en":"Ducting","ua":"Система повітропроводів","ex":"Ducting is the system of tubes that carries air through the aircraft.","cloze":"…… is the system of tubes that carries air through the aircraft.","acc":["ducting"],"dis":["Mixing valve","Condenser","Heat exchanger"],"uadis":["Педалі керування","Заклепка «в потай»","Шайба"],"k":"m1:Ducting"},{"en":"Mixing valve","ua":"Змішувальний клапан","ex":"The mixing valve blends hot and cold air to the required temperature.","cloze":"The …… blends hot and cold air to the required temperature.","acc":["mixing valve"],"dis":["Thermostat","Water separator","Ducting"],"uadis":["Статор","Паливозаправник","Змастити"],"k":"m1:Mixing valve"},{"en":"Cabin altitude","ua":"«Висота» в кабіні","ex":"Cabin altitude indicates the equivalent pressure altitude inside the aircraft.","cloze":"…… indicates the equivalent pressure altitude inside the aircraft.","acc":["cabin altitude"],"dis":["Water separator","Ram air","Heat exchanger"],"uadis":["Зворотний клапан","Перетирання","Приймач попередження про опромінення"],"k":"m1:Cabin altitude"},{"en":"Outflow valve","ua":"Випускний клапан","ex":"The outflow valve regulates cabin pressure by releasing excess air.","cloze":"The …… regulates cabin pressure by releasing excess air.","acc":["outflow valve"],"dis":["Heat exchanger","Air cycle machine","Cabin altitude"],"uadis":["Прикріпити","Момент затягування","Антена GPS"],"k":"m1:Outflow valve"},{"en":"Ram air","ua":"Набігаючий потік","ex":"Ram air is outside air that enters the system due to aircraft speed.","cloze":"…… is outside air that enters the system due to aircraft speed.","acc":["ram air"],"dis":["Condenser","Mixing valve","Water separator"],"uadis":["Частота","Налаштувати","Впровадити"],"k":"m1:Ram air"},{"en":"Condenser","ua":"Конденсатор","ex":"The condenser converts vapor into liquid.","cloze":"The …… converts vapor into liquid.","acc":["condenser"],"dis":["Thermostat","Cabin altitude","Mixing valve"],"uadis":["Прокладка","Шпангоут / Рама","Форсажна камера"],"k":"m1:Condenser"},{"en":"Thermostat","ua":"Термостат","ex":"The thermostat automatically maintains a set temperature.","cloze":"The …… automatically maintains a set temperature.","acc":["thermostat"],"dis":["Ram air","Water separator","Air cycle machine"],"uadis":["Дипольні відбивачі","Теплова пастка","Окуляри нічного бачення"],"k":"m1:Thermostat"}]}],"texts":["ecs"],"drills":[]},{"id":"ea788653","title":"Пошкодження та дефекти","lessons":[{"id":"m1:72e26749","title":"Пошкодження та дефекти","terms":[{"en":"Crack","ua":"Тріщина","ex":"A crack is a fracture in the material that must be reported immediately.","cloze":"A …… is a fracture in the material that must be reported immediately.","acc":["crack"],"dis":["Pitting","Nick","Dent"],"uadis":["Шайби","Обтічник","ГСН"],"k":"m1:Crack"},{"en":"Dent","ua":"Вм'ятина","ex":"A dent is a surface deformation without penetration.","cloze":"A …… is a surface deformation without penetration.","acc":["dent"],"dis":["Chafing","Erosion","Nick"],"uadis":["Елевон","Редуктор","НАЗ"],"k":"m1:Dent"},{"en":"Scratch","ua":"Подряпина","ex":"A scratch is superficial surface damage to the skin.","cloze":"A …… is superficial surface damage to the skin.","acc":["scratch"],"dis":["Dent","Pitting","Chafing"],"uadis":["Теплова пастка","Канал / Протока","Плашка"],"k":"m1:Scratch"},{"en":"Nick","ua":"Зазубрина","ex":"A nick is a small sharp cut on a blade or leading edge.","cloze":"A …… is a small sharp cut on a blade or leading edge.","acc":["nick"],"dis":["Pitting","Dent","Scratch"],"uadis":["Шпангоут","НАЗ","Витягти"],"k":"m1:Nick"},{"en":"Gouge","ua":"Глибока вибоїна","ex":"A gouge is deep damage with material removal.","cloze":"A …… is deep damage with material removal.","acc":["gouge"],"dis":["Erosion","Chafing","Dent"],"uadis":["Деактивувати","Ємність","Вирівняти / Сумістити"],"k":"m1:Gouge"},{"en":"Erosion","ua":"Ерозія","ex":"Erosion is surface wear caused by sand, rain, or high-speed airflow.","cloze":"…… is surface wear caused by sand, rain, or high-speed airflow.","acc":["erosion"],"dis":["Scratch","Gouge","Buckle"],"uadis":["Серійний номер","Блок лінійної заміни","Температура вихлопних газів"],"k":"m1:Erosion"},{"en":"Leak","ua":"Витік","ex":"A leak is an unintended escape of fluid or gas.","cloze":"A …… is an unintended escape of fluid or gas.","acc":["leak"],"dis":["Crack","Scratch","Buckle"],"uadis":["Прицільний контейнер","Компресор","Припій / Паяти"],"k":"m1:Leak"},{"en":"Chafing","ua":"Перетирання","ex":"Chafing is damage from a wire or hose rubbing against a surface.","cloze":"…… is damage from a wire or hose rubbing against a surface.","acc":["chafing"],"dis":["Dent","Gouge","Scratch"],"uadis":["Гайковерт","Ізоляція","Гідроакумулятор"],"k":"m1:Chafing"},{"en":"Buckle","ua":"Складка / Вигин","ex":"A buckle is a structural deformation from overload.","cloze":"A …… is a structural deformation from overload.","acc":["buckle"],"dis":["Dent","Nick","Scratch"],"uadis":["Монтувати / Встановити","Термін зберігання","Запальник / Свічка"],"k":"m1:Buckle"},{"en":"Pitting","ua":"Точкова корозія","ex":"Pitting is small holes on a metal surface caused by corrosion.","cloze":"…… is small holes on a metal surface caused by corrosion.","acc":["pitting"],"dis":["Erosion","Scratch","Chafing"],"uadis":["Знеструмити","Аварійний скид","Попередження"],"k":"m1:Pitting"}]}],"texts":["structure"],"drills":[3]},{"id":"91e0bfd7","title":"Вимірювання та інструменти","lessons":[{"id":"m1:1e617560","title":"Вимірювання та інструменти","terms":[{"en":"Wrench","ua":"Гайковий ключ","ex":"A wrench is used to tighten or loosen bolts and nuts.","cloze":"A …… is used to tighten or loosen bolts and nuts.","acc":["wrench"],"dis":["Reamer","Socket","Die"],"uadis":["«Висота» в кабіні","Зачистка","Розмах"],"k":"m1:Wrench"},{"en":"Socket","ua":"Торцева головка","ex":"A socket is an attachment for a ratchet handle.","cloze":"A …… is an attachment for a ratchet handle.","acc":["socket"],"dis":["Torque multiplier","Borescope","Feeler gauge"],"uadis":["Зачистити (сплавно)","Ультразвук","Сила тяжіння"],"k":"m1:Socket"},{"en":"Ratchet","ua":"Тріскачка","ex":"A ratchet is a handle with a one-way mechanism for turning sockets.","cloze":"A …… is a handle with a one-way mechanism for turning sockets.","acc":["ratchet"],"dis":["Soldering iron","Feeler gauge","Die"],"uadis":["Аварійний скид","Зняти з бойового взводу","Консоль"],"k":"m1:Ratchet"},{"en":"Pliers","ua":"Плоскогубці","ex":"Pliers are a gripping and cutting hand tool.","cloze":"…… are a gripping and cutting hand tool.","acc":["pliers"],"dis":["Wrench","Tensiometer","Socket"],"uadis":["Водовідділювач","Поставити на бойовий взвод","Доступ"],"k":"m1:Pliers"},{"en":"Screwdriver","ua":"Викрутка","ex":"A screwdriver is used for screws with various drive types.","cloze":"A …… is used for screws with various drive types.","acc":["screwdriver"],"dis":["Drill","Tensiometer","Ratchet"],"uadis":["Дренаж / Вентиляція","Вирівняти / Сумістити","Паливомір"],"k":"m1:Screwdriver"},{"en":"Drill","ua":"Дриль / Свердло","ex":"A drill creates holes in metal or composite material.","cloze":"A …… creates holes in metal or composite material.","acc":["drill"],"dis":["Ratchet","Heat gun","Pliers"],"uadis":["Електрогідравлічний клапан","Заклепка","Регулятор"],"k":"m1:Drill"},{"en":"Tap","ua":"Мітчик","ex":"A tap cuts internal threads inside a hole.","cloze":"A …… cuts internal threads inside a hole.","acc":["tap"],"dis":["Ratchet","Borescope","Feeler gauge"],"uadis":["Рентгенографія","Лобовий опір","Електрогідравлічний клапан"],"k":"m1:Tap"},{"en":"Die","ua":"Плашка","ex":"A die cuts external threads on a bolt or rod.","cloze":"A …… cuts external threads on a bolt or rod.","acc":["die"],"dis":["Screwdriver","Wrench","Tap"],"uadis":["Поставити на бойовий взвод","ПЗ","Лобовий опір"],"k":"m1:Die"},{"en":"Reamer","ua":"Розгортка","ex":"A reamer enlarges and finishes holes to precise dimensions.","cloze":"A …… enlarges and finishes holes to precise dimensions.","acc":["reamer"],"dis":["Impact wrench","Pressure gauge","Borescope"],"uadis":["Гайковий ключ","Законтрити","Літак не може літати (статус)"],"k":"m1:Reamer"},{"en":"Micrometer","ua":"Мікрометр","ex":"A micrometer measures dimensions to micron accuracy.","cloze":"A …… measures dimensions to micron accuracy.","acc":["micrometer"],"dis":["Pliers","Borescope","Pressure gauge"],"uadis":["Заклепка","Неоднорідність","Подати (звіт)"],"k":"m1:Micrometer"},{"en":"Feeler gauge","ua":"Щуп","ex":"A feeler gauge measures small gaps and clearances.","cloze":"A …… measures small gaps and clearances.","acc":["feeler gauge"],"dis":["Drill","Crimping tool","Torque multiplier"],"uadis":["Втулка","Крісло-катапульта","Допуск"],"k":"m1:Feeler gauge"},{"en":"Borescope","ua":"Бороскоп","ex":"A borescope is a flexible camera for inspecting inside the engine.","cloze":"A …… is a flexible camera for inspecting inside the engine.","acc":["borescope"],"dis":["Torque multiplier","Impact wrench","Soldering iron"],"uadis":["Вогненебезпечно","Термостат","Опір"],"k":"m1:Borescope"},{"en":"Torque multiplier","ua":"Мультиплікатор моменту","ex":"A torque multiplier allows very high torque on large fasteners.","cloze":"A …… allows very high torque on large fasteners.","acc":["torque multiplier"],"dis":["Wrench","Heat gun","Tensiometer"],"uadis":["Постановка завад","Заїдати / Заклинити","Неоднорідність"],"k":"m1:Torque multiplier"},{"en":"Tensiometer","ua":"Тензометр","ex":"A tensiometer measures the tension in a control cable.","cloze":"A …… measures the tension in a control cable.","acc":["tensiometer"],"dis":["Torque multiplier","Socket","Drill"],"uadis":["Затягнути з моментом","Інтерфейс","Кут атаки"],"k":"m1:Tensiometer"},{"en":"Pressure gauge","ua":"Манометр","ex":"A pressure gauge displays system pressure in bar or PSI.","cloze":"A …… displays system pressure in bar or PSI.","acc":["pressure gauge"],"dis":["Vacuum pump","Die","Drill"],"uadis":["Консоль","Складка / Вигин","Злити"],"k":"m1:Pressure gauge"},{"en":"Crimping tool","ua":"Прес-кліщі","ex":"A crimping tool attaches terminals to wires by compression.","cloze":"A …… attaches terminals to wires by compression.","acc":["crimping tool"],"dis":["Screwdriver","Socket","Ratchet"],"uadis":["Плашка","Повітрозабірник","Супорт"],"k":"m1:Crimping tool"},{"en":"Heat gun","ua":"Будівельний фен","ex":"A heat gun is used to shrink heat-shrink tubing.","cloze":"A …… is used to shrink heat-shrink tubing.","acc":["heat gun"],"dis":["Wrench","Impact wrench","Screwdriver"],"uadis":["ГСН","Ракета","Пружинна шайба"],"k":"m1:Heat gun"},{"en":"Soldering iron","ua":"Паяльник","ex":"A soldering iron melts solder to join electrical components.","cloze":"A …… melts solder to join electrical components.","acc":["soldering iron"],"dis":["Socket","Vacuum pump","Heat gun"],"uadis":["Не ставати","Магнітопорошковий метод","Трубка Піто"],"k":"m1:Soldering iron"},{"en":"Impact wrench","ua":"Гайковерт","ex":"An impact wrench rapidly removes fasteners using rotating impacts.","cloze":"An …… rapidly removes fasteners using rotating impacts.","acc":["impact wrench"],"dis":["Feeler gauge","Screwdriver","Crimping tool"],"uadis":["Система повітропроводів","Інвертор","Основні стійки шасі"],"k":"m1:Impact wrench"},{"en":"Vacuum pump","ua":"Вакуумний насос","ex":"A vacuum pump removes air and moisture from systems.","cloze":"A …… removes air and moisture from systems.","acc":["vacuum pump"],"dis":["Tap","Torque multiplier","Soldering iron"],"uadis":["Регулювальна прокладка","Кермо напрямку","Відкачувальний насос"],"k":"m1:Vacuum pump"}]}],"texts":[],"drills":[]},{"id":"d1d7cfa3","title":"Документація та статус деталей","lessons":[{"id":"m1:f5233bca","title":"Документація та статус деталей","terms":[{"en":"Logbook","ua":"Бортовий журнал","ex":"The logbook is the main document recording aircraft maintenance history.","cloze":"The …… is the main document recording aircraft maintenance history.","acc":["logbook"],"dis":["Expiry date","Shelf life","Serial Number"],"uadis":["Компресор","Кронштейн","Будівельний фен"],"k":"m1:Logbook"},{"en":"Work Order","ua":"Наряд-замовлення","ex":"The work order is the document authorizing a specific maintenance task.","cloze":"The …… is the document authorizing a specific maintenance task.","acc":["work order"],"dis":["AOG","Part Number","Unserviceable"],"uadis":["Екранування","Капілярний метод","Складка / Вигин"],"k":"m1:Work Order"},{"en":"Certificate","ua":"Сертифікат","ex":"The certificate confirms that a component meets airworthiness standards.","cloze":"The …… confirms that a component meets airworthiness standards.","acc":["certificate"],"dis":["Revision","Expiry date","Work Order"],"uadis":["Відремонтувати","Азотний візок","Гармата"],"k":"m1:Certificate"},{"en":"Revision","ua":"Редакція / Оновлення","ex":"A revision is an updated version of a technical manual.","cloze":"A …… is an updated version of a technical manual.","acc":["revision"],"dis":["Serial Number","Unserviceable","Part Number"],"uadis":["Вихлоп / Випуск","Гайковерт","Зняти з бойового взводу"],"k":"m1:Revision"},{"en":"Serviceable","ua":"Справний","ex":"Serviceable means the component is ready for installation on the aircraft.","cloze":"…… means the component is ready for installation on the aircraft.","acc":["serviceable"],"dis":["LRU","Shelf life","Rotable"],"uadis":["Повітря-земля","Запобіжник","Індикація (сигнал)"],"k":"m1:Serviceable"},{"en":"Unserviceable","ua":"Несправний","ex":"Unserviceable means the component requires repair or inspection.","cloze":"…… means the component requires repair or inspection.","acc":["unserviceable"],"dis":["Serial Number","Interchangeable","AOG"],"uadis":["Деактивувати","Мастильний фільтр","Обтічник"],"k":"m1:Unserviceable"},{"en":"Traceability","ua":"Простежуваність","ex":"Traceability is the ability to track the full history of a component.","cloze":"…… is the ability to track the full history of a component.","acc":["traceability"],"dis":["Expiry date","LRU","Part Number"],"uadis":["Чохол / Заглушка","Тяга","Директива льотної придатності"],"k":"m1:Traceability"},{"en":"Shelf life","ua":"Термін зберігання","ex":"Shelf life is the maximum storage time for a component or material.","cloze":"…… is the maximum storage time for a component or material.","acc":["shelf life"],"dis":["Rotable","Interchangeable","Part Number"],"uadis":["Регулятор","Вісь","Напруга"],"k":"m1:Shelf life"},{"en":"Expiry date","ua":"Дата закінчення строку","ex":"The expiry date is the date after which a component cannot be used.","cloze":"The …… is the date after which a component cannot be used.","acc":["expiry date"],"dis":["Consumable","Interchangeable","Rotable"],"uadis":["Перетирання","Драбина","Консоль"],"k":"m1:Expiry date"},{"en":"Interchangeable","ua":"Взаємозамінний","ex":"Interchangeable means the component can replace another without modification.","cloze":"…… means the component can replace another without modification.","acc":["interchangeable"],"dis":["Revision","Expiry date","LRU"],"uadis":["Подати (звіт)","Гальмівний диск","Інвертор"],"k":"m1:Interchangeable"},{"en":"Part Number","ua":"Номер деталі","ex":"The part number is the unique manufacturer identifier for a component.","cloze":"The …… is the unique manufacturer identifier for a component.","acc":["part number"],"dis":["Lead Time","LRU","Work Order"],"uadis":["Ручка керування","Азотний візок","Процесор"],"k":"m1:Part Number"},{"en":"Serial Number","ua":"Серійний номер","ex":"The serial number is the unique identifier for a specific unit.","cloze":"The …… is the unique identifier for a specific unit.","acc":["serial number"],"dis":["Logbook","Work Order","Expiry date"],"uadis":["Центр ваги","Захоплення цілі","Відповідач"],"k":"m1:Serial Number"},{"en":"Lead Time","ua":"Термін виконання","ex":"Lead time is the time from ordering to delivery of a component.","cloze":"…… is the time from ordering to delivery of a component.","acc":["lead time"],"dis":["Consumable","Traceability","Revision"],"uadis":["Паливна форсунка","Аеродинамічний профіль","Набігаючий потік"],"k":"m1:Lead Time"},{"en":"AOG","ua":"Літак не може літати (статус)","ex":"AOG stands for Aircraft On Ground — the aircraft cannot fly due to a defect.","cloze":"…… stands for Aircraft On Ground — the aircraft cannot fly due to a defect.","acc":["aog"],"dis":["Part Number","Expiry date","Serviceable"],"uadis":["Компресор","Інерціальна навігаційна система","Подряпина"],"k":"m1:AOG"},{"en":"LRU","ua":"Блок лінійної заміни","ex":"LRU stands for Line Replaceable Unit — a component replaced as a whole.","cloze":"…… stands for Line Replaceable Unit — a component replaced as a whole.","acc":["lru"],"dis":["Part Number","AOG","Rotable"],"uadis":["Гайка","Завіса / Петля","Стороннє пошкодження"],"k":"m1:LRU"},{"en":"Rotable","ua":"Оборотний агрегат","ex":"A rotable component is repaired and returned to service after removal.","cloze":"A …… component is repaired and returned to service after removal.","acc":["rotable"],"dis":["Shelf life","Logbook","Traceability"],"uadis":["Ємність","Стороннє пошкодження","Головний вал"],"k":"m1:Rotable"},{"en":"Consumable","ua":"Витратний матеріал","ex":"Consumables are materials used up during maintenance — oils, rags, solvents.","cloze":"…… are materials used up during maintenance — oils, rags, solvents.","acc":["consumable","consumables"],"dis":["Part Number","Shelf life","Logbook"],"uadis":["Мітчик","Передня стійка шасі","Теплова пастка"],"k":"m1:Consumable"}]}],"texts":["aog"],"drills":[7]},{"id":"ea06da29","title":"Аеродинаміка","lessons":[{"id":"m1:96cbf418","title":"Аеродинаміка","terms":[{"en":"Lift","ua":"Підйомна сила","ex":"Lift is the aerodynamic force that keeps the aircraft in the air.","cloze":"…… is the aerodynamic force that keeps the aircraft in the air.","acc":["lift"],"dis":["Leading edge","Vortex","Chord"],"uadis":["Інерціальна навігаційна система","Крісло-катапульта","Шпилька"],"k":"m1:Lift"},{"en":"Drag","ua":"Лобовий опір","ex":"Drag is the aerodynamic force that opposes forward motion.","cloze":"…… is the aerodynamic force that opposes forward motion.","acc":["drag"],"dis":["Trailing edge","Leading edge","Lift"],"uadis":["Дріт заземлення","Індикатор зносу","Вузол підвіски"],"k":"m1:Drag"},{"en":"Gravity","ua":"Сила тяжіння","ex":"Gravity is the force pulling the aircraft toward the earth.","cloze":"…… is the force pulling the aircraft toward the earth.","acc":["gravity"],"dis":["Lift","Vortex","Airfoil"],"uadis":["Запобіжний клапан","Буксирувальне водило","Розподільна коробка"],"k":"m1:Gravity"},{"en":"Airfoil","ua":"Аеродинамічний профіль","ex":"The airfoil is the cross-sectional shape of the wing.","cloze":"The …… is the cross-sectional shape of the wing.","acc":["airfoil"],"dis":["Stall","Drag","Lift"],"uadis":["Торцева головка","ПЗ","Опір"],"k":"m1:Airfoil"},{"en":"Angle of Attack","ua":"Кут атаки","ex":"Angle of attack is the angle between the wing chord and airflow.","cloze":"…… is the angle between the wing chord and airflow.","acc":["angle of attack"],"dis":["Airfoil","Gravity","Span"],"uadis":["Інструкція з обслуговування","Прицільний контейнер","Інерціальна навігація"],"k":"m1:Angle of Attack"},{"en":"Leading edge","ua":"Передня кромка","ex":"The leading edge is the front of the wing that meets the airflow first.","cloze":"The …… is the front of the wing that meets the airflow first.","acc":["leading edge"],"dis":["Angle of Attack","Drag","Stall"],"uadis":["Стандарт розділів документації","Окуляри нічного бачення","Люк доступу"],"k":"m1:Leading edge"},{"en":"Trailing edge","ua":"Задня кромка","ex":"The trailing edge is the rear of the wing where airflow leaves.","cloze":"The …… is the rear of the wing where airflow leaves.","acc":["trailing edge"],"dis":["Airfoil","Leading edge","Lift"],"uadis":["Скинути тиск","Відбірне повітря","Амортизаційна стійка"],"k":"m1:Trailing edge"},{"en":"Chord","ua":"Хорда","ex":"The chord is the distance from leading edge to trailing edge.","cloze":"The …… is the distance from leading edge to trailing edge.","acc":["chord"],"dis":["Angle of Attack","Stall","Span"],"uadis":["Нервюра","Вихрові струми","Випустити"],"k":"m1:Chord"},{"en":"Span","ua":"Розмах","ex":"The span is the distance from wingtip to wingtip.","cloze":"The …… is the distance from wingtip to wingtip.","acc":["span"],"dis":["Airfoil","Drag","Chord"],"uadis":["Шина живлення","Шпилька","Задня кромка"],"k":"m1:Span"},{"en":"Vortex","ua":"Вихор","ex":"A vortex is turbulent rotating airflow at the wingtips.","cloze":"A …… is turbulent rotating airflow at the wingtips.","acc":["vortex"],"dis":["Chord","Drag","Stall"],"uadis":["Відстійник","Обтічник","Водовідділювач"],"k":"m1:Vortex"},{"en":"Stall","ua":"Звалювання","ex":"A stall occurs when the angle of attack exceeds the critical value and lift is lost.","cloze":"A …… occurs when the angle of attack exceeds the critical value and lift is lost.","acc":["stall"],"dis":["Angle of Attack","Leading edge","Lift"],"uadis":["Шайба","Захоплення цілі","Вирівняти / Сумістити"],"k":"m1:Stall"}]}],"texts":[],"drills":[]},{"id":"35c3deee","title":"Безпека та знаки","lessons":[{"id":"m1:971ca43c","title":"Безпека та знаки","terms":[{"en":"Warning","ua":"Попередження","ex":"Warning indicates risk of serious injury or death.","cloze":"…… indicates risk of serious injury or death.","acc":["warning"],"dis":["No Step","Caution","Keep clear"],"uadis":["Демонтувати / Зняти","Повітря-повітря","Оборотний агрегат"],"k":"m1:Warning"},{"en":"Caution","ua":"Застереження","ex":"Caution indicates risk of damage to equipment.","cloze":"…… indicates risk of damage to equipment.","acc":["caution"],"dis":["Toxic","Warning","DANGER"],"uadis":["Система повітропроводів","Антена","Взаємозамінний"],"k":"m1:Caution"},{"en":"DANGER","ua":"Небезпека","ex":"Danger marks zones of maximum risk such as engine intakes.","cloze":"…… marks zones of maximum risk such as engine intakes.","acc":["danger"],"dis":["Evacuate","Keep clear","Inflammable"],"uadis":["Підтягнути","Регулятор","Прошивка"],"k":"m1:DANGER"},{"en":"No Step","ua":"Не ставати","ex":"No step marks areas where the skin cannot support human weight.","cloze":"…… marks areas where the skin cannot support human weight.","acc":["no step"],"dis":["Keep clear","DANGER","FOD"],"uadis":["Мультиплікатор моменту","Законтрити","Електропроводка"],"k":"m1:No Step"},{"en":"Inflammable","ua":"Вогненебезпечно","ex":"Inflammable means the material ignites easily — keep away from fire.","cloze":"…… means the material ignites easily — keep away from fire.","acc":["inflammable"],"dis":["Caution","No Step","Toxic"],"uadis":["Вісь","Напрямна лопатка","Злити"],"k":"m1:Inflammable"},{"en":"Toxic","ua":"Токсично","ex":"Toxic means poisonous — fuels and hydraulic fluid require protection.","cloze":"…… means poisonous — fuels and hydraulic fluid require protection.","acc":["toxic"],"dis":["Evacuate","No Step","Warning"],"uadis":["Повітрозабірник","Розшарування","Мастилорадіатор"],"k":"m1:Toxic"},{"en":"Keep clear","ua":"Триматися подалі","ex":"Keep clear means do not enter the area while systems are operating.","cloze":"…… means do not enter the area while systems are operating.","acc":["keep clear"],"dis":["Toxic","Inflammable","DANGER"],"uadis":["Зазубрина","Складка / Вигин","Взаємозамінний"],"k":"m1:Keep clear"},{"en":"FOD","ua":"Стороннє пошкодження","ex":"FOD stands for Foreign Object Damage — damage caused by debris ingested by the engine.","cloze":"…… stands for Foreign Object Damage — damage caused by debris ingested by the engine.","acc":["fod"],"dis":["Warning","DANGER","Keep clear"],"uadis":["Ерозія","Точкова корозія","Допуск"],"k":"m1:FOD"},{"en":"Evacuate","ua":"Покинути зону / евакуювати","ex":"Evacuate means to immediately leave the danger area.","cloze":"…… means to immediately leave the danger area.","acc":["evacuate"],"dis":["No Step","Keep clear","Toxic"],"uadis":["Селектор","«Висота» в кабіні","Записати / Задокументувати"],"k":"m1:Evacuate"}]}],"texts":["signs"],"drills":[9]},{"id":"42e21d9f","title":"Неруйнівний контроль (NDT)","lessons":[{"id":"m1:3edc8477","title":"Неруйнівний контроль (NDT)","terms":[{"en":"Eddy Current","ua":"Вихрові струми","ex":"Eddy current testing detects surface cracks using magnetic fields.","cloze":"…… testing detects surface cracks using magnetic fields.","acc":["eddy current"],"dis":["Ultrasonic","Discontinuity","Magnetic Particle"],"uadis":["Герметик","Замок прибраного стану","Шина живлення"],"k":"m1:Eddy Current"},{"en":"Ultrasonic","ua":"Ультразвук","ex":"Ultrasonic testing detects internal defects using sound waves.","cloze":"…… testing detects internal defects using sound waves.","acc":["ultrasonic"],"dis":["Dye Penetrant","Eddy Current","Discontinuity"],"uadis":["Замінити","Продути","Напруга"],"k":"m1:Ultrasonic"},{"en":"Radiography","ua":"Рентгенографія","ex":"Radiography uses X-rays to inspect internal structural components.","cloze":"…… uses X-rays to inspect internal structural components.","acc":["radiography"],"dis":["Dye Penetrant","Eddy Current","Ultrasonic"],"uadis":["ПЗ","Кріпильний елемент","Шестигранна головка"],"k":"m1:Radiography"},{"en":"Dye Penetrant","ua":"Капілярний метод","ex":"Dye penetrant testing uses colored dye that seeps into surface cracks.","cloze":"…… testing uses colored dye that seeps into surface cracks.","acc":["dye penetrant"],"dis":["Indication","Radiography","Magnetic Particle"],"uadis":["Стрингер","Регулятор","Гайковерт"],"k":"m1:Dye Penetrant"},{"en":"Magnetic Particle","ua":"Магнітопорошковий метод","ex":"Magnetic particle testing finds cracks in ferromagnetic steel parts.","cloze":"…… testing finds cracks in ferromagnetic steel parts.","acc":["magnetic particle"],"dis":["Discontinuity","Radiography","Dye Penetrant"],"uadis":["Прибрати","Мануал з ремонту конструкції","Замінити"],"k":"m1:Magnetic Particle"},{"en":"Indication","ua":"Індикація (сигнал)","ex":"An indication is a signal showing the presence of a defect.","cloze":"An …… is a signal showing the presence of a defect.","acc":["indication"],"dis":["Magnetic Particle","Eddy Current","Radiography"],"uadis":["Інвертор","Відремонтувати","Редакція / Оновлення"],"k":"m1:Indication"},{"en":"Discontinuity","ua":"Неоднорідність","ex":"A discontinuity is any irregularity in the material structure.","cloze":"A …… is any irregularity in the material structure.","acc":["discontinuity"],"dis":["Indication","Dye Penetrant","Ultrasonic"],"uadis":["Оборотний агрегат","Інвертор","Шпангоут"],"k":"m1:Discontinuity"}]}],"texts":[],"drills":[]},{"id":"e01e21cf","title":"Абревіатури","lessons":[{"id":"m1:e1c0df5f","title":"Абревіатури — ч. 1","terms":[{"en":"AD","ua":"Директива льотної придатності","ex":"AD stands for Airworthiness Directive — a mandatory maintenance requirement.","cloze":"…… stands for Airworthiness Directive — a mandatory maintenance requirement.","acc":["ad"],"dis":["GPS","WoW","A/A"],"uadis":["Шпангоут","Злити","Сертифікат"],"k":"m1:AD"},{"en":"AMM","ua":"Інструкція з обслуговування","ex":"AMM stands for Aircraft Maintenance Manual — the primary maintenance reference.","cloze":"…… stands for Aircraft Maintenance Manual — the primary maintenance reference.","acc":["amm"],"dis":["NVG","BVR","SB"],"uadis":["Зрощування","Мастилорадіатор","Перелік мінімального обладнання"],"k":"m1:AMM"},{"en":"ATA","ua":"Стандарт розділів документації","ex":"ATA is the standard system for organizing maintenance documentation chapters.","cloze":"…… is the standard system for organizing maintenance documentation chapters.","acc":["ata"],"dis":["IPC","INS","IFF"],"uadis":["Кріпильний елемент","Струм","Турбохолодильник"],"k":"m1:ATA"},{"en":"IPC","ua":"Каталог запчастин","ex":"IPC stands for Illustrated Parts Catalog — used to identify and order parts.","cloze":"…… stands for Illustrated Parts Catalog — used to identify and order parts.","acc":["ipc"],"dis":["ECM","INS","APU"],"uadis":["Продути","Постановка завад","Монтувати / Встановити"],"k":"m1:IPC"},{"en":"MEL","ua":"Перелік мінімального обладнання","ex":"MEL stands for Minimum Equipment List — items the aircraft may fly without.","cloze":"…… stands for Minimum Equipment List — items the aircraft may fly without.","acc":["mel"],"dis":["AMM","AD","IPC"],"uadis":["Ємність","Манометр","Мануал з ремонту конструкції"],"k":"m1:MEL"},{"en":"SB","ua":"Сервісний бюлетень","ex":"SB stands for Service Bulletin — a manufacturer recommendation for modification.","cloze":"…… stands for Service Bulletin — a manufacturer recommendation for modification.","acc":["sb"],"dis":["NVG","A/A","CG"],"uadis":["Мультиплікатор моменту","Консоль","Редуктор"],"k":"m1:SB"},{"en":"SRM","ua":"Мануал з ремонту конструкції","ex":"SRM stands for Structural Repair Manual — the reference for airframe repairs.","cloze":"…… stands for Structural Repair Manual — the reference for airframe repairs.","acc":["srm"],"dis":["GPS","TSO","IPC"],"uadis":["Момент затягування","Витягти","Літак не може літати (статус)"],"k":"m1:SRM"},{"en":"TSN","ua":"Наліт від нового","ex":"TSN stands for Time Since New — total operating hours from manufacture.","cloze":"…… stands for Time Since New — total operating hours from manufacture.","acc":["tsn"],"dis":["ATA","AMM","MEL"],"uadis":["ПЗ","Звалювання","Кут атаки"],"k":"m1:TSN"},{"en":"TSO","ua":"Час після капремонту","ex":"TSO stands for Time Since Overhaul — hours since the last major service.","cloze":"…… stands for Time Since Overhaul — hours since the last major service.","acc":["tso"],"dis":["BVR","WoW","IPC"],"uadis":["Температура вихлопних газів","Камера згоряння","Гальмівний диск"],"k":"m1:TSO"},{"en":"A/A","ua":"Повітря-повітря","ex":"A/A stands for Air-to-Air — weapons or systems targeting airborne threats.","cloze":"…… stands for Air-to-Air — weapons or systems targeting airborne threats.","acc":["a/a"],"dis":["TSN","SB","TSO"],"uadis":["Сопло","Активувати","Турбохолодильник"],"k":"m1:A/A"},{"en":"A/G","ua":"Повітря-земля","ex":"A/G stands for Air-to-Ground — weapons or systems targeting surface targets.","cloze":"…… stands for Air-to-Ground — weapons or systems targeting surface targets.","acc":["a/g"],"dis":["SB","ATA","A/A"],"uadis":["Оглянути","Виконати","Протектор"],"k":"m1:A/G"},{"en":"AAR","ua":"Дозаправлення у повітрі","ex":"AAR stands for Air-to-Air Refueling — refueling from another aircraft in flight.","cloze":"…… stands for Air-to-Air Refueling — refueling from another aircraft in flight.","acc":["aar"],"dis":["GPS","NVG","SRM"],"uadis":["Вирівняти / Сумістити","Цілісність (продзвонка)","Гайковерт"],"k":"m1:AAR"},{"en":"APU","ua":"Допоміжна силова установка","ex":"APU stands for Auxiliary Power Unit — provides ground electrical and pneumatic power.","cloze":"…… stands for Auxiliary Power Unit — provides ground electrical and pneumatic power.","acc":["apu"],"dis":["TSN","A/A","GPS"],"uadis":["Напрямна лопатка","Усунути","Вихрові струми"],"k":"m1:APU"},{"en":"BVR","ua":"Поза межами візуальної видимості","ex":"BVR stands for Beyond Visual Range — engagement outside visual contact.","cloze":"…… stands for Beyond Visual Range — engagement outside visual contact.","acc":["bvr"],"dis":["INS","NVG","AMM"],"uadis":["Кільцеве ущільнення","Тягач","Мітчик"],"k":"m1:BVR"}]},{"id":"m1:d99ad342","title":"Абревіатури — ч. 2","terms":[{"en":"CG","ua":"Центр ваги","ex":"CG stands for Center of Gravity — the point where aircraft mass is balanced.","cloze":"…… stands for Center of Gravity — the point where aircraft mass is balanced.","acc":["cg"],"dis":["APU","ATA","A/A"],"uadis":["Шестигранна головка","Відкачувальний насос","Тягач"],"k":"m1:CG"},{"en":"ECM","ua":"Електронна протидія","ex":"ECM stands for Electronic Countermeasures — jamming enemy radar and missiles.","cloze":"…… stands for Electronic Countermeasures — jamming enemy radar and missiles.","acc":["ecm"],"dis":["SRM","IPC","BVR"],"uadis":["Застереження","Заблокувати / Заборонити","Шайби"],"k":"m1:ECM"},{"en":"GPS","ua":"Система глобального позиціювання","ex":"GPS stands for Global Positioning System — satellite navigation.","cloze":"…… stands for Global Positioning System — satellite navigation.","acc":["gps"],"dis":["SB","AMM","A/A"],"uadis":["Елевон","Іскріння","Наряд-замовлення"],"k":"m1:GPS"},{"en":"IFF","ua":"Свій-чужий","ex":"IFF stands for Identification Friend or Foe — the aircraft recognition system.","cloze":"…… stands for Identification Friend or Foe — the aircraft recognition system.","acc":["iff"],"dis":["IPC","AMM","AD"],"uadis":["Елерон","Основні стійки шасі","Трубка Піто"],"k":"m1:IFF"},{"en":"INS","ua":"Інерціальна навігаційна система","ex":"INS stands for Inertial Navigation System — navigation without external signals.","cloze":"…… stands for Inertial Navigation System — navigation without external signals.","acc":["ins"],"dis":["ATA","SRM","CG"],"uadis":["Стороннє пошкодження","Супорт","Записати / Задокументувати"],"k":"m1:INS"},{"en":"NVG","ua":"Окуляри нічного бачення","ex":"NVG stands for Night Vision Goggles — for low-light flight operations.","cloze":"…… stands for Night Vision Goggles — for low-light flight operations.","acc":["nvg"],"dis":["ATA","RWR","GPS"],"uadis":["Рівень рідини","Буксирувальне водило","Магнітопорошковий метод"],"k":"m1:NVG"},{"en":"RWR","ua":"Приймач попередження про опромінення","ex":"RWR stands for Radar Warning Receiver — alerts the pilot to radar lock.","cloze":"…… stands for Radar Warning Receiver — alerts the pilot to radar lock.","acc":["rwr"],"dis":["AMM","TSO","A/G"],"uadis":["Свій-чужий","Прокачати","Блок лінійної заміни"],"k":"m1:RWR"},{"en":"WoW","ua":"Вага на колесах","ex":"WoW stands for Weight on Wheels — indicates the aircraft is on the ground.","cloze":"…… stands for Weight on Wheels — indicates the aircraft is on the ground.","acc":["wow"],"dis":["RWR","AD","IPC"],"uadis":["Частота","Попередження","Консоль"],"k":"m1:WoW"}]}],"texts":[],"drills":[]}],"texts":[{"id":"walkaround","title":"Walkaround before the first flight","ua":"Огляд літака перед першим вильотом","lines":[["A","Good morning. Before we start, make sure the {1} are in front of the main wheels so that the aircraft cannot roll."],["B","They are already in place. I have also connected the {2} to the airframe, because the fuel tanker is coming in ten minutes."],["A","Good. Now walk around the aircraft and look for any sign of a hydraulic {3} under the landing gear."],["B","The ground is dry, but there is a small {4} on the leading edge of the left wing."],["A","Measure it. If it is inside the {5} given in the SRM, we can release the aircraft."],["B","Understood. The {6} is still fitted on the air inlet, and a blank is fitted on the pitot tube."],["A","Remove both of them before engine start. Loose objects on the ramp are the most common cause of {7} damage."],["B","Copy. I will connect the {8} to the nose gear so that the tug can move the aircraft to the runway."]],"gaps":[{"a":"chocks","alt":["chock"],"opts":["chocks","clamps","latches","jacks"],"ua":"колодки"},{"a":"ground wire","opts":["ground wire","tow bar","harness","safety wire"],"ua":"заземлення"},{"a":"leak","opts":["leak","crack","burr","vent"],"ua":"витік"},{"a":"dent","opts":["dent","gouge","stall","shim"],"ua":"вм'ятина"},{"a":"tolerance","opts":["tolerance","clearance sign","revision","indication"],"ua":"допуск"},{"a":"cover","alt":["blank"],"opts":["cover","fairing","baffle","gasket"],"ua":"заглушка"},{"a":"FOD","opts":["FOD","AOG","EGT","MEL"],"ua":"пошкодження стороннім предметом"},{"a":"tow bar","opts":["tow bar","tug","ground wire","lifting jack"],"ua":"водило"}]},{"id":"engine","title":"High EGT reported after the last flight","ua":"Двигун: висока температура газів","lines":[["A","The pilot reported a high {1} indication during the last flight."],["B","I will {2} the system on the ground before we remove anything."],["A","Start with the {3}. If there are metal particles in the oil, we will see them there first."],["B","The detector is clean, but the {4} is partly blocked."],["A","Replace it, and {5} the old oil from the tank completely."],["B","Do you want me to inspect the compressor as well?"],["A","Yes. Use the {6} so that we can look at the first stage without removing the engine."],["B","Two {7} have a small {8} on the leading edge."],["A","{9} the edges smooth within the limits of the manual, and record the work in the logbook."]],"gaps":[{"a":"EGT","opts":["EGT","AOG","IFF","APU"],"ua":"температура вихлопних газів"},{"a":"troubleshoot","opts":["troubleshoot","overhaul","calibrate","jettison"],"ua":"шукати несправність"},{"a":"chip detector","opts":["chip detector","pressure switch","thermocouple","outflow valve"],"ua":"датчик стружки"},{"a":"oil filter","opts":["oil filter","oil cooler","fuel probe","water separator"],"ua":"масляний фільтр"},{"a":"drain","opts":["drain","purge","refuel","blend"],"ua":"злити"},{"a":"borescope","opts":["borescope","micrometer","tensiometer","feeler gauge"],"ua":"бороскоп"},{"a":"blades","alt":["blade"],"opts":["blades","vanes","ribs","spars"],"ua":"лопатки (робочі)"},{"a":"nick","opts":["nick","buckle","splice","shim"],"ua":"забоїна"},{"a":"Blend","opts":["Blend","Torque","Purge","Crimp"],"ua":"зачистити плавно"}]},{"id":"hydraulics","title":"Pressure drop in the main hydraulic system","ua":"Падіння тиску в гідросистемі","lines":[["A","The main system pressure drops every time we {1} the landing gear."],["B","I have checked the {2} in the reservoir and it is below the minimum mark."],["A","Then we are losing fluid somewhere. {3} the system before you open any line."],["B","Done. The union on the aileron {4} is wet."],["A","Tighten it to the correct {5} value. Do not overtighten it, or you will damage the fitting."],["B","After that I will {6} the system to remove the air from the lines."],["A","Connect the {7} so that we can pressurize the aircraft without running the engine."],["B","And if the pressure is still too high, the {8} valve may be stuck closed."]],"gaps":[{"a":"extend","opts":["extend","retract","inhibit","align"],"ua":"випустити"},{"a":"fluid level","opts":["fluid level","cabin altitude","shelf life","torque value"],"ua":"рівень рідини"},{"a":"Depressurize","opts":["Depressurize","Pressurize","Lubricate","Annotate"],"ua":"стравити тиск"},{"a":"actuator","opts":["actuator","accumulator","igniter","condenser"],"ua":"виконавчий механізм"},{"a":"torque","opts":["torque","thrust","drag","resistance"],"ua":"момент затягування"},{"a":"bleed","opts":["bleed","flush","defuel","seize"],"ua":"прокачати"},{"a":"hydraulic mule","opts":["hydraulic mule","nitrogen cart","fuel tanker","GPU"],"ua":"гідроустановка"},{"a":"relief","opts":["relief","check","transfer","mixing"],"ua":"запобіжний (клапан)"}]},{"id":"wheel","title":"Brake disc replacement on the left main gear","ua":"Заміна гальмівного диска","lines":[["A","The {1} on the left brake shows that the disc has reached its limit."],["B","Then I will change the {2} this morning."],["A","Put the {3} under the jacking point and lift the {4} clear of the ground."],["B","The wheel is off the {5} now."],["A","Fit the new disc, and {6} the nut to the value given in the AMM."],["B","The manual says to {7} the castle nut with a {8}."],["A","Correct. Check the {9} on the nose gear as well, because the pilot reported vibration during taxi."],["B","I will also measure the {10} of both tyres before I release the aircraft."]],"gaps":[{"a":"wear indicator","opts":["wear indicator","pressure gauge","chip detector","uplock"],"ua":"індикатор зносу"},{"a":"brake disc","opts":["brake disc","shock strut","shimmy damper","axle"],"ua":"гальмівний диск"},{"a":"lifting jack","opts":["lifting jack","tow bar","nitrogen cart","hydraulic mule"],"ua":"підйомний домкрат"},{"a":"MLG","opts":["MLG","NLG","APU","LRU"],"ua":"основна опора шасі"},{"a":"axle","opts":["axle","stud","spar","manifold"],"ua":"вісь"},{"a":"torque","opts":["torque","retighten","crimp","secure"],"ua":"затягнути з моментом"},{"a":"secure","opts":["secure","detach","isolate","blend"],"ua":"законтрити / закріпити"},{"a":"cotter pin","opts":["cotter pin","safety pin","lock washer","hex head"],"ua":"шплінт"},{"a":"shimmy damper","opts":["shimmy damper","downlock","caliper","bushing"],"ua":"демпфер шіммі"},{"a":"tread","opts":["tread","chord","span","thread"],"ua":"протектор"}]},{"id":"armament","title":"Weapon loading on the flight line","ua":"Підвіска озброєння","lines":[["A","Before anybody approaches the aircraft, {1} the weapons and fit the safety pins."],["B","Both {2} are installed, and the launchers are safe."],["A","Today we load one {3} on the outboard {4}."],["B","That {5} is rated for the weight, so we can use it."],["A","Check the {6} head as well. The missile cannot see the target if the glass is dirty."],["B","The head is clean. Do we load the countermeasures now?"],["A","Yes, {7} against radar and {8} against infrared missiles."],["B","And we {9} the aircraft only in the designated area, never on the ramp."]],"gaps":[{"a":"dearm","opts":["dearm","arm","jettison","inhibit"],"ua":"розконсервувати / зняти з бойового"},{"a":"safety pins","alt":["safety pin"],"opts":["safety pins","cotter pins","chocks","shims"],"ua":"запобіжні чеки"},{"a":"missile","opts":["missile","flare","store","pod"],"ua":"ракета"},{"a":"pylon","opts":["pylon","bulkhead","stringer","console"],"ua":"пілон"},{"a":"hardpoint","opts":["hardpoint","hinge","bracket","gusset"],"ua":"вузол підвіски"},{"a":"seeker","opts":["seeker","sensor","antenna","transponder"],"ua":"головка самонаведення"},{"a":"chaff","opts":["chaff","flares","ammunition","jamming"],"ua":"дипольні відбивачі"},{"a":"flares","alt":["flare"],"opts":["flares","chaff","igniters","vanes"],"ua":"теплові пастки"},{"a":"arm","opts":["arm","dearm","activate","verify"],"ua":"привести в бойове положення"}]},{"id":"wiring","title":"Intermittent display failure","ua":"Плаваюча несправність дисплея","lines":[["A","The MFD goes dark every time the pilot moves the {1}."],["B","Then a wire in the {2} behind the console is probably chafing."],["A","{3} the aircraft before you open the junction box."],["B","The power is off. I am using a {4} to check the {5} between the two ends of the wire."],["A","If you get no reading at all, the wire is broken. If the insulation is damaged, you may have a {6}."],["B","I have found the damage. I will cut the wire, make a {7} and cover it with {8}."],["A","Use the correct {9} tool for the contacts, not pliers."],["B","Understood. After the repair I will reset the {10} and test the display again."]],"gaps":[{"a":"control stick","opts":["control stick","throttle lever","rudder pedals","selector"],"ua":"ручка керування"},{"a":"harness","opts":["harness","manifold","ducting","bus"],"ua":"джгут проводів"},{"a":"De-energize","opts":["De-energize","Pressurize","Calibrate","Incorporate"],"ua":"знеструмити"},{"a":"multimeter","opts":["multimeter","tensiometer","micrometer","borescope"],"ua":"мультиметр"},{"a":"continuity","opts":["continuity","capacitance","tolerance","traceability"],"ua":"цілісність ланцюга"},{"a":"short circuit","opts":["short circuit","open hinge","chip detector","relief valve"],"ua":"коротке замикання"},{"a":"splice","opts":["splice","sump","burr","spar"],"ua":"з'єднання (зрощення)"},{"a":"heatshrink","opts":["heatshrink","sealant","insulation tape only","solder"],"ua":"термоусадка"},{"a":"crimping","opts":["crimping","soldering","stripping","tapping"],"ua":"обтискний"},{"a":"circuit breaker","opts":["circuit breaker","relay","rectifier","inverter"],"ua":"автомат захисту"}]},{"id":"structure","title":"Damage found during a scheduled inspection","ua":"Пошкодження, знайдені під час огляду","lines":[["A","There is a {1} in the lower skin, next to the access panel."],["B","How long is it?"],["A","About twelve millimetres. We cannot repair it on the line, so the aircraft stays {2} until the structure shop looks at it."],["B","Should we do an NDT check first?"],["A","Yes. Use {3} to see whether the damage continues under the paint."],["B","There is also white powder around the fasteners. That looks like {4}."],["A","Clean it, and tap the composite panel to check it for {5}. A dull sound means the layers have separated."],["B","The trailing edge has a shallow {6} where a tool slipped."],["A","{7} it smooth within the limits of the SRM, and record every finding in the {8}."]],"gaps":[{"a":"crack","opts":["crack","vortex","shim","burr"],"ua":"тріщина"},{"a":"unserviceable","opts":["unserviceable","serviceable","interchangeable","rotable"],"ua":"непридатний"},{"a":"Eddy Current","opts":["Eddy Current","Radiography","Dye Penetrant","Magnetic Particle"],"ua":"вихрострумовий контроль"},{"a":"corrosion","opts":["corrosion","erosion","fatigue","arcing"],"ua":"корозія"},{"a":"delamination","opts":["delamination","pitting","chafing","buckle"],"ua":"розшарування"},{"a":"gouge","opts":["gouge","scratch","dent","nick"],"ua":"задир з вирваним металом"},{"a":"Blend","opts":["Blend","Flush","Seize","Renew"],"ua":"зачистити плавно"},{"a":"logbook","opts":["logbook","revision","certificate","interface"],"ua":"формуляр"}]},{"id":"aog","title":"The aircraft is waiting for a spare unit","ua":"Документація і AOG","lines":[["A","The {1} we removed yesterday fails its built-in test every time, so it is {2}."],["B","Do we have a spare on the shelf?"],["A","I searched the store by {3} and found nothing."],["B","Then the aircraft is {4} until a new unit arrives."],["A","What is the {5} from the supplier?"],["B","Four days. The unit is {6}, so the removed one goes to the workshop for repair instead of being scrapped."],["A","Raise a {7} for the removal, and send the unit with its {8} so that we keep full {9}."],["B","One more thing: the seal we used is a {10}, and its {11} date is next month."]],"gaps":[{"a":"LRU","opts":["LRU","APU","MEL","SRM"],"ua":"змінний блок"},{"a":"unserviceable","opts":["unserviceable","serviceable","consumable","traceable"],"ua":"непридатний"},{"a":"part number","opts":["part number","lead time","shelf life","revision"],"ua":"номер деталі"},{"a":"AOG","opts":["AOG","FOD","TSO","WoW"],"ua":"літак прикутий до землі"},{"a":"lead time","opts":["lead time","shelf life","expiry date","time since new"],"ua":"термін постачання"},{"a":"rotable","opts":["rotable","consumable","unserviceable","interchangeable"],"ua":"ремонтопридатний оборотний"},{"a":"work order","opts":["work order","logbook","certificate","revision"],"ua":"наряд на роботу"},{"a":"certificate","opts":["certificate","serial number","part number","indication"],"ua":"сертифікат"},{"a":"traceability","opts":["traceability","continuity","interchangeability","tolerance"],"ua":"простежуваність"},{"a":"consumable","opts":["consumable","rotable","LRU","store"],"ua":"витратний матеріал"},{"a":"expiry","opts":["expiry","revision","lead","shelf"],"ua":"кінцевий термін"}]},{"id":"fuel","title":"Refuelling and a water check","ua":"Заправка і перевірка на воду","lines":[["A","We have to {1} the aircraft to five thousand kilograms before the next sortie."],["B","The fuel tanker is in position and I have connected the {2} first."],["A","Good. The {3} in the tanks measure the quantity by {4}, so watch the gauge while the tanks fill."],["B","The left {5} tank is already full."],["A","When you finish, take a sample from the {6} and check it for water."],["B","There is water in the sample. I will {7} that tank and fill it again."],["A","Check the {8} pump as well, because the pilot reported low fuel pressure at high altitude."],["B","Understood. And if the aircraft has to land heavy, the pilot can {9} the external tanks."]],"gaps":[{"a":"refuel","opts":["refuel","defuel","purge","vent"],"ua":"заправити"},{"a":"ground wire","opts":["ground wire","tow bar","safety wire","pigtail"],"ua":"заземлення"},{"a":"fuel probes","alt":["fuel probe","probes"],"opts":["fuel probes","boost pumps","thermocouples","igniters"],"ua":"паливоміри"},{"a":"capacitance","opts":["capacitance","resistance","voltage","frequency"],"ua":"ємність"},{"a":"external","opts":["external","internal","collector","surge"],"ua":"підвісний (бак)"},{"a":"sump","opts":["sump","vent","duct","manifold"],"ua":"відстійник"},{"a":"defuel","opts":["defuel","refuel","flush","jettison"],"ua":"злити паливо"},{"a":"boost","opts":["boost","scavenge","vacuum","transfer"],"ua":"підкачувальний"},{"a":"jettison","opts":["jettison","retract","inhibit","isolate"],"ua":"скинути"}]},{"id":"ecs","title":"The cockpit was too warm during the flight","ua":"Система кондиціювання","lines":[["A","The pilot reported that the cockpit was too warm during the whole sortie."],["B","The air comes from the engine as {1}, so we start by checking its temperature."],["A","Then it passes through the {2}, which cools it with {3}."],["B","After that the {4} takes the moisture out of the air."],["A","If the {5} valve is stuck, hot and cold air are not mixed in the correct proportion."],["B","The pilot also said that the {6} was higher than normal."],["A","Then check the {7} valve. If it stays open, the cockpit cannot be pressurized."],["B","I will also inspect the {8} for leaks, because a loose joint gives the same symptoms."]],"gaps":[{"a":"bleed air","opts":["bleed air","ram air","exhaust","vortex"],"ua":"відбір повітря від двигуна"},{"a":"heat exchanger","opts":["heat exchanger","air cycle machine","condenser","accumulator"],"ua":"теплообмінник"},{"a":"ram air","opts":["ram air","bleed air","nitrogen","oxygen"],"ua":"швидкісний напір повітря"},{"a":"water separator","opts":["water separator","oil cooler","fuel probe","baffle"],"ua":"вологовідділювач"},{"a":"mixing","opts":["mixing","check","relief","servo"],"ua":"змішувальний"},{"a":"cabin altitude","opts":["cabin altitude","angle of attack","shelf life","chord"],"ua":"висота в кабіні"},{"a":"outflow","opts":["outflow","transfer","pressure","selector"],"ua":"випускний (клапан)"},{"a":"ducting","alt":["duct","ducts"],"opts":["ducting","wiring","harness","fairing"],"ua":"повітропроводи"}]},{"id":"cockpit","title":"Work inside the cockpit","ua":"Робота в кабіні","lines":[["A","Before anyone works in the cockpit, fit the {1} pins in the {2}."],["B","Both pins are installed and the seat is safe."],["A","Open the {3} carefully, and do not put any weight on the {4}."],["B","The pilot reported that the {5} lever moves stiffly."],["A","Check the linkage under the {6} on the left side."],["B","There is also a broken {7} switch on the right panel, and the mode {8} does not stay in position."],["A","Replace both of them, then {9} the system and check that every warning lamp comes on."],["B","After the test I will {10} the work in the aircraft documents."]],"gaps":[{"a":"safety","opts":["safety","cotter","castle","shear"],"ua":"запобіжні"},{"a":"ejection seat","opts":["ejection seat","canopy","console","parachute"],"ua":"катапультне крісло"},{"a":"canopy","opts":["canopy","access panel","fairing","latch"],"ua":"ліхтар кабіни"},{"a":"glare shield","opts":["glare shield","visor","bulkhead","gusset"],"ua":"протисонячний козирок"},{"a":"throttle","opts":["throttle","rudder","selector","toggle"],"ua":"РУД"},{"a":"console","opts":["console","manifold","reservoir","junction box"],"ua":"пульт"},{"a":"toggle","opts":["toggle","relay","fuse","socket"],"ua":"тумблер"},{"a":"selector","opts":["selector","igniter","seeker","shim"],"ua":"перемикач режимів"},{"a":"activate","opts":["activate","deactivate","inhibit","jettison"],"ua":"увімкнути"},{"a":"annotate","opts":["annotate","submit","modify","verify"],"ua":"записати / внести запис"}]},{"id":"signs","title":"Safety signs and warnings","ua":"Знаки безпеки та попередження","lines":[["A","The sign on the upper wing says {1}, because the skin in that area carries no load."],["B","Understood. What does the label near the fuel line mean?"],["A","It says {2}. The fluid catches fire very easily."],["B","And the red sign in front of the air inlet?"],["A","{3}. A running engine can pull a person inside."],["B","In the manual, what is the difference between the two headings?"],["A","A {4} tells you about a risk to people, and a {5} tells you about a risk of damage to the equipment."],["B","Before I open the panel, do I have to do anything else?"],["A","Yes. {6} the electrical bus and {7} the hydraulic system first."],["B","And if there is a fuel spill on the ramp?"],["A","{8} the area immediately and call the fire section."]],"gaps":[{"a":"No Step","opts":["No Step","Keep clear","Toxic","DANGER"],"ua":"не наступати"},{"a":"Inflammable","opts":["Inflammable","Toxic","Caution","No Step"],"ua":"легкозаймисте"},{"a":"Keep clear","opts":["Keep clear","No Step","Evacuate","Inhibit"],"ua":"не наближатися"},{"a":"WARNING","opts":["WARNING","CAUTION","NOTE","REVISION"],"ua":"попередження про ризик для людей"},{"a":"CAUTION","opts":["CAUTION","WARNING","DANGER","INDICATION"],"ua":"застереження про ризик для техніки"},{"a":"Isolate","opts":["Isolate","Incorporate","Interface","Install"],"ua":"від'єднати / ізолювати"},{"a":"depressurize","opts":["depressurize","pressurize","lubricate","calibrate"],"ua":"стравити тиск"},{"a":"Evacuate","opts":["Evacuate","Activate","Annotate","Verify"],"ua":"евакуювати"}]}],"drills":[{"title":"vane / blade","ua":"Лопатка яка? Рухома чи нерухома","set":["blade","vane"],"items":[{"s":"The rotating {} of the compressor are attached to the disc and turn with the main shaft.","a":"blades"},{"s":"The stationary {} between the stages direct the airflow onto the next stage.","a":"vanes"},{"s":"The inlet guide {} change their angle to control the airflow into the compressor.","a":"vanes"},{"s":"One turbine {} was damaged by a foreign object and had to be replaced.","a":"blade"}]},{"title":"bolt / screw / stud","ua":"Три різні кріпильні елементи","set":["bolt","screw","stud"],"items":[{"s":"A {} passes through both parts and is held in place by a nut.","a":"bolt"},{"s":"A {} has a thread at both ends and stays permanently in the casing.","a":"stud"},{"s":"A {} is turned with a screwdriver and holds light panels or covers.","a":"screw"},{"s":"Fit the washer under the head of the {} before you torque it.","a":"bolt"}]},{"title":"rib / spar / stringer","ua":"Елементи набору крила","set":["rib","spar","stringer"],"items":[{"s":"The {} runs from the root to the tip of the wing and carries the main bending load.","a":"spar"},{"s":"Each {} gives the wing its cross-section shape and supports the skin.","a":"rib"},{"s":"A {} is a light longitudinal member that stiffens the skin between the frames.","a":"stringer"},{"s":"The crack was found in the lower flange of the front {}, so the aircraft was grounded.","a":"spar"}]},{"title":"nick / gouge / dent / scratch","ua":"Види пошкоджень поверхні","set":["nick","gouge","dent","scratch"],"items":[{"s":"A shallow line on the surface with almost no loss of material is a {}.","a":"scratch"},{"s":"A sharp local notch on the edge of a blade is a {}.","a":"nick"},{"s":"When a hard object cuts material away and leaves a deep groove, the damage is a {}.","a":"gouge"},{"s":"The skin is pushed inwards but not broken, so the damage is a {}.","a":"dent"}]},{"title":"bushing / bearing","ua":"Втулка чи підшипник","set":["bushing","bearing"],"items":[{"s":"A {} is a plain sleeve fitted into a hole to protect the structure from wear.","a":"bushing"},{"s":"A {} contains balls or rollers and supports a rotating shaft.","a":"bearing"},{"s":"The main shaft turns in a {} that is lubricated by the oil system.","a":"bearing"},{"s":"The worn {} in the hinge was pressed out and a new one was pressed in.","a":"bushing"}]},{"title":"bleed / drain / flush / purge","ua":"Чотири дії з рідиною або газом","set":["bleed","drain","flush","purge"],"items":[{"s":"After the repair you must {} the brake line to remove the air from it.","a":"bleed"},{"s":"Before removing the tank, {} all the fuel from it.","a":"drain"},{"s":"If the oil is contaminated, {} the system by passing clean oil through it.","a":"flush"},{"s":"Use nitrogen to {} the remaining vapour out of the line before welding.","a":"purge"}]},{"title":"remove / detach / withdraw","ua":"Зняти, від'єднати, витягти","set":["remove","detach","withdraw"],"items":[{"s":"First {} the clips that hold the cover to the fairing.","a":"detach"},{"s":"Then {} the unit from the aircraft and put it on the trolley.","a":"remove"},{"s":"Before you sit in the cockpit, {} the safety pin from the seat.","a":"withdraw"},{"s":"Do not {} the connector by pulling the wires.","a":"detach"}]},{"title":"serviceable / unserviceable / rotable / consumable","ua":"Статус деталі","set":["serviceable","unserviceable","rotable","consumable"],"items":[{"s":"The unit passed all its tests, so it is {} and may be fitted to an aircraft.","a":"serviceable"},{"s":"The unit failed the test, so it is {} and must go to the workshop.","a":"unserviceable"},{"s":"A part that is repaired and returned to service many times is a {} item.","a":"rotable"},{"s":"Sealant, oil and rags are {} items that are used up during the work.","a":"consumable"}]},{"title":"clamp / bracket / shim","ua":"Хомут, кронштейн, прокладка","set":["clamp","bracket","shim"],"items":[{"s":"A {} holds a hose or a bundle of wires tightly against the structure.","a":"clamp"},{"s":"A {} is a metal support that carries a component on the airframe.","a":"bracket"},{"s":"A thin plate used to fill a small gap between two parts is a {}.","a":"shim"},{"s":"The cracked {} was replaced and the unit was installed again.","a":"bracket"}]},{"title":"isolate / de-energize / pressurize / depressurize","ua":"Підготовка системи до робіт","set":["isolate","de-energize","pressurize","depressurize"],"items":[{"s":"Before you open the junction box, {} the aircraft so that no power reaches the wiring.","a":"de-energize"},{"s":"Close the valve to {} that section of the system from the rest of the aircraft.","a":"isolate"},{"s":"Always {} the line before you loosen any hydraulic union.","a":"depressurize"},{"s":"Connect the ground cart to {} the system for the leak test.","a":"pressurize"}]}],"n":351},{"id":"m5","title":"Зв'язок і радіообмін","sub":"Фонетичний алфавіт, скорочення, формат дати-часу","themes":[{"id":"d2b9aa41","title":"Фонетичний алфавіт НАТО","lessons":[{"id":"m5:cb0f32bb","title":"Літери A–M","terms":[{"en":"ALPHA","ua":"А","ex":"ALPHA is the NATO phonetic word for the letter A.","cloze":"…… is the NATO phonetic word for the letter A.","acc":["alpha"],"dis":["WHISKEY","ZULU","KILO"],"uadis":["Ф","Ігрек (лат. Y)","стандартна операційна процедура"],"k":"m5:ALPHA"},{"en":"BRAVO","ua":"Б (лат. B)","ex":"BRAVO is the NATO phonetic word for the letter B.","cloze":"…… is the NATO phonetic word for the letter B.","acc":["bravo"],"dis":["PAPA","ALPHA","LIMA"],"uadis":["правила застосування сили","У","поблизу"],"k":"m5:BRAVO"},{"en":"CHARLIE","ua":"Ц (лат. C)","ex":"CHARLIE is the NATO phonetic word for the letter C.","cloze":"…… is the NATO phonetic word for the letter C.","acc":["charlie"],"dis":["HOTEL","BRAVO","INDIA"],"uadis":["сержантський склад","Дабл-ю (лат. W)","М"],"k":"m5:CHARLIE"},{"en":"DELTA","ua":"Д","ex":"DELTA is the NATO phonetic word for the letter D.","cloze":"…… is the NATO phonetic word for the letter D.","acc":["delta"],"dis":["ROMEO","WHISKEY","XRAY"],"uadis":["стандартна операційна процедура","Н","нічого немає"],"k":"m5:DELTA"},{"en":"ECHO","ua":"Е","ex":"ECHO is the NATO phonetic word for the letter E.","cloze":"…… is the NATO phonetic word for the letter E.","acc":["echo"],"dis":["MIKE","WHISKEY","PAPA"],"uadis":["головне на початку","Ц (лат. C)","нічого немає"],"k":"m5:ECHO"},{"en":"FOXTROT","ua":"Ф","ex":"FOXTROT is the NATO phonetic word for the letter F.","cloze":"…… is the NATO phonetic word for the letter F.","acc":["foxtrot"],"dis":["GOLF","INDIA","ALPHA"],"uadis":["для того щоб","Д","Б (лат. B)"],"k":"m5:FOXTROT"},{"en":"GOLF","ua":"Ґ (лат. G)","ex":"GOLF is the NATO phonetic word for the letter G.","cloze":"…… is the NATO phonetic word for the letter G.","acc":["golf"],"dis":["ROMEO","SIERRA","HOTEL"],"uadis":["стандартна операційна процедура","група дати-часу","У"],"k":"m5:GOLF"},{"en":"HOTEL","ua":"Г (лат. H)","ex":"HOTEL is the NATO phonetic word for the letter H.","cloze":"…… is the NATO phonetic word for the letter H.","acc":["hotel"],"dis":["KILO","DELTA","NOVEMBER"],"uadis":["Л","для того щоб","Н"],"k":"m5:HOTEL"},{"en":"INDIA","ua":"І","ex":"INDIA is the NATO phonetic word for the letter I.","cloze":"…… is the NATO phonetic word for the letter I.","acc":["india"],"dis":["XRAY","TANGO","ZULU"],"uadis":["група дати-часу","Р","М"],"k":"m5:INDIA"},{"en":"JULIET","ua":"Й (лат. J)","ex":"JULIET is the NATO phonetic word for the letter J.","cloze":"…… is the NATO phonetic word for the letter J.","acc":["juliet"],"dis":["CHARLIE","VICTOR","ECHO"],"uadis":["М","У","П"],"k":"m5:JULIET"},{"en":"KILO","ua":"К","ex":"KILO is the NATO phonetic word for the letter K.","cloze":"…… is the NATO phonetic word for the letter K.","acc":["kilo"],"dis":["UNIFORM","QUEBEC","GOLF"],"uadis":["С","Ігрек (лат. Y)","Л"],"k":"m5:KILO"},{"en":"LIMA","ua":"Л","ex":"LIMA is the NATO phonetic word for the letter L.","cloze":"…… is the NATO phonetic word for the letter L.","acc":["lima"],"dis":["HOTEL","NOVEMBER","BRAVO"],"uadis":["поблизу","передова оперативна база","В (лат. V)"],"k":"m5:LIMA"},{"en":"MIKE","ua":"М","ex":"MIKE is the NATO phonetic word for the letter M.","cloze":"…… is the NATO phonetic word for the letter M.","acc":["mike"],"dis":["XRAY","LIMA","SIERRA"],"uadis":["група дати-часу","П","Ц (лат. C)"],"k":"m5:MIKE"}]},{"id":"m5:330d28c7","title":"Літери N–Z","terms":[{"en":"NOVEMBER","ua":"Н","ex":"NOVEMBER is the NATO phonetic word for the letter N.","cloze":"…… is the NATO phonetic word for the letter N.","acc":["november"],"dis":["UNIFORM","DELTA","ROMEO"],"uadis":["група дати-часу","варіант дій","К"],"k":"m5:NOVEMBER"},{"en":"OSCAR","ua":"О","ex":"OSCAR is the NATO phonetic word for the letter O.","cloze":"…… is the NATO phonetic word for the letter O.","acc":["oscar"],"dis":["WHISKEY","ALPHA","SIERRA"],"uadis":["передова оперативна база","Д","доповідь про обстановку"],"k":"m5:OSCAR"},{"en":"PAPA","ua":"П","ex":"PAPA is the NATO phonetic word for the letter P.","cloze":"…… is the NATO phonetic word for the letter P.","acc":["papa"],"dis":["ALPHA","SIERRA","HOTEL"],"uadis":["Ц (лат. C)","І","доповідь про обстановку"],"k":"m5:PAPA"},{"en":"QUEBEC","ua":"Ку (лат. Q)","ex":"QUEBEC is the NATO phonetic word for the letter Q.","cloze":"…… is the NATO phonetic word for the letter Q.","acc":["quebec"],"dis":["MIKE","JULIET","PAPA"],"uadis":["У","О","передова оперативна база"],"k":"m5:QUEBEC"},{"en":"ROMEO","ua":"Р","ex":"ROMEO is the NATO phonetic word for the letter R.","cloze":"…… is the NATO phonetic word for the letter R.","acc":["romeo"],"dis":["HOTEL","CHARLIE","XRAY"],"uadis":["не пізніше ніж","бути готовим до","Дабл-ю (лат. W)"],"k":"m5:ROMEO"},{"en":"SIERRA","ua":"С","ex":"SIERRA is the NATO phonetic word for the letter S.","cloze":"…… is the NATO phonetic word for the letter S.","acc":["sierra"],"dis":["INDIA","UNIFORM","FOXTROT"],"uadis":["З (лат. Z); також час UTC","Б (лат. B)","Н"],"k":"m5:SIERRA"},{"en":"TANGO","ua":"Т","ex":"TANGO is the NATO phonetic word for the letter T.","cloze":"…… is the NATO phonetic word for the letter T.","acc":["tango"],"dis":["DELTA","GOLF","BRAVO"],"uadis":["О","Ц (лат. C)","група дати-часу"],"k":"m5:TANGO"},{"en":"UNIFORM","ua":"У","ex":"UNIFORM is the NATO phonetic word for the letter U.","cloze":"…… is the NATO phonetic word for the letter U.","acc":["uniform"],"dis":["XRAY","MIKE","PAPA"],"uadis":["група дати-часу","Е","Ґ (лат. G)"],"k":"m5:UNIFORM"},{"en":"VICTOR","ua":"В (лат. V)","ex":"VICTOR is the NATO phonetic word for the letter V.","cloze":"…… is the NATO phonetic word for the letter V.","acc":["victor"],"dis":["FOXTROT","WHISKEY","ZULU"],"uadis":["Д","правила застосування сили","М"],"k":"m5:VICTOR"},{"en":"WHISKEY","ua":"Дабл-ю (лат. W)","ex":"WHISKEY is the NATO phonetic word for the letter W.","cloze":"…… is the NATO phonetic word for the letter W.","acc":["whiskey"],"dis":["CHARLIE","INDIA","NOVEMBER"],"uadis":["А","І","правила застосування сили"],"k":"m5:WHISKEY"},{"en":"XRAY","ua":"Ікс","ex":"XRAY is the NATO phonetic word for the letter X.","cloze":"…… is the NATO phonetic word for the letter X.","acc":["xray"],"dis":["QUEBEC","NOVEMBER","ALPHA"],"uadis":["стандартна операційна процедура","А","Ку (лат. Q)"],"k":"m5:XRAY"},{"en":"YANKEE","ua":"Ігрек (лат. Y)","ex":"YANKEE is the NATO phonetic word for the letter Y.","cloze":"…… is the NATO phonetic word for the letter Y.","acc":["yankee"],"dis":["BRAVO","JULIET","MIKE"],"uadis":["Ку (лат. Q)","не пізніше ніж","Л"],"k":"m5:YANKEE"},{"en":"ZULU","ua":"З (лат. Z); також час UTC","ex":"ZULU is the phonetic word for Z and also means UTC time in a date time group.","cloze":"…… is the phonetic word for Z and also means UTC time in a date time group.","acc":["zulu"],"dis":["KILO","JULIET","ALPHA"],"uadis":["В (лат. V)","стандартна операційна процедура","для того щоб"],"k":"m5:ZULU"}]}],"texts":["radio"],"drills":[1]},{"id":"ba066da7","title":"Скорочення в бойових документах","lessons":[{"id":"m5:8e5bbc25","title":"Оперативні скорочення","terms":[{"en":"IOT","ua":"для того щоб","ex":"IOT stands for 'in order to' and introduces the purpose of a task.","cloze":"…… stands for 'in order to' and introduces the purpose of a task.","acc":["iot"],"dis":["BLUF","SOP","BPT"],"uadis":["М","варіант дій","Ц (лат. C)"],"k":"m5:IOT"},{"en":"BPT","ua":"бути готовим до","ex":"BPT stands for 'be prepared to' and introduces an on-order task.","cloze":"…… stands for 'be prepared to' and introduces an on-order task.","acc":["bpt"],"dis":["FOM","DTG","IOT"],"uadis":["Р","група дати-часу","Ігрек (лат. Y)"],"k":"m5:BPT"},{"en":"NLT","ua":"не пізніше ніж","ex":"NLT stands for 'no later than' and gives the latest acceptable time.","cloze":"…… stands for 'no later than' and gives the latest acceptable time.","acc":["nlt"],"dis":["DTG","BLUF","NIL"],"uadis":["сержантський склад","І","Ікс"],"k":"m5:NLT"},{"en":"IVO","ua":"поблизу","ex":"IVO stands for 'in the vicinity of' and gives an approximate location.","cloze":"…… stands for 'in the vicinity of' and gives an approximate location.","acc":["ivo"],"dis":["NIL","NCO","IOT"],"uadis":["Б (лат. B)","район операції","В (лат. V)"],"k":"m5:IVO"},{"en":"IAW","ua":"згідно з","ex":"IAW stands for 'in accordance with' and refers to a rule or document.","cloze":"…… stands for 'in accordance with' and refers to a rule or document.","acc":["iaw"],"dis":["ROE","FOB","DTG"],"uadis":["передова оперативна база","Д","З (лат. Z); також час UTC"],"k":"m5:IAW"},{"en":"NIL","ua":"нічого немає","ex":"NIL means that there is nothing to report in that line.","cloze":"…… means that there is nothing to report in that line.","acc":["nil"],"dis":["SOP","IAW","SITREP"],"uadis":["Ігрек (лат. Y)","бути готовим до","Д"],"k":"m5:NIL"},{"en":"AOO","ua":"район операції","ex":"AOO stands for 'area of operations', the ground assigned to a commander.","cloze":"…… stands for 'area of operations', the ground assigned to a commander.","acc":["aoo"],"dis":["ROE","NIL","COA"],"uadis":["правила застосування сили","стандартна операційна процедура","сержантський склад"],"k":"m5:AOO"},{"en":"ROE","ua":"правила застосування сили","ex":"ROE stands for 'rules of engagement' and defines when force may be used.","cloze":"…… stands for 'rules of engagement' and defines when force may be used.","acc":["roe"],"dis":["FOM","IAW","SOP"],"uadis":["згідно з","В (лат. V)","Й (лат. J)"],"k":"m5:ROE"},{"en":"COA","ua":"варіант дій","ex":"COA stands for 'course of action', one possible plan considered by a commander.","cloze":"…… stands for 'course of action', one possible plan considered by a commander.","acc":["coa"],"dis":["DTG","FOB","BLUF"],"uadis":["район операції","Л","Ікс"],"k":"m5:COA"},{"en":"FOM","ua":"свобода маневру","ex":"FOM stands for 'freedom of movement' of friendly forces.","cloze":"…… stands for 'freedom of movement' of friendly forces.","acc":["fom"],"dis":["ROE","IVO","SITREP"],"uadis":["У","І","поблизу"],"k":"m5:FOM"},{"en":"NCO","ua":"сержантський склад","ex":"NCO stands for 'non-commissioned officer', a soldier promoted from the ranks.","cloze":"…… stands for 'non-commissioned officer', a soldier promoted from the ranks.","acc":["nco"],"dis":["DTG","BPT","BLUF"],"uadis":["головне на початку","доповідь про обстановку","С"],"k":"m5:NCO"},{"en":"FOB","ua":"передова оперативна база","ex":"FOB stands for 'forward operating base', a secured position near the operational area.","cloze":"…… stands for 'forward operating base', a secured position near the operational area.","acc":["fob"],"dis":["BPT","SOP","DTG"],"uadis":["Б (лат. B)","П","Ґ (лат. G)"],"k":"m5:FOB"},{"en":"SOP","ua":"стандартна операційна процедура","ex":"SOP stands for 'standard operating procedure', the agreed way of doing a routine task.","cloze":"…… stands for 'standard operating procedure', the agreed way of doing a routine task.","acc":["sop"],"dis":["NLT","FOM","IVO"],"uadis":["Й (лат. J)","К","І"],"k":"m5:SOP"},{"en":"BLUF","ua":"головне на початку","ex":"BLUF stands for 'bottom line up front' and means the key message comes first.","cloze":"…… stands for 'bottom line up front' and means the key message comes first.","acc":["bluf"],"dis":["NIL","COA","NLT"],"uadis":["Ку (лат. Q)","О","І"],"k":"m5:BLUF"},{"en":"DTG","ua":"група дати-часу","ex":"DTG stands for 'date time group', for example 121500ZAPR24.","cloze":"…… stands for 'date time group', for example 121500ZAPR24.","acc":["dtg"],"dis":["AOO","IVO","SOP"],"uadis":["С","Ґ (лат. G)","Л"],"k":"m5:DTG"},{"en":"SITREP","ua":"доповідь про обстановку","ex":"A SITREP is a situation report sent to a headquarters.","cloze":"A …… is a situation report sent to a headquarters.","acc":["sitrep"],"dis":["BPT","NIL","BLUF"],"uadis":["для того щоб","правила застосування сили","Л"],"k":"m5:SITREP"}]}],"texts":["warno"],"drills":[0]}],"texts":[{"id":"radio","title":"Passing a message by radio","ua":"Передача повідомлення по радіо","lines":[["A","HOTEL ONE, this is DELTA TWO, radio check, over."],["B","DELTA TWO, this is HOTEL ONE, I read you loud and clear, over."],["A","Roger. I have a {1} for you, over."],["B","Send your message, over."],["A","Two vehicles observed {2} the bridge at grid four five six seven, over."],["B","Roger. Say again the grid, I {3} you, over."],["A","I say again, grid four five six seven. I spell: FOUR, FIVE, SIX, SEVEN, over."],["B","Roger. Report {4} one six zero zero, over."],["A","Wilco. Nothing further, {5}."]],"gaps":[{"a":"SITREP","opts":["SITREP","COA","SOP","ROE"],"ua":"доповідь про обстановку"},{"a":"IVO","opts":["IVO","IAW","IOT","NLT"],"ua":"поблизу"},{"a":"read you","alt":["read"],"opts":["read you","send you","spell you","clear you"],"ua":"чую вас (нерозбірливо)"},{"a":"NLT","opts":["NLT","NIL","BPT","FOM"],"ua":"не пізніше ніж"},{"a":"out","opts":["out","over","roger","wilco"],"ua":"кінець зв'язку"}]},{"id":"warno","title":"Reading a warning order","ua":"Читання попереднього розпорядження","lines":[["","The company will move to the {1} at grid two three four five."],["","1 Platoon is to secure the crossing site {2} 0600 hours."],["","{3} deny the enemy freedom of movement, 2 Platoon will occupy the ridge."],["","All movement will be conducted {4} the current traffic plan."],["","3 Platoon is to be in reserve, {5} reinforce 1 Platoon on order."],["","Casualties: {6}."],["","Send a {7} every two hours to the company headquarters."]],"gaps":[{"a":"FOB","opts":["FOB","AOO","NCO","DTG"],"ua":"передова база"},{"a":"NLT","opts":["NLT","IVO","BLUF","NIL"],"ua":"не пізніше ніж"},{"a":"IOT","opts":["IOT","IAW","BPT","SOP"],"ua":"для того щоб"},{"a":"IAW","opts":["IAW","IOT","IVO","ROE"],"ua":"згідно з"},{"a":"BPT","opts":["BPT","NLT","COA","FOM"],"ua":"бути готовим"},{"a":"NIL","opts":["NIL","NCO","NLT","SOP"],"ua":"немає"},{"a":"SITREP","opts":["SITREP","DTG","COA","AOO"],"ua":"доповідь про обстановку"}]}],"drills":[{"title":"IOT / IAW / IVO / NLT","ua":"Чотири скорочення, які легко переплутати","set":["IOT","IAW","IVO","NLT"],"items":[{"s":"The platoon will occupy the hill {} observe the main road.","a":"IOT"},{"s":"All weapons will be handled {} the safety regulations.","a":"IAW"},{"s":"The vehicles were reported {} the bridge, about two hundred metres north of it.","a":"IVO"},{"s":"Submit the report {} 1800 hours.","a":"NLT"}]},{"title":"over / out / roger / wilco","ua":"Службові слова радіообміну","set":["over","out","roger","wilco"],"items":[{"s":"You have finished speaking and expect an answer, so you say {}.","a":"over"},{"s":"The conversation is finished and no answer is expected, so you say {}.","a":"out"},{"s":"You have received and understood the message, so you say {}.","a":"roger"},{"s":"You have understood the order and you will carry it out, so you say {}.","a":"wilco"}]}],"n":42}],"planned":[{"id":"m2","title":"Загальновійськова англійська","soon":true,"sub":"Military English Guide: стиль, накази, звіти, брифінги, звання, штаб, місцевість, роди військ, логістика"},{"id":"m3","title":"Термінологія НАТО","soon":true,"sub":"Вибірка зі словника на 20 000 статей за темами"},{"id":"m4","title":"Мовні навички","soon":true,"sub":"Словотвір, фразові дієслова, прийменники, активний і пасивний стан"}]}</script>
+<script>
+"use strict";
+var C = JSON.parse(document.getElementById("course").textContent);
+/* Скрипт Telegram підвантажується і в звичайному браузері, де WebApp — заглушка
+   з platform === "unknown". Довіряємо лише справжньому клієнту. */
+var TGW = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+var TG = (TGW && TGW.platform && TGW.platform !== "unknown") ? TGW : null;
+if(TG){ try{ TG.ready(); TG.expand(); document.body.className = "tg"; }catch(e){} }
+
+/* ================= індекси ================= */
+var IDX = {}, ALL = [], TXT = {}, DRL = {};
+C.modules.forEach(function(m){
+  TXT[m.id] = {}; DRL[m.id] = m.drills || [];
+  (m.texts || []).forEach(function(t){ TXT[m.id][t.id] = t; });
+  m.themes.forEach(function(th){
+    th.mid = m.id;
+    th.lessons.forEach(function(l){
+      l.mid = m.id; l.tid = th.id;
+      l.terms.forEach(function(t){ t.mid = m.id; IDX[t.k] = t; ALL.push(t); });
+    });
+  });
+});
+
+/* ================= прогрес ================= */
+var DAY = Math.floor(Date.now() / 86400000);
+var P = {v:2, t:{}, l:{}, streak:{d:0, c:0}};
+var INTERVALS = [1, 2, 4, 8, 16, 30];
+
+function termState(k){ return P.t[k] || (P.t[k] = {n:0, due:0}); }
+function isDue(k){ var s = P.t[k]; return !s || s.due <= DAY; }
+function mastered(k){ var s = P.t[k]; return !!s && s.n >= 3; }
+function answer(k, good){
+  var s = termState(k);
+  if(good){ s.n = Math.min(s.n + 1, INTERVALS.length); s.due = DAY + INTERVALS[s.n - 1]; }
+  else { s.n = 0; s.due = DAY; }
+  touchStreak();
+  saveSoon();
+}
+function touchStreak(){
+  if(P.streak.d === DAY) return;
+  P.streak.c = (P.streak.d === DAY - 1) ? P.streak.c + 1 : 1;
+  P.streak.d = DAY;
+}
+function lessonState(id){ return P.l[id] || (P.l[id] = {learn:0, prac:0}); }
+function lessonDone(id){ var s = P.l[id]; return !!s && s.learn && s.prac; }
+
+/* ---- сховище: Telegram CloudStorage або localStorage ---- */
+/* CloudStorage з'явився в Bot API 6.9; у старіших клієнтах виклики мовчки падають */
+var CS = (TG && TG.CloudStorage && TG.isVersionAtLeast && TG.isVersionAtLeast("6.9"))
+         ? TG.CloudStorage : null;
+var LKEY = "course_v2";
+var CHUNK = 3500, MAXCH = 24;
+var syncEl = document.getElementById("f-sync");
+function setSync(s){ syncEl.textContent = s; }
+
+function loadLocal(){
+  try{
+    var raw = localStorage.getItem(LKEY);
+    if(raw){ var o = JSON.parse(raw); if(o && o.v === 2) P = o; }
+  }catch(e){}
+}
+
+function loadProgress(done){
+  var fired = false;
+  function once(label){
+    if(fired) return;
+    fired = true;
+    setSync(label);
+    done();
+  }
+  if(!CS){
+    loadLocal();
+    return once(TG ? "локально (старий Telegram)" : "локально");
+  }
+  var keys = ["cn"], i;
+  for(i = 0; i < MAXCH; i++) keys.push("c" + i);
+  /* якщо CloudStorage не відповість — не лишаємо порожній екран */
+  setTimeout(function(){ if(!fired){ loadLocal(); once("локально"); } }, 4000);
+  try{
+    CS.getItems(keys, function(err, vals){
+      if(!err && vals){
+        var n = parseInt(vals["cn"], 10);
+        if(n > 0){
+          var s = "";
+          for(var j = 0; j < n; j++) s += (vals["c" + j] || "");
+          try{ var o = JSON.parse(s); if(o && o.v === 2) P = o; }catch(e){}
+        }
+      }
+      if(err) loadLocal();
+      once(err ? "локально" : "Telegram");
+    });
+  }catch(e){
+    loadLocal();
+    once("локально");
+  }
+}
+
+var saveTimer = null;
+function saveSoon(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 1200);
+}
+function saveNow(){
+  var s = JSON.stringify(P);
+  try{ localStorage.setItem(LKEY, s); }catch(e){}   /* завжди тримаємо локальну копію */
+  if(!CS) return;
+  var parts = [];
+  for(var i = 0; i < s.length; i += CHUNK) parts.push(s.slice(i, i + CHUNK));
+  if(parts.length > MAXCH){ setSync("забагато даних"); return; }
+  var left = parts.length + 1;
+  function fin(){ if(--left === 0) setSync("збережено"); }
+  CS.setItem("cn", String(parts.length), fin);
+  parts.forEach(function(p, i){ CS.setItem("c" + i, p, fin); });
+}
+
+/* ================= утиліти ================= */
+function el(tag, cls, txt){
+  var e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(txt !== undefined) e.textContent = txt;
+  return e;
+}
+function shuffle(a){
+  a = a.slice();
+  for(var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1)), t = a[i];
+    a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function norm(s){
+  s = (s || "").toLowerCase().replace(/[.,;:!?"'’()]/g, " ")
+       .replace(/[-–—/]/g, " ").replace(/\s+/g, " ").trim();
+  return s.replace(/^(to|the|a|an)\s+/, "");
+}
+function lev(a, b){
+  var m = a.length, n = b.length, i, j, prev, tmp, d = [];
+  for(j = 0; j <= n; j++) d[j] = j;
+  for(i = 1; i <= m; i++){
+    prev = d[0]; d[0] = i;
+    for(j = 1; j <= n; j++){
+      tmp = d[j];
+      d[j] = Math.min(d[j] + 1, d[j-1] + 1, prev + (a[i-1] === b[j-1] ? 0 : 1));
+      prev = tmp;
+    }
+  }
+  return d[n];
+}
+function grade(user, accepted){
+  var u = norm(user), i;
+  if(!u) return "";
+  for(i = 0; i < accepted.length; i++) if(u === norm(accepted[i])) return "ok";
+  for(i = 0; i < accepted.length; i++){
+    var b = norm(accepted[i]);
+    if(b.length >= 6 && lev(u, b) <= 1) return "near";
+  }
+  return "";
+}
+function speak(text, lang){
+  try{
+    if(!window.speechSynthesis) return;
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = lang || "en-GB";
+    u.rate = 0.92;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function haptic(kind){
+  try{ if(TG && TG.HapticFeedback) TG.HapticFeedback.notificationOccurred(kind); }catch(e){}
+}
+function pct(a, b){ return b ? Math.round(a * 100 / b) : 0; }
+function progressBar(a, b){
+  var w = el("div", "bar");
+  var i = el("i");
+  i.style.width = pct(a, b) + "%";
+  w.appendChild(i);
+  return w;
+}
+function plural(n, one, few, many){
+  var m10 = n % 10, m100 = n % 100;
+  if(m10 === 1 && m100 !== 11) return one;
+  if(m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+  return many;
+}
+
+/* ================= маршрутизація ================= */
+var view = document.getElementById("view");
+var stack = [];
+function go(fn, keep){
+  if(!keep) stack.push(fn);
+  view.innerHTML = "";
+  fn();
+  window.scrollTo(0, 0);
+  if(TG && TG.BackButton){
+    try{ stack.length > 1 ? TG.BackButton.show() : TG.BackButton.hide(); }catch(e){}
+  }
+}
+function back(){
+  stack.pop();
+  var f = stack[stack.length - 1] || screenHome;
+  go(f, true);
+}
+if(TG && TG.BackButton){ try{ TG.BackButton.onClick(back); }catch(e){} }
+function backLink(){
+  var a = el("div", "back", "← назад");
+  a.onclick = back;
+  return a;
+}
+document.getElementById("f-home").onclick = function(){ stack = []; go(screenHome); };
+document.getElementById("f-review").onclick = function(){ go(screenReview); };
+document.getElementById("f-search").onclick = function(){ go(screenSearch); };
+
+/* ================= підрахунки ================= */
+function moduleStats(m){
+  var total = 0, done = 0, learned = 0, terms = 0;
+  m.themes.forEach(function(th){
+    th.lessons.forEach(function(l){
+      total++;
+      if(lessonDone(l.id)) done++;
+      l.terms.forEach(function(t){ terms++; if(mastered(t.k)) learned++; });
+    });
+  });
+  return {lessons:total, done:done, terms:terms, learned:learned};
+}
+function dueTerms(){
+  return ALL.filter(function(t){
+    var s = P.t[t.k];
+    return s && s.n > 0 && s.due <= DAY;
+  });
+}
+
+/* ================= екран: курс ================= */
+function screenHome(){
+  var h = el("div");
+  h.appendChild(el("h1", "", "Військова англійська"));
+  var due = dueTerms().length;
+  h.appendChild(el("div", "sub",
+    "Серія: " + P.streak.c + " " + plural(P.streak.c, "день", "дні", "днів") +
+    (due ? " · до повторення " + due : "")));
+  view.appendChild(h);
+
+  if(due){
+    var r = el("div", "card tap");
+    r.appendChild(el("h3", "", "Повторити " + due + " " + plural(due, "слово", "слова", "слів")));
+    r.appendChild(el("div", "sub", "Слова, у яких минув інтервал повторення"));
+    r.onclick = function(){ go(screenReview); };
+    view.appendChild(r);
+  }
+
+  C.modules.forEach(function(m){
+    var s = moduleStats(m);
+    var c = el("div", "card tap");
+    var top = el("div", "between");
+    top.appendChild(el("h3", "", m.title));
+    top.appendChild(el("span", s.done === s.lessons ? "pill done" : "pill",
+      s.done + " / " + s.lessons));
+    c.appendChild(top);
+    c.appendChild(el("div", "sub", m.sub));
+    c.appendChild(progressBar(s.learned, s.terms));
+    c.appendChild(el("div", "tiny", "засвоєно " + s.learned + " з " + s.terms + " термінів"));
+    c.onclick = function(){ go(function(){ screenModule(m); }); };
+    view.appendChild(c);
+  });
+
+  (C.planned || []).forEach(function(p){
+    var c = el("div", "card");
+    var top = el("div", "between");
+    top.appendChild(el("h3", "", p.title));
+    top.appendChild(el("span", "pill soon", "готується"));
+    c.appendChild(top);
+    c.appendChild(el("div", "sub", p.sub));
+    view.appendChild(c);
+  });
+
+  var reset = el("div", "back", "скинути весь прогрес");
+  reset.onclick = function(){
+    if(confirm("Стерти прогрес по всьому курсу?")){
+      P = {v:2, t:{}, l:{}, streak:{d:0, c:0}};
+      saveNow();
+      go(screenHome, true);
+    }
+  };
+  view.appendChild(reset);
+}
+
+/* ================= екран: модуль ================= */
+function screenModule(m){
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", m.title));
+  view.appendChild(el("div", "sub", m.sub));
+
+  m.themes.forEach(function(th){
+    var tot = 0, dn = 0, lrn = 0, tms = 0;
+    th.lessons.forEach(function(l){
+      tot++; if(lessonDone(l.id)) dn++;
+      l.terms.forEach(function(t){ tms++; if(mastered(t.k)) lrn++; });
+    });
+    var c = el("div", "card tap");
+    var top = el("div", "between");
+    top.appendChild(el("h3", "", th.title));
+    top.appendChild(el("span", dn === tot ? "pill done" : "pill", dn + " / " + tot));
+    c.appendChild(top);
+    var extra = [];
+    if(th.texts.length) extra.push(th.texts.length + " діалог");
+    if(th.drills.length) extra.push(th.drills.length + " дриль");
+    c.appendChild(el("div", "tiny", tms + " термінів" + (extra.length ? " · " + extra.join(" · ") : "")));
+    c.appendChild(progressBar(lrn, tms));
+    c.onclick = function(){ go(function(){ screenTheme(m, th); }); };
+    view.appendChild(c);
+  });
+}
+
+/* ================= екран: тема ================= */
+function screenTheme(m, th){
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", th.title));
+  view.appendChild(el("div", "sub", m.title));
+
+  var c = el("div", "card");
+  th.lessons.forEach(function(l){
+    var it = el("div", "list-item tap");
+    var g = el("div", "grow");
+    g.appendChild(el("div", "", l.title));
+    var lrn = l.terms.filter(function(t){ return mastered(t.k); }).length;
+    g.appendChild(el("div", "tiny", l.terms.length + " термінів · засвоєно " + lrn));
+    it.appendChild(g);
+    it.appendChild(el("span", lessonDone(l.id) ? "pill done nowrap" : "pill nowrap",
+      lessonDone(l.id) ? "пройдено" : "почати"));
+    it.onclick = function(){ go(function(){ screenLesson(m, th, l); }); };
+    c.appendChild(it);
+  });
+  view.appendChild(c);
+
+  if(th.texts.length || th.drills.length){
+    view.appendChild(el("h2", "", "Закріплення в контексті"));
+    var c2 = el("div", "card");
+    th.texts.forEach(function(tid){
+      var t = TXT[m.id][tid];
+      var it = el("div", "list-item");
+      var g = el("div", "grow");
+      g.appendChild(el("div", "", t.title));
+      g.appendChild(el("div", "tiny", t.ua + " · " + t.gaps.length + " пропусків"));
+      it.appendChild(g);
+      var b1 = el("button", "ghost small", "варіанти");
+      b1.onclick = function(){ go(function(){ screenText(m, t, "choice"); }); };
+      var b2 = el("button", "ghost small", "вписати");
+      b2.onclick = function(){ go(function(){ screenText(m, t, "type"); }); };
+      var r = el("div", "nowrap");
+      r.appendChild(b1); r.appendChild(b2);
+      it.appendChild(r);
+      c2.appendChild(it);
+    });
+    th.drills.forEach(function(di){
+      var d = DRL[m.id][di];
+      var it = el("div", "list-item tap");
+      var g = el("div", "grow");
+      g.appendChild(el("div", "", "Дриль: " + d.title));
+      g.appendChild(el("div", "tiny", d.ua));
+      it.appendChild(g);
+      it.appendChild(el("span", "pill nowrap", "пройти"));
+      it.onclick = function(){ go(function(){ screenDrill(m, d, di); }); };
+      c2.appendChild(it);
+    });
+    view.appendChild(c2);
+  }
+}
+
+/* ================= екран: урок ================= */
+function screenLesson(m, th, l){
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", l.title));
+  view.appendChild(el("div", "sub", th.title + " · " + l.terms.length + " термінів"));
+
+  var st = lessonState(l.id);
+  var steps = el("div", "steps");
+  var s1 = el("div", st.learn ? "ok" : "on", "1. Вивчення");
+  var s2 = el("div", st.prac ? "ok" : (st.learn ? "on" : ""), "2. Закріплення");
+  var s3 = el("div", (th.texts.length || th.drills.length) ? "" : "", "3. Контекст");
+  steps.appendChild(s1); steps.appendChild(s2); steps.appendChild(s3);
+  view.appendChild(steps);
+
+  var c = el("div", "card");
+  c.appendChild(el("h3", "", "1. Вивчення"));
+  c.appendChild(el("div", "sub", "Картки зі словами, перекладом і поясненням англійською."));
+  var r1 = el("div", "row");
+  var b1 = el("button", "act", st.learn ? "Повторити картки" : "Почати");
+  b1.onclick = function(){ go(function(){ stageLearn(m, th, l); }); };
+  r1.appendChild(b1);
+  c.appendChild(r1);
+  view.appendChild(c);
+
+  var c2 = el("div", "card");
+  c2.appendChild(el("h3", "", "2. Закріплення"));
+  c2.appendChild(el("div", "sub",
+    "Три кола: визначення → термін, українська → English, і пропуск у реченні."));
+  var r2 = el("div", "row");
+  var b2 = el("button", "act", st.prac ? "Пройти ще раз" : "Почати");
+  b2.disabled = !st.learn;
+  b2.onclick = function(){ go(function(){ stagePractice(m, th, l); }); };
+  r2.appendChild(b2);
+  if(!st.learn) r2.appendChild(el("span", "hint", "спершу пройдіть картки"));
+  c2.appendChild(r2);
+  view.appendChild(c2);
+
+  if(th.texts.length || th.drills.length){
+    var c3 = el("div", "card");
+    c3.appendChild(el("h3", "", "3. Контекст"));
+    c3.appendChild(el("div", "sub", "Діалоги й дрилі теми — спільні для всіх її уроків."));
+    var r3 = el("div", "row");
+    var b3 = el("button", "ghost", "До матеріалів теми");
+    b3.onclick = function(){ go(function(){ screenTheme(m, th); }); };
+    r3.appendChild(b3);
+    c3.appendChild(r3);
+    view.appendChild(c3);
+  }
+}
+
+/* ---------- етап 1: картки ---------- */
+function stageLearn(m, th, l){
+  var queue = shuffle(l.terms.slice());
+  var total = queue.length, seen = 0;
+  view.appendChild(backLink());
+  var head = el("div", "between");
+  var counter = el("div", "sub", "");
+  head.appendChild(el("h1", "", "Вивчення"));
+  head.appendChild(counter);
+  view.appendChild(head);
+  var host = el("div");
+  view.appendChild(host);
+
+  function next(){
+    host.innerHTML = "";
+    counter.textContent = seen + " / " + total;
+    if(!queue.length){
+      lessonState(l.id).learn = 1;
+      touchStreak(); saveSoon();
+      var done = el("div", "card");
+      done.appendChild(el("h3", "", "Картки пройдено"));
+      done.appendChild(el("div", "sub", "Тепер закріплення — саме там слова переходять у активний запас."));
+      var r = el("div", "row");
+      var b = el("button", "act", "До закріплення");
+      b.onclick = function(){ go(function(){ stagePractice(m, th, l); }, true); };
+      var b2 = el("button", "ghost", "До уроку");
+      b2.onclick = back;
+      r.appendChild(b); r.appendChild(b2);
+      done.appendChild(r);
+      host.appendChild(done);
+      return;
+    }
+    var t = queue[0];
+    var c = el("div", "card");
+    var f = el("div", "flash");
+    f.appendChild(el("div", "big", t.en));
+    var sp = el("button", "speak", "🔊 прослухати");
+    sp.onclick = function(ev){ ev.stopPropagation(); speak(t.en); };
+    f.appendChild(sp);
+    f.appendChild(el("div", "hint", "натисніть, щоб побачити переклад"));
+    c.appendChild(f);
+    c.className = "card tap";
+    c.onclick = function(){ flip(t, c); };
+    host.appendChild(c);
+  }
+
+  function flip(t, c){
+    c.innerHTML = "";
+    c.className = "card";
+    var f = el("div", "flash");
+    f.appendChild(el("div", "big", t.en));
+    f.appendChild(el("div", "mid", t.ua));
+    f.appendChild(el("div", "expl", t.ex));
+    var sp = el("button", "speak", "🔊 EN");
+    sp.onclick = function(){ speak(t.en + ". " + t.ex); };
+    f.appendChild(sp);
+    c.appendChild(f);
+    var r = el("div", "row");
+    var ok = el("button", "act", "Знаю");
+    ok.onclick = function(){
+      queue.shift(); seen++;
+      answer(t.k, true);
+      next();
+    };
+    var again = el("button", "ghost", "Ще раз");
+    again.onclick = function(){
+      var x = queue.shift();
+      queue.push(x);
+      next();
+    };
+    r.appendChild(ok); r.appendChild(again);
+    c.appendChild(r);
+  }
+
+  next();
+}
+
+/* ---------- етап 2: закріплення ---------- */
+function buildItems(terms, kinds){
+  var items = [];
+  kinds.forEach(function(kind){
+    shuffle(terms).forEach(function(t){ items.push({t:t, kind:kind}); });
+  });
+  return items;
+}
+
+function stagePractice(m, th, l){
+  runSession(buildItems(l.terms, ["def", "ua", "cloze"]), "Закріплення",
+    l.terms.length + " термінів × 3 кола", function(){
+      lessonState(l.id).prac = 1;
+      saveSoon();
+    });
+}
+
+function screenReview(){
+  var due = dueTerms();
+  view.innerHTML = "";
+  view.appendChild(backLink());
+  if(!due.length){
+    view.appendChild(el("h1", "", "Повторення"));
+    var c = el("div", "card");
+    c.appendChild(el("div", "sub", "Сьогодні повторювати нічого. Слова повертаються через 1, 2, 4, 8, 16 і 30 днів після правильної відповіді."));
+    view.appendChild(c);
+    return;
+  }
+  var pick = shuffle(due).slice(0, 20);
+  runSession(buildItems(pick, ["def", "ua"]), "Повторення",
+    pick.length + " слів до повторення", function(){});
+}
+
+/* універсальна сесія питань */
+function runSession(items, title, subtitle, onDone){
+  view.innerHTML = "";
+  view.appendChild(backLink());
+  var head = el("div", "between");
+  head.appendChild(el("h1", "", title));
+  var counter = el("div", "sub", "");
+  head.appendChild(counter);
+  view.appendChild(head);
+  view.appendChild(el("div", "sub", subtitle));
+  var host = el("div");
+  view.appendChild(host);
+
+  var queue = items.slice(), total = items.length, done = 0, ok = 0;
+
+  function next(){
+    host.innerHTML = "";
+    counter.textContent = done + " / " + total;
+    if(!queue.length){
+      onDone();
+      var c = el("div", "card");
+      c.appendChild(el("h3", "", "Готово"));
+      c.appendChild(el("div", "sub", "Правильно з першого разу: " + ok + " з " + total));
+      var r = el("div", "row");
+      var b = el("button", "act", "Далі");
+      b.onclick = back;
+      r.appendChild(b);
+      c.appendChild(r);
+      host.appendChild(c);
+      haptic("success");
+      return;
+    }
+    var it = queue[0];
+    var c = el("div", "card");
+    if(it.kind === "def"){
+      c.appendChild(el("div", "tiny", "Оберіть термін за означенням"));
+      c.appendChild(el("div", "mid", hideTerm(it.t)));
+      c.appendChild(mcq(shuffle([it.t.en].concat(it.t.dis)), it.t.en, it));
+    } else if(it.kind === "ua"){
+      c.appendChild(el("div", "tiny", "Як це англійською?"));
+      c.appendChild(el("div", "mid", it.t.ua));
+      c.appendChild(mcq(shuffle([it.t.en].concat(it.t.dis)), it.t.en, it));
+    } else {
+      c.appendChild(el("div", "tiny", "Впишіть пропущений термін"));
+      c.appendChild(el("div", "mid", it.t.cloze.replace("……", "________")));
+      c.appendChild(el("div", "hint", "укр.: " + it.t.ua));
+      c.appendChild(typeIn(it));
+    }
+    host.appendChild(c);
+  }
+
+  function hideTerm(t){
+    var re = new RegExp("\\b" + t.en.replace(/[.*+?^${}()|[\]\\\/]/g, "\\$&") + "\\b", "ig");
+    return t.ex.replace(re, "________");
+  }
+
+  function resolve(it, good, node){
+    answer(it.t.k, good);
+    haptic(good ? "success" : "error");
+    queue.shift();
+    if(good){ done++; ok++; }
+    else { done++; queue.push(it); total++; }
+    var r = el("div", "row");
+    var b = el("button", "act", "Далі");
+    b.onclick = next;
+    r.appendChild(b);
+    if(!good) r.appendChild(el("span", "hint", "це слово повернеться в кінці"));
+    node.appendChild(r);
+  }
+
+  function mcq(opts, right, it){
+    var wrap = el("div", "opts");
+    var used = false;
+    opts.forEach(function(o){
+      var b = el("button", "", o);
+      b.onclick = function(){
+        if(used) return;
+        used = true;
+        Array.prototype.forEach.call(wrap.children, function(x){
+          x.disabled = true;
+          if(x.textContent === right) x.className = "good";
+        });
+        if(o !== right) b.className = "bad";
+        wrap.parentNode.appendChild(el("div", "hint", it.t.ua + " — " + it.t.ex));
+        resolve(it, o === right, wrap.parentNode);
+      };
+      wrap.appendChild(b);
+    });
+    return wrap;
+  }
+
+  function typeIn(it){
+    var wrap = el("div", "");
+    var i = el("input", "tin");
+    i.type = "text"; i.autocapitalize = "off"; i.autocomplete = "off"; i.spellcheck = false;
+    i.placeholder = "англійською";
+    var r = el("div", "row");
+    var b = el("button", "act", "Перевірити");
+    var out = el("div", "hint", "");
+    var used = false;
+    function check(){
+      if(used) return;
+      var res = grade(i.value, it.t.acc);
+      i.className = "tin " + (res === "ok" ? "good" : res === "near" ? "near" : "bad");
+      i.disabled = true; b.disabled = true;
+      used = true;
+      out.textContent = res === "ok" ? it.t.ua
+        : (res === "near" ? "майже — правильно: " + it.t.en : "правильно: " + it.t.en);
+      resolve(it, !!res, wrap);
+    }
+    b.onclick = check;
+    i.onkeydown = function(e){ if(e.key === "Enter") check(); };
+    r.appendChild(i); r.appendChild(b);
+    wrap.appendChild(r);
+    wrap.appendChild(out);
+    setTimeout(function(){ try{ i.focus(); }catch(e){} }, 50);
+    return wrap;
+  }
+
+  next();
+}
+
+/* ================= контекст: діалоги ================= */
+function buildGapped(host, text, re, make){
+  var last = 0, m;
+  re.lastIndex = 0;
+  while((m = re.exec(text)) !== null){
+    if(m.index > last) host.appendChild(document.createTextNode(text.slice(last, m.index)));
+    host.appendChild(make(m[1] ? parseInt(m[1], 10) : 0));
+    last = m.index + m[0].length;
+  }
+  if(last < text.length) host.appendChild(document.createTextNode(text.slice(last)));
+}
+function accepted(g){ return g.alt ? [g.a].concat(g.alt) : [g.a]; }
+
+function checkGaps(fields, out){
+  var ok = 0;
+  fields.forEach(function(x){
+    var res = grade(x.f.value, accepted(x.g));
+    x.f.className = "gap " + (res === "ok" ? "good" : res === "near" ? "near" : "bad");
+    if(x.f.nextSibling && x.f.nextSibling.className === "fix")
+      x.f.parentNode.removeChild(x.f.nextSibling);
+    if(res !== "ok") x.f.parentNode.insertBefore(el("span", "fix", "→ " + x.g.a), x.f.nextSibling);
+    if(res) ok++;
+    if(x.key) answer(x.key, !!res);
+  });
+  out.innerHTML = "";
+  var sc = el("div", "score", "Правильно " + ok + " з " + fields.length);
+  if(ok < fields.length * 0.7) sc.className = "score low";
+  out.appendChild(sc);
+  haptic(ok === fields.length ? "success" : "warning");
+  saveSoon();
+}
+
+function makeField(g, mode){
+  if(mode === "choice"){
+    var s = el("select", "gap");
+    s.appendChild(el("option", "", "— обрати —")).value = "";
+    shuffle(g.opts).forEach(function(o){
+      var op = el("option", "", o);
+      op.value = o;
+      s.appendChild(op);
+    });
+    return s;
+  }
+  var i = el("input", "gap");
+  i.type = "text"; i.autocapitalize = "off"; i.autocomplete = "off"; i.spellcheck = false;
+  i.placeholder = g.ua || "";
+  i.title = g.ua || "";
+  return i;
+}
+
+function screenText(m, t, mode){
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", t.title));
+  view.appendChild(el("div", "sub", t.ua));
+
+  var c = el("div", "card");
+  if(mode === "type"){
+    c.appendChild(el("div", "hint", "Банк слів:"));
+    var bank = el("div", "bank");
+    shuffle(t.gaps.map(function(g){ return g.a; })).forEach(function(w){
+      bank.appendChild(el("span", "", w));
+    });
+    c.appendChild(bank);
+  }
+  var fields = [];
+  t.lines.forEach(function(ln){
+    var row = el("div", "line");
+    if(ln[0]) row.appendChild(el("div", "who", ln[0] + ":"));
+    var txt = el("div", "txt");
+    buildGapped(txt, ln[1], /\{(\d+)\}/g, function(idx){
+      var g = t.gaps[idx - 1];
+      var f = makeField(g, mode);
+      fields.push({f:f, g:g, key:IDX[m.id + ":" + g.a] ? m.id + ":" + g.a : null});
+      return f;
+    });
+    row.appendChild(txt);
+    c.appendChild(row);
+  });
+  var out = el("div");
+  var r = el("div", "row");
+  var b = el("button", "act", "Перевірити");
+  b.onclick = function(){ checkGaps(fields, out); };
+  var b2 = el("button", "ghost", "Ще раз");
+  b2.onclick = function(){ go(function(){ screenText(m, t, mode); }, true); };
+  var b3 = el("button", "ghost", mode === "choice" ? "Режим: вписати" : "Режим: варіанти");
+  b3.onclick = function(){
+    go(function(){ screenText(m, t, mode === "choice" ? "type" : "choice"); }, true);
+  };
+  r.appendChild(b); r.appendChild(b2); r.appendChild(b3);
+  c.appendChild(r);
+  c.appendChild(out);
+  view.appendChild(c);
+}
+
+function screenDrill(m, d){
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", d.title));
+  view.appendChild(el("div", "sub", d.ua));
+  var c = el("div", "card");
+  var fields = [];
+  d.items.forEach(function(it){
+    var p = el("p", "para");
+    buildGapped(p, it.s, /\{\}/g, function(){
+      var s = el("select", "gap");
+      s.appendChild(el("option", "", "— обрати —")).value = "";
+      shuffle(d.set).forEach(function(w){
+        var op = el("option", "", w);
+        op.value = w;
+        s.appendChild(op);
+      });
+      fields.push({f:s, g:{a:it.a, alt:[it.a.replace(/s$/, ""), it.a + "s"]}, key:null});
+      return s;
+    });
+    c.appendChild(p);
+  });
+  var out = el("div");
+  var r = el("div", "row");
+  var b = el("button", "act", "Перевірити");
+  b.onclick = function(){ checkGaps(fields, out); };
+  r.appendChild(b);
+  c.appendChild(r);
+  c.appendChild(out);
+  view.appendChild(c);
+}
+
+/* ================= пошук ================= */
+function screenSearch(){
+  view.innerHTML = "";
+  view.appendChild(backLink());
+  view.appendChild(el("h1", "", "Пошук по курсу"));
+  var i = el("input", "tin");
+  i.type = "search";
+  i.placeholder = "термін англійською або українською";
+  i.style.maxWidth = "100%";
+  view.appendChild(i);
+  var out = el("div");
+  view.appendChild(out);
+
+  function run(){
+    var q = i.value.trim().toLowerCase();
+    out.innerHTML = "";
+    if(q.length < 2){
+      out.appendChild(el("div", "hint", "Введіть щонайменше дві літери. Усього в курсі " + ALL.length + " термінів."));
+      return;
+    }
+    var hits = ALL.filter(function(t){
+      return t.en.toLowerCase().indexOf(q) >= 0 || t.ua.toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 40);
+    if(!hits.length){ out.appendChild(el("div", "hint", "Нічого не знайдено")); return; }
+    var c = el("div", "card");
+    hits.forEach(function(t){
+      var it = el("div", "list-item");
+      var g = el("div", "grow");
+      g.appendChild(el("div", "", t.en + " — " + t.ua));
+      g.appendChild(el("div", "tiny", t.ex));
+      it.appendChild(g);
+      var sp = el("button", "speak nowrap", "🔊");
+      sp.onclick = function(){ speak(t.en); };
+      it.appendChild(sp);
+      c.appendChild(it);
+    });
+    out.appendChild(c);
+  }
+  i.oninput = run;
+  run();
+  setTimeout(function(){ try{ i.focus(); }catch(e){} }, 50);
+}
+
+/* ================= старт ================= */
+loadProgress(function(){ go(screenHome); });
+</script>
+</body>
+</html>
