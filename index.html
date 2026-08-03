@@ -186,6 +186,17 @@ function touchStreak(){
 function lessonState(id){ return P.l[id] || (P.l[id] = {learn:0, prac:0}); }
 function lessonDone(id){ var s = P.l[id]; return !!s && s.learn && s.prac; }
 
+/* ---- контекст: діалоги й дрилі теми ---- */
+function ctxKey(mid, kind, id){ return "x:" + mid + ":" + kind + ":" + id; }
+function ctxDone(key){ return !!(P.c && P.c[key]); }
+function markCtx(key){ if(!P.c) P.c = {}; P.c[key] = 1; }
+function themeCtxDone(m, th){
+  var any = false, all = true;
+  th.texts.forEach(function(tid){ any = true; if(!ctxDone(ctxKey(m.id, "t", tid))) all = false; });
+  th.drills.forEach(function(di){ any = true; if(!ctxDone(ctxKey(m.id, "d", di))) all = false; });
+  return any && all;
+}
+
 /* ---- сховище: Telegram CloudStorage або localStorage ---- */
 /* CloudStorage з'явився в Bot API 6.9; у старіших клієнтах виклики мовчки падають */
 var CS = (TG && TG.CloudStorage && TG.isVersionAtLeast && TG.isVersionAtLeast("6.9"))
@@ -509,9 +520,13 @@ function screenTheme(m, th){
     var c2 = el("div", "card");
     th.texts.forEach(function(tid){
       var t = TXT[m.id][tid];
+      var done = ctxDone(ctxKey(m.id, "t", tid));
       var it = el("div", "list-item");
       var g = el("div", "grow");
-      g.appendChild(el("div", "", t.title));
+      var head = el("div", "");
+      head.appendChild(document.createTextNode(t.title + " "));
+      head.appendChild(el("span", done ? "pill done" : "pill", done ? "пройдено" : "діалог"));
+      g.appendChild(head);
       g.appendChild(el("div", "tiny", t.ua + " · " + t.gaps.length + " пропусків"));
       it.appendChild(g);
       var b1 = el("button", "ghost small", "варіанти");
@@ -525,12 +540,13 @@ function screenTheme(m, th){
     });
     th.drills.forEach(function(di){
       var d = DRL[m.id][di];
+      var done = ctxDone(ctxKey(m.id, "d", di));
       var it = el("div", "list-item tap");
       var g = el("div", "grow");
       g.appendChild(el("div", "", "Дриль: " + d.title));
       g.appendChild(el("div", "tiny", d.ua));
       it.appendChild(g);
-      it.appendChild(el("span", "pill nowrap", "пройти"));
+      it.appendChild(el("span", done ? "pill done nowrap" : "pill nowrap", done ? "пройдено" : "пройти"));
       it.onclick = function(){ go(function(){ screenDrill(m, d, di); }); };
       c2.appendChild(it);
     });
@@ -548,7 +564,8 @@ function screenLesson(m, th, l){
   var steps = el("div", "steps");
   var s1 = el("div", st.learn ? "ok" : "on", "1. Вивчення");
   var s2 = el("div", st.prac ? "ok" : (st.learn ? "on" : ""), "2. Закріплення");
-  var s3 = el("div", (th.texts.length || th.drills.length) ? "" : "", "3. Контекст");
+  var hasCtx = th.texts.length || th.drills.length;
+  var s3 = el("div", themeCtxDone(m, th) ? "ok" : (hasCtx && st.prac ? "on" : ""), "3. Контекст");
   steps.appendChild(s1); steps.appendChild(s2); steps.appendChild(s3);
   view.appendChild(steps);
 
@@ -575,12 +592,16 @@ function screenLesson(m, th, l){
   c2.appendChild(r2);
   view.appendChild(c2);
 
-  if(th.texts.length || th.drills.length){
+  if(hasCtx){
     var c3 = el("div", "card");
-    c3.appendChild(el("h3", "", "3. Контекст"));
-    c3.appendChild(el("div", "sub", "Діалоги й дрилі теми — спільні для всіх її уроків."));
+    var h3row = el("div", "between");
+    h3row.appendChild(el("h3", "", "3. Контекст"));
+    if(themeCtxDone(m, th)) h3row.appendChild(el("span", "pill done", "пройдено"));
+    c3.appendChild(h3row);
+    c3.appendChild(el("div", "sub",
+      "Діалоги й дрилі теми — спільні для всіх її уроків. Зараховується за проходження без помилок."));
     var r3 = el("div", "row");
-    var b3 = el("button", "ghost", "До матеріалів теми");
+    var b3 = el("button", "act", "До матеріалів теми");
     b3.onclick = function(){ go(function(){ screenTheme(m, th); }); };
     r3.appendChild(b3);
     c3.appendChild(r3);
@@ -833,7 +854,7 @@ function buildGapped(host, text, re, make){
 }
 function accepted(g){ return g.alt ? [g.a].concat(g.alt) : [g.a]; }
 
-function checkGaps(fields, out){
+function checkGaps(fields, out, doneKey){
   var ok = 0;
   fields.forEach(function(x){
     var res = grade(x.f.value, accepted(x.g));
@@ -844,11 +865,14 @@ function checkGaps(fields, out){
     if(res) ok++;
     if(x.key) answer(x.key, !!res);
   });
+  var full = ok === fields.length;
+  if(doneKey && full) markCtx(doneKey);   /* зараховуємо контекст лише за повністю правильне проходження */
   out.innerHTML = "";
-  var sc = el("div", "score", "Правильно " + ok + " з " + fields.length);
+  var sc = el("div", "score", "Правильно " + ok + " з " + fields.length +
+    (doneKey && full ? " · пройдено" : ""));
   if(ok < fields.length * 0.7) sc.className = "score low";
   out.appendChild(sc);
-  haptic(ok === fields.length ? "success" : "warning");
+  haptic(full ? "success" : "warning");
   saveSoon();
 }
 
@@ -901,7 +925,7 @@ function screenText(m, t, mode){
   var out = el("div");
   var r = el("div", "row");
   var b = el("button", "act", "Перевірити");
-  b.onclick = function(){ checkGaps(fields, out); };
+  b.onclick = function(){ checkGaps(fields, out, ctxKey(m.id, "t", t.id)); };
   var b2 = el("button", "ghost", "Ще раз");
   b2.onclick = function(){ go(function(){ screenText(m, t, mode); }, true); };
   var b3 = el("button", "ghost", mode === "choice" ? "Режим: вписати" : "Режим: варіанти");
@@ -914,7 +938,7 @@ function screenText(m, t, mode){
   view.appendChild(c);
 }
 
-function screenDrill(m, d){
+function screenDrill(m, d, di){
   view.appendChild(backLink());
   view.appendChild(el("h1", "", d.title));
   view.appendChild(el("div", "sub", d.ua));
@@ -938,7 +962,7 @@ function screenDrill(m, d){
   var out = el("div");
   var r = el("div", "row");
   var b = el("button", "act", "Перевірити");
-  b.onclick = function(){ checkGaps(fields, out); };
+  b.onclick = function(){ checkGaps(fields, out, ctxKey(m.id, "d", di)); };
   r.appendChild(b);
   c.appendChild(r);
   c.appendChild(out);
